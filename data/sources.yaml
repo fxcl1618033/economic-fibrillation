@@ -94,13 +94,54 @@ sources:
         bytes: 562767
     used_by: paper1/scripts/eraA_claude_ai/crisis_analysis.py (reads gdp.csv); prepare_data.py built paper1/data/gdp_panel_*.csv from it
 
+downloads:
+  # Files downloaded once from official sources on Sid's Mac (approved by Sid, 11 October 2026). Their URLs serve the
+  # latest release, so a new download would differ: never re-fetch silently. tools/fetch_data.py verifies them and,
+  # when one is missing, restores it from `archive` (a copy on Sid's Mac) or from the gzip copy in data/archive/.
+  - id: bis_lbs
+    what: BIS Locational Banking Statistics, bulk file, all series (cross-border bank claims and liabilities by reporting and counterparty country), the June 2026 release with data from 1977-Q4 to 2025-Q4. Values in millions of US dollars
+    url: https://data.bis.org/static/bulk/WS_LBS_D_PUB_csv_col.zip
+    downloaded: 2026-07-15           # by Sid; the file date inside the zip is 2026-06-10 (the BIS release)
+    dir: bis
+    archive: ~/data/raw/bis   # Sid's July download: the pinned copy (too large for git)
+    optional: true                           # needed only for the GNN (G0); a missing file warns, a changed file fails
+    files:
+      - path: WS_LBS_D_PUB_csv_col.zip
+        sha256: 7e4865ed8d0011de627ded55aaa2e9d3a5665089cb925b15e2e14962dbf9c18a
+        bytes: 121177971
+      - path: WS_LBS_D_PUB_csv_col.csv
+        from_zip: WS_LBS_D_PUB_csv_col.zip
+        sha256: f6f096de557fda577cf6194ed4640d747eec9fd1537aa83b0a3e8614c34e86e3
+        bytes: 534063740
+    read_with: one row per series, quarters as columns. Cross-border claims of all reporting banks on all sectors - FREQ=Q, L_MEASURE=S, L_POSITION=C, L_INSTR=A, L_DENOM=TO1, L_CURR_TYPE=A, L_PARENT_CTY=5J, L_REP_BANK_TYPE=A, L_CP_SECTOR=A (B for banks only), L_POS_TYPE=N; lender = L_REP_CTY, borrower = L_CP_COUNTRY (BIS two-letter codes)
+    coverage_S30: lenders reporting bilateral claims on S30 economies - 10 from 1977-Q4 (FR, BE, SE, CH, DE, DK, NL, US, GB, JP; the main edge set), then FI 1983, AU 1997, BR 2002, GR and MX 2003, KR 2005, AT and CA 2007, ZA 2009, ES 2012, IT 2014. Never lenders - CN, IN, ID, IR, NO, PT, SA, TH, TR
+    used_by: GNN G0 bank-lending edges (main set fixed to the 10 lenders since 1977; the expanding set as sensitivity only - Sid, 11 October 2026)
+    cite: Bank for International Settlements, Locational Banking Statistics, data.bis.org (release of June 2026).
+
+  - id: imf_imts
+    what: IMF International Trade in Goods by partner country (IMTS, formerly Direction of Trade Statistics), annual, goods exports FOB (XG_FOB_USD) and imports CIF (MG_CIF_USD) in US dollars, 1948-2025. Reporters and partners - the 30 S30 economies plus Belgium-Luxembourg (TX126, Belgium before 1997) and the South African Common Customs Area (TX198, South Africa before 1998); the world (G001) as a partner for totals
+    url: see query_url.txt (SDMX 3.0, https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/IMTS/+/<reporters>.XG_FOB_USD+MG_CIF_USD.<partners>+G001.A, header Accept application/vnd.sdmx.data+csv;version=2.0.0)
+    downloaded: 2026-10-11T06:30:40Z
+    dir: imf_imts
+    files:
+      - path: IMTS_S30_annual.csv
+        sha256: 782a437d7c44cb04bcc464d9aef94acd114e794315181698042b38350ca0876f
+        bytes: 10602840
+      - path: IMTS_structure.json     # the dataflow's structure and codelists, retrieved the same day
+        sha256: dd34fba0ea1a0c0a3dd14c3da473a8070fd61401b8ee4692b6c9dd0f7959678a
+        bytes: 897836
+      - path: query_url.txt
+        sha256: 28c673f56d6c6512f89ff875369e609f5cb8776305379e29519a475a2aa8adc3
+        bytes: 360
+    read_with: SDMX-CSV 2.0; columns COUNTRY (reporter), INDICATOR, COUNTERPART_COUNTRY, TIME_PERIOD, OBS_VALUE (US dollars); STATUS 'e' marks IMF estimates (1,346 of 131,093 rows). Read with low_memory=False
+    coverage_S30: directed pairs with exports or mirror imports - 834 of 870 in 1970, 856 in 1975, 858-859 in 1982-1991, all 870 from 2000. Missing 1970 pairs mostly involve China (16), many of them true zeros (embargoes), not gaps
+    used_by: GNN G0 trade edges
+    cite: International Monetary Fund, International Trade in Goods (by partner country) (IMTS), data.imf.org, retrieved 11 October 2026.
+
 not_pinned:
   - id: jst_xlsx
     what: Jordà–Schularick–Taylor Macrohistory Database (jst.xlsx), used only by crisis_dating_test.py (banking-crisis dating, superseded)
     status: original download not recorded; macrohistory.net was unreachable from the sandbox. GMD's data/clean/aggregators/JST/JST.dta is the candidate replacement. crisis_dating_results.json has not been re-verified.
-  - id: bis_lbs
-    what: BIS Locational Banking Statistics (bilateral bank claims), planned edge data for the coupling network
-    status: never downloaded; see docs/specs/BIS_download_spec.md and paper1/scripts/eraA_claude_ai/build_coupling_matrix.py
   - id: kose_terrones_dates
     what: Global recession years 1975, 1982, 1991, 2009, 2020 and downturns 1998, 2001, 2012 (Kose, Sugawara and Terrones)
     status: hard-coded constants, not a file. Cite Kose, Sugawara and Terrones (2020), Global Recessions, World Bank Policy Research Working Paper 9172.
