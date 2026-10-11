@@ -211,3 +211,11 @@ the Phase 3 results.
    decomposition's 5,000 surrogates (seed 707), upper tail, both weightings; reported as disclosure only.
 9. **E4 detrended**: L minus its Gaussian-smoothed copy (σ = 8 years) over the years L is defined, then the same trend.
 10. **Variant folders**: `results/<sample>[_minus_<ISO>…|_strict|_gmd_growth]/<convention>/<test>.json`.
+
+### Amendment 2 — past-only phases for short channel histories (11 October 2026, before any S30 run)
+
+Under C an economy's channel phase in year t needs at least 16 years of that channel's data up to t (the band-pass
+cannot run on fewer). Some short-rate series start in 1965, so their past-only phase is undefined until 1980. In each
+year, r(t) under C is computed over the economies whose phase is defined, and the number of economies is recorded
+per year. Under P nothing changes.
+
