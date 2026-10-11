@@ -30,14 +30,14 @@ the one-sided p in brackets.
 | ID | Quantity | S30 | S26 | Source | Status |
 |---|---|---|---|---|---|
 | A1 | Lead-2 | +0.226 (0.038) | +0.230 (0.038) | `<sample>/P/arc` | reported, **not claimed as a lead**: fails past-only phases (A13) |
-| A2 | Lead-1 | +0.217 (0.019) | +0.216 (0.019) | same | **headline**: survives past-only phases (A13); rests on 2009 and 2020 (B13–B15) |
+| A2 | Lead-1 | +0.217 (0.019) | +0.216 (0.019) | same | **headline**: supported by survival under past-only phases (A13) and leave-one-economy-out (B16), not by corrected significance (A8, A9); past-only without China p 0.057 (B19); rests on 2009 and 2020 (B13–B15) |
 | A3 | Crisis year | +0.161 (0.189) | +0.149 (0.189) | same | null |
 | A4 | After-1 (one-sided down) | +0.111 (0.755) | +0.078 (0.679) | same | null |
 | A5 | After-2 (one-sided down) | −0.236 (0.057) | −0.277 (0.019) | same | **limitation** (Sid, 11 Oct 2026): fragile — not significant on S30, under W, N, E or C, at 3–10 years, with growth rates or without 2020 |
 | A6 | Superposed epoch: mean r at t−1 / t+2 | 0.65 / 0.33 | 0.70 / 0.35 | same | descriptive |
 | A7 | Mean r: recessions / downturns / normal years (95% bootstrap CI) | 0.61 [0.39, 0.84] / 0.30 [0.12, 0.55] / 0.49 [0.42, 0.56] | 0.65 [0.45, 0.86] / 0.37 [0.23, 0.62] / 0.54 [0.47, 0.61] | same | descriptive |
 | A8 | Bonferroni over five lags: lead-1 / after-2 / lead-2 | 0.094 / 0.283 / 0.189 | 0.094 / 0.094 / 0.189 (Methods printed 0.095) | same | robustness; no raw p at the floor can pass (5/53 = 0.094) |
-| A9 | Benjamini–Hochberg q: lead-1 / after-2 / lead-2 | 0.094 / 0.094 / 0.094 | 0.047 / 0.047 / 0.063 | same | robustness; **on S30 no lag survives** |
+| A9 | Benjamini–Hochberg q: lead-1 / after-2 / lead-2 | 0.094 / 0.094 / 0.094 | 0.047 / 0.047 / 0.063 | same | robustness; **on S30 no lag survives**. A lag at the floor cannot pass BH on its own: it needs a second lag at the floor (as on S26) or four at ≤ 0.038 |
 | A10 | Convention W (Hilbert on 1970–2022 only): lead-2 / lead-1 / after-2 | +0.204 (0.075) / +0.184 (0.057) / −0.131 (0.170) | +0.210 (0.057) / +0.178 (0.094) / −0.144 (0.170) | `<sample>/P/conventions` (W) | robustness (issue 1) |
 | A11 | Convention N (no run-in): same | +0.204 (0.019) / +0.173 (0.094) / −0.158 (0.132) | +0.210 (0.038) / +0.178 (0.094) / −0.197 (0.094) | `<sample>/P/conventions` (N) | robustness (issue 1) |
 | A12 | Convention E (9-year mirror): same | +0.224 (0.038) / +0.226 (0.019) / −0.136 (0.170) | +0.228 (0.057) / +0.220 (0.019) / −0.170 (0.113) | `<sample>/P/conventions` (E) | robustness (issues 1, 2) |
@@ -68,6 +68,7 @@ S30 under P (`S30/P/robustness`):
 | B16 | Each of the 30 left out in turn (range) | +0.21 to +0.25 (0.019–0.094) | +0.21 to +0.23 (0.019–0.038) | +0.13 to +0.18 (0.132–0.226) | −0.25 to −0.22 (0.019–0.075) | robustness |
 | B17 | Each added economy left out: CHN / BRA / SAU / IRN | 0.057 / 0.038 / 0.019 / 0.038 | 0.019 / 0.019 / 0.038 / 0.019 | — | 0.075 / 0.019 / 0.057 / 0.057 | robustness (p only; mandatory) |
 | B18 | Norway, Switzerland, South Africa with GMD growth 1991–2011 (issue 13) | +0.23 (0.038) | +0.22 (0.019) | +0.16 (0.151) | −0.26 (0.075) | robustness (`S30_gmd_growth/P/arc`; S26 below: `S26_gmd_growth/P/arc`) |
+| B19 | Lead-1 with past-only phases, each added economy left out: CHN / BRA / SAU / IRN | — | +0.345 (0.057) / +0.380 (0.038) / +0.394 (0.019) / +0.363 (0.038) | — | — | robustness (`S30_minus_*/P/conventions`, C); Appendix Table A1 |
 
 S26 under P (`S26/P/robustness`; identical to the first run, which used P):
 
@@ -111,17 +112,17 @@ not robust to the band, to growth rates or, on S30, to anything; no single econo
 
 | ID | Quantity | S30 | S26 | Source | Status |
 |---|---|---|---|---|---|
-| D1 | Cross term's share of excess crisis variance, GDP-weighted (within-window mean weights, as the Methods state) | 83.3% | 80.2% (was 82.4%: four recessions, windows from 1970) | `<sample>/P/diversification` | headline (descriptive magnitude) |
+| D1 | Cross term's share of excess crisis variance, GDP-weighted (within-window mean weights, as the Methods state) | 83.3% | 80.2% (was 82.4%: four recessions, windows from 1970) | `<sample>/P/diversification` | headline (descriptive magnitude); the Results term is **loss of diversification** (Sid) |
 | D2 | same with end-of-window weights (as-run script) | — | 82.6% (first run) | diversification_results.json | **flag** (issue 4); kept as the as-run record |
 | D3 | same, equal-weighted | 96.8% | 96.5% (was 96.9%) | same | headline (descriptive) |
 | D4 | Cross share of world variance, crisis vs normal windows: GDP-weighted / equal | 0.707 vs 0.619 / 0.771 vs 0.671 | 0.704 vs 0.646 / 0.876 vs 0.817 (was 0.723 vs 0.669 / 0.880 vs 0.818) | same | descriptive |
 | D5 | Surrogate p printed on figures for the crisis cross share | 0.0002 | 0.0002 | same | **flag** (issue 6): tests only "are economies correlated at all" |
 | D6 | Disclosure: nominal p of the share ratio, GDP / equal; Δcross; Δown | 0.32 / 0.47; 0.0002 both; 0.035 GDP, 0.0002 equal | 0.34 / 0.48; all 0.0002 (Methods: 0.35 / 0.48) | same (`d6`) | disclosure |
-| D7 | Inside the cross term's rise, GDP-weighted: correlation / swing size / interaction | 44% / 41% / 15% | 33% / 53% / 14% (was 35 / 50 / 14%) | `<sample>/P/cross_split` | headline (correction): both parts of similar size; which is larger depends on the sample |
+| D7 | Inside the cross term's rise, GDP-weighted: correlation / swing size / interaction | 44% / 41% / 15% | 33% / 53% / 14% (was 35 / 50 / 14%) | `<sample>/P/cross_split` | headline (correction). Results: "co-movement and larger swings contribute about equally"; "amplification transmitted by alignment" only as Discussion interpretation (Sid) |
 | D8 | same, equal-weighted | 49% / 38% / 13% | 39% / 49% / 12% (was 41 / 46 / 13%) | same | headline (correction) |
 | D9 | Mean pairwise correlation, normal → crisis windows; mean cycle s.d. ratio | 0.294 → 0.392; × 1.11 | 0.351 → 0.441; × 1.13 (was 0.376 → 0.490; × 1.14) | same | descriptive |
 | D10 | Fibrillation identity \|Z\| = Ā × R_A, max error | below 10⁻¹⁸ (machine rounding) | below 10⁻¹⁸ (machine rounding) | `<sample>/P/structure` | descriptive |
-| D11 | Share of the crisis excess in log world swing² from alignment / from swing size (surrogate p) | 18.9% / 81.1% (0.356 / 0.0002) | 39.3% / 60.7% (0.103 / 0.0002) | same | headline for the swing part; **the alignment share depends on Iran** (D13); its use in Results is for Sid to decide |
+| D11 | Share of the crisis excess in log world swing² from alignment / from swing size (surrogate p) | 18.9% / 81.1% (0.356 / 0.0002) | 39.3% / 60.7% (0.103 / 0.0002) | same | **descriptive, sample-sensitive** (Sid): reported as S26 39.3%, S30 18.9%, S30 without Iran 33.0% (D13); Results builds nothing on it |
 | D12 | corr(R_A, r) | +0.886 | +0.942 | same | descriptive |
 | D13 | Without Iran / Saudi Arabia / both: D1; D3; D7; D11 alignment share | 83.0 / 82.9 / 82.5%; 96.5 / 97.1 / 96.8%; 42/43/15, 43/42/15, 41/44/15%; 33.0 / 17.4 / 37.4% | — | `S30_minus_*/P/` | robustness (mandatory) |
 | D14 | Windows kept inside 1970–2022 (four recessions): D1 / D3 | 85.9% / 96.7% | 82.4% / 96.9% (the first-run values) | `<sample>_strict/P/diversification` | robustness |
@@ -151,7 +152,7 @@ none. Coupling test: after all five recessions.
 | ID | Quantity | S30 | S26 | Source | Status |
 |---|---|---|---|---|---|
 | F1 | Pre-crisis trend of the lag-1 autocorrelation of r(t) | τ −0.098 (0.676) | τ +0.027 (0.456); was −0.152 (0.757) under W | `<sample>/P/csd` | null |
-| F2 | Pre-crisis trend of the variance of r(t) | τ +0.420 (0.037) | τ +0.438 (0.033); was +0.295 (0.107) under W | same | **reported as it is** (Sid, 11 Oct 2026): rising variance without rising autocorrelation, so not the slowing-down signature; rests on 2009 and 2020 (F2b) |
+| F2 | Pre-crisis trend of the variance of r(t) | τ +0.420 (0.037) | τ +0.438 (0.033); was +0.295 (0.107) under W | same | **reported as it is** (Sid, 11 Oct 2026): rising variance without rising autocorrelation, so not the slowing-down signature; presented as consistent with loss of diversification (shocks stop cancelling), an interpretation; rests on 2009 and 2020 (F2b) |
 | F2b | F2 by recession (not pre-registered): without 2009 and 2020; 2009 and 2020 alone; without 2009; without 2020 | −0.018 (0.528); +0.857 (0.005); +0.274 (0.200); +0.274 (0.176) | +0.125 (0.408); +0.750 (0.019); +0.369 (0.123); +0.298 (0.154) | `followup/<sample>/P/csd_by_event`; `results/FOLLOWUP.md` | exploratory (Sid asked for it after Phase 3) |
 | F2c | F2 under W / N / E | +0.295 (0.113) / +0.393 (0.075) / +0.384 (0.054) | +0.295 (0.107) / +0.369 (0.091) / +0.420 (0.041) | `<sample>/{W,N,E}/csd` | robustness |
 | F2s | F1 / F2 with windows inside 1970–2022 (2009 and 2020 only) | −0.036 (0.550) / +0.857 (0.005) | −0.071 (0.595) / +0.750 (0.019) | `<sample>_strict/P/csd` | robustness |

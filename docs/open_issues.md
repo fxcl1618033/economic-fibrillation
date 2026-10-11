@@ -202,3 +202,14 @@ Methods 6.5 and registry E4 give τ = −0.086, p = 0.316 for Gaussian-detrended
 on the as-run windows (from 1962, seed 303) gives τ between −0.043 and −0.057 and p between 0.36 and 0.42; the
 original script is not in the repository. The conclusion (null) is the same. **What to do:** the pre-registration fixes
 σ = 8 and the new windows; Phase 3 reports that value and edit B5 rewrites the sentence.
+
+## 24. Russia is not in the sample, and no reason is recorded — Sid decides
+
+By mean real GDP over 1970–2022, the largest economies missing from the 26 are China (8.06 trillion 2011 PPP dollars),
+Russia (2.18), Brazil (1.74), Iran (0.71), Saudi Arabia (0.65) and Poland (0.54); in 2022 Russia (3.73) is still larger
+than Brazil (3.19) (`docs/data_validation.md`, `ef.data.maddison.largest_outside`). Russia's Maddison series is complete
+for 1950–2022, so the inclusion rule does not exclude it: the rule filtered the candidates chosen on 10 October (China,
+Brazil, Saudi Arabia, the UAE, Iran) and was never applied to every Maddison economy. The §1 sentence "China and Brazil
+are the largest economies missing from the 26" is therefore not true as written. **What to do:** Sid gives the reason
+for leaving Russia out (it goes into §1), rewords the sentence ("with Russia, the five largest"), or adds Russia as a
+sensitivity run after a pre-registration amendment. Nothing is run until he decides.

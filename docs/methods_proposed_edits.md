@@ -2,29 +2,35 @@
 
 `docs/methods.md` is not changed. Each edit below quotes the current text, gives the proposed text and the reason.
 
-**Second draft, 11 October 2026, after Phase 3 and Sid's decisions on it.** S30 is Paper 1's main sample (Sid), so
-every number below is the 30-economy value under convention P unless it says otherwise; the original 26 move to a new
-§7.8. Sources: `results/S30/P/*.json` and `results/COMPARISON.md` (pre-registered run, code 07bbdd8) and
-`results/FOLLOWUP.md` (the leave-one-crisis-out check Sid asked for, not pre-registered).
+**Third draft, 11 October 2026, after Phase 3 and two rounds of Sid's decisions on it.** S30 is Paper 1's main
+sample (Sid), so every number below is the 30-economy value under convention P unless it says otherwise; the original
+26 move to a new §7.8 and Appendix Table A1. Sources: `results/S30/P/*.json` and `results/COMPARISON.md`
+(pre-registered run, code 07bbdd8), `results/FOLLOWUP.md` (the leave-one-crisis-out check Sid asked for, not
+pre-registered) and `docs/data_validation.md` (share of world GDP).
+
+**The paper's framing (Sid, second round):** the mechanism is loss of diversification, not bifurcation tipping; the
+tipping tests are the "what it isn't" that led to it. Results say "loss of diversification"; the Discussion proposes
+"diversification-type tipping" as our own term (D2).
 
 The edits are in Methods order. Each heading carries its label from the first draft so they can be traced:
 
 | Label | What | Section | Status |
 |---|---|---|---|
-| A1 | Bonferroni value | §7.4 | decided (0.094); S30 values added |
+| A1 | Bonferroni value; what the multiplicity correction can and cannot show | §7.4 | decided; rewritten for Sid's second-round decision |
 | A2 | MST windows and decade means | §6.5 | decided; S30 values replace S26 (1.6× instead of 1.8×) |
 | A3 | One window rule for all rolling statistics | §7.7 | decided; Phase 3 sensitivity numbers filled in |
-| A4 | Early-warning battery: two indicators plus the coupling test | §6.7 | decided; **rewritten for Sid's decision on the variance result** |
-| B1 | The arc depends on the phase convention | §1, §6.3, §7.2 | drafted from Sid's decision on the arc's wording |
+| A4 | Early-warning battery: two indicators plus the coupling test | §6.7 | decided; the variance rise read as consistent with loss of diversification (Sid) |
+| B1 | The arc depends on the phase convention | §1, §6.3, §7.2 | decided wording (Sid) |
 | B2 | The earlier amplitude convention is known | §8 | drafted |
-| B3 | The cross-term split | §6.1 | drafted with S30 values |
+| B3 | The cross-term split | §6.1 | decided: "co-movement and larger swings contribute about equally"; the interpretation goes to the Discussion (Sid) |
 | B4 | Data citation | §8 | drafted |
 | B5 | The detrended pre-crisis MST test | §6.5 | drafted with the Phase 3 value |
 | C | Phase 3 numbers | every section | filled in |
-| N1 | The expected value of r under random phases | §3 | **new**: a small correction found while drafting |
-| N2 | The cross-share formula needs equal variances | §6.1 | **new**: a correction that matters on S30 (Iran) |
-| N3 | Surrogates follow convention P | §5.2 | **new**: one sentence |
-| L1–L3 | Results and Limitations text | outside the Methods | drafted from Sid's decisions; for the paper, not for `methods.md` |
+| N1–N3 | Expected r under random phases; the cross-share formula needs equal variances; surrogates follow P | §3, §6.1, §5.2 | approved (Sid) |
+| — | Why the four economies were added; share of world GDP | §1 | drafted from Sid's wording; **one fact to settle: Russia** |
+| — | The original 26 and the added economies | §7.8, Appendix Table A1 | decided: one paragraph, full table in an Appendix (Sid) |
+| L1–L7 | Results and Limitations text | outside the Methods | drafted from Sid's decisions; for the paper, not for `methods.md` |
+| D1–D2 | Discussion text: the mechanism and "diversification-type tipping" | outside the Methods | drafted from Sid's framing |
 
 ---
 
@@ -43,10 +49,12 @@ Germany, Greece, India, Indonesia, Iran, Italy, Japan, Mexico, the Netherlands, 
 Africa, South Korea, Spain, Sweden, Switzerland, Thailand, Turkey, the United Kingdom and the United States. The panel
 is balanced: every economy has an uninterrupted annual observation from 1950 to 2022, so no interpolation, gap-filling
 or unbalanced-panel weighting enters the pipeline at any stage. An earlier version of this analysis used the first 26
-of these economies. Brazil, China, Iran and Saudi Arabia were added for a more representative sample, and the sample,
-the phase convention, the tests and their directions were written down before any test was run on them (§8). The
-United Arab Emirates was considered and left out because its Maddison series misses 1991–1992. Results on the original
-26 are reported in §7.8."
+of these economies. China and Brazil are the largest economies missing from them [after Russia, which is left out
+because ⟨reason, Sid⟩], and Saudi Arabia and Iran add the oil-exporting Middle East. The inclusion rule, the phase
+convention, the tests and their directions were written down before any test was run on the added economies (§8); the
+rule admits an economy only with a complete Maddison series for 1950–2022, which excluded the United Arab Emirates (its
+series misses 1991–1992). In Maddison's PPP figures the original 26 produced $67\%$ of world GDP in 1970 and $51\%$ in
+2022; the 30 produce $76\%$ and $77\%$. Results on the original 26 are reported in §7.8 and Appendix Table A1."
 
 **Current (end of third paragraph):** "It is a consequential choice rather than a formality: recomputing phases on a
 1970–2022 series alone, with no run-in, changes the order parameter materially in individual years and shifts the
@@ -56,8 +64,24 @@ synchronization–amplitude coefficient of §6.2 by roughly $0.08$ (§7.2)."
 with no run-in, changes the order parameter materially in individual years, shifts the synchronization–amplitude
 coefficient of §6.2 by roughly $0.1$ and moves the lead–lag profile of §6.3 (§7.2)."
 
-**Why:** Sid's decision that S30 is the main sample; the reason for adding the four is the decision log's of 9 October
-("stronger, more representative evidence") — **Sid may want to name it more precisely**. The run-in shift is
+**Why:** Sid's decisions: S30 is the main sample; the reason is his wording of the second round. World GDP shares from
+`docs/data_validation.md` (`ef.data.maddison.world_share`: GDP per capita × population; the former USSR, Czechoslovakia
+and Yugoslavia counted as Maddison's aggregates so nothing is counted twice; the 26 and the 30 produce 62% and 78% of
+world GDP on average over 1970–2022).
+
+**Russia, for Sid.** As first worded ("China and Brazil are the largest economies missing from the 26") the sentence
+is not true of Maddison's data. By mean real GDP over 1970–2022 the largest economies missing from the 26 are China
+(8.06 trillion 2011 PPP dollars), Russia (2.18), Brazil (1.74), Iran (0.71), Saudi Arabia (0.65) and Poland (0.54);
+Russia is also larger than Brazil in 2022 (3.73 against 3.19). Russia's Maddison series is complete for 1950–2022, so the
+inclusion rule does not exclude it: the rule filtered the candidates chosen on 10 October (China, Brazil, Saudi Arabia,
+the UAE, Iran) and was never applied to every Maddison economy. No reason for leaving Russia out is recorded anywhere
+in the repository. Three ways to settle it: (a) give the reason in the bracket (it must be one you hold, for example
+that Russia's figures before 1991 are reconstructions for a planned economy, or that its 1990s transition collapse is
+not a business cycle); (b) write instead "Brazil, China, Iran and Saudi Arabia are, with Russia, the five largest
+economies missing from the 26", with the same reason; (c) add Russia as a sensitivity run, which needs a
+pre-registration amendment before anything is run. Recorded as open issue 24.
+
+The run-in shift is
 $0.641 - 0.535 = 0.106$ on S30 ($0.608 - 0.531 = 0.077$ on S26). The clause on the lead–lag profile is the short form
 of B1; the numbers are in §7.2.
 
@@ -140,14 +164,12 @@ crisis-window means (mean correlation $0.294 \to 0.392$) supplies $44\%$ of the 
 GDP-weighted ($49\%$ equal-weighted); changing only the cycle sizes (mean cycle s.d. $\times 1.11$) supplies $41\%$
 ($38\%$); their interaction supplies the remaining $15\%$ ($13\%$). The two parts are of similar size, and which is
 larger depends on the sample: on the original 26 economies the larger swings supplied more ($53\%$ against $33\%$;
-§7.8). The crisis excess is therefore co-movement and larger swings together — amplification transmitted by alignment
-— not a pure correlation event."
+§7.8). Co-movement and larger swings contribute about equally."
 
 **Why:** Phase 3 values (`results/S30/P/diversification.json`, `cross_split.json`). The weights are the Methods'
 within-window mean GDP, as stated. On B3: the first draft's 35/50/14% was S26 with four recessions and end-of-window
-weights. **For Sid:** on S30 correlation slightly outweighs swing size (44 against 41), so "amplification transmitted
-by alignment" puts the emphasis the other way from the S30 numbers; the sentence above keeps it because both parts are
-near equal. A plainer alternative: "co-movement and larger swings contribute about equally."
+weights. Sid's decision: Methods and Results say "co-movement and larger swings contribute about equally";
+"amplification transmitted by alignment" is kept as interpretation in the Discussion only (D1).
 
 ## §6.2 Synchronization–amplitude coupling (C)
 
@@ -236,7 +258,9 @@ the recovery rate does not fall after onsets (change $+0.024$, $p = 0.51$). The 
 crises ($\tau = +0.420$, $p = 0.037$), but without the rise in autocorrelation. Critical slowing down raises both
 together, because both follow from a slower return to equilibrium; variance alone also rises when the shocks that move
 $r(t)$ grow larger. A rise in variance without a rise in autocorrelation is therefore not the slowing-down signature.
-The variance rise also rests on the two modern events, like the lead of §6.3: the windows before 2009 and 2020 alone
+It is what loss of diversification (§6.1) would produce: when shocks to the economies stop cancelling, $r(t)$ swings
+more widely without returning more slowly. This is a reading of the result, not a separate test. The variance rise
+also rests on the two modern events, like the lead of §6.3: the windows before 2009 and 2020 alone
 give $\tau = +0.857$ ($p = 0.005$), those before 1982 and 1991 give $\tau = -0.018$ ($p = 0.53$), and dropping either
 2009 or 2020 leaves it short of significance ($p = 0.20$ and $0.18$). It is significant under convention P but not under
 W, N or the edge-robust E ($p = 0.11$, $0.075$ and $0.054$; §7.2). Annual data over 8-year pre-crisis windows give
@@ -249,7 +273,14 @@ consistent with a non-bifurcation transition, …"
 
 **Proposed:** "Rising autocorrelation and variance together are the specific signature of a system approaching a
 *bifurcation* …" and "The absence of that joint fingerprint is therefore consistent with a non-bifurcation transition,
-…" (the rest of the paragraph, the Ashwin et al. taxonomy, stands).
+…" (the Ashwin et al. taxonomy stands).
+
+**Current (last sentence of the section):** "We record the classification here and leave the mechanism argument to the
+Discussion; nothing in this paper identifies which non-bifurcation route applies."
+
+**Proposed:** "We report these tests as what the transition is not. The mechanism the paper proposes is loss of
+diversification (§6.1), argued in the Discussion; nothing in this paper tests whether that mechanism has a
+threshold."
 
 **Why:** Sid's decisions: restoring time dropped (open issue 22); the variance result reported as it is, rising
 variance without rising autocorrelation, so not the slowing-down signature. The first-run null for variance
@@ -257,7 +288,9 @@ variance without rising autocorrelation, so not the slowing-down signature. The 
 $p = 0.033$ on S26). The leave-one-crisis-out numbers come from the follow-up Sid asked for (`results/FOLLOWUP.md`,
 same seed and surrogates as the pre-registered test; not pre-registered). The "2009 and 2020 alone" value is also the
 pre-registered strict version (§7.7), which keeps only fully defined windows. The coupling test was run and reported in
-the registry but not described in the Methods; this adds it.
+the registry but not described in the Methods; this adds it. Second round (Sid): the paper's mechanism is loss of
+diversification, not bifurcation tipping, and the variance rise is presented as consistent with it (shocks stop
+cancelling) rather than with slowing recovery.
 
 ## §7.1 Filter band (C)
 
@@ -341,13 +374,20 @@ can absorb: $0.019$ is already the smallest value the test can return."
 
 **Proposed:** "Across the five lags of §6.3, no coefficient survives a Bonferroni correction (lead-1:
 $p_{\mathrm{adj}} = 0.094$; lead-2: $0.189$; lag $-2$: $0.283$) or Benjamini–Hochberg control of the false discovery
-rate ($q = 0.094$ for lead-2, lead-1 and lag $-2$). On the original 26 economies lead-1 and lag $-2$ reached
-$q = 0.047$ (§7.8). The permutation floor of §5.1 caps how much correction the raw values can absorb: $0.019$ is
-already the smallest value the test can return, so with five lags no coefficient can pass Bonferroni
-($5/53 = 0.094$)."
+rate ($q = 0.094$ for lead-2, lead-1 and lag $-2$). This is partly built into the test. With 53 circular shifts the
+smallest $p$ the test can return is $1/53 = 0.019$, so no single lag can pass a Bonferroni correction over five lags
+($5/53 = 0.094$), and a lag can pass Benjamini–Hochberg only if another lag also reaches the floor, as lead-1 and lag
+$-2$ did together on the original 26 economies ($q = 0.047$; §7.8). Corrected significance is therefore not what
+supports lead-1. Its support is that it survives phases built from past data only (§7.2) and the removal of any one
+economy (§7.5); with past-only phases and China left out together it is $p = 0.057$ (Appendix Table A1). It does not
+survive the removal of 2009 or 2020 (§7.3)."
 
-**Why:** A1 (0.094, not 0.095) with S30 values. **On S30 nothing survives either correction**; under the
-pre-registration A1–A5 on S30 is the primary family, so this is the multiplicity statement the paper must make.
+**Why:** A1 (0.094, not 0.095) with S30 values, and Sid's second-round decision to state plainly what multiplicity can
+and cannot show. **On S30 nothing survives either correction**; under the pre-registration A1–A5 on S30 is the primary
+family. **Precision, for Sid:** "no single lag can pass Bonferroni or Benjamini–Hochberg" holds for Bonferroni always,
+but for Benjamini–Hochberg only for a lag on its own: on S26 two lags at the floor passed together ($q = 0.047$), so the
+text says when it can pass. The exact condition with five lags: a second lag at the floor, or four lags at 0.038 or
+below. New in this draft: past-only lead-1 without China is $+0.345$ ($p = 0.057$) (`S30_minus_CHN/P/conventions`).
 
 ## §7.5 Leave-one-economy-out (C)
 
@@ -398,31 +438,53 @@ $+0.857$ ($p = 0.005$)."
 ## §7.8 The original 26 economies and the four added ones (new section, C)
 
 **Proposed:** "**7.8 The original 26 economies and the four added ones.** Every test was also run on the original 26
-economies, under the same conventions. The lead–lag profile is almost the same: lead-2 $+0.230$ ($p = 0.038$), lead-1
-$+0.216$ ($p = 0.019$), lag $-2$ $-0.277$ ($p = 0.019$); with phases from past data only, lead-1 is $+0.374$
-($p = 0.038$) and lead-2 $+0.007$ ($p = 0.45$). Under Benjamini–Hochberg, lead-1 and lag $-2$ reach $q = 0.047$. The
-synchronization–amplitude link is $+0.608$ detrended ($+0.530$ raw; $p = 0.019$; surrogate $p = 2\times10^{-4}$). The
-cross-term supplies $80.2\%$ of the excess crisis variance GDP-weighted and $96.5\%$ equal-weighted ($82.4\%$ and
-$96.9\%$ with windows inside 1970–2022), and inside it the larger swings supply more than the higher correlations
-($53\%$ against $33\%$, interaction $14\%$). The network tightens by $1.8\times$ (decade means $0.677$ against $0.379$).
-The phase-lead spread is $0.445$ years ($p = 2\times10^{-4}$, the floor). Lag-1 autocorrelation shows no pre-crisis
-rise ($+0.027$, $p = 0.46$), while variance does ($+0.438$, $p = 0.033$; without 2009 and 2020, $+0.125$,
-$p = 0.41$).
+economies under the same conventions, and on the 30 with each added economy left out and with Iran and Saudi Arabia,
+whose cycles are $2.9$ and $2.2$ times the median size of the 26, left out together (Appendix Table A1). On the 26 the
+lead–lag profile is almost the same (lead-1 $+0.216$, $p = 0.019$; with past-only phases $+0.374$, $p = 0.038$),
+lead-1 and lag $-2$ pass Benjamini–Hochberg together ($q = 0.047$), the network tightens by $1.8\times$ rather than
+$1.6\times$, and the larger swings supply more of the cross-term's crisis rise than the higher correlations ($53\%$
+against $33\%$). Leaving out one added economy moves three results across $p = 0.05$: without China, lead-2 and
+past-only lead-1 rise to $p = 0.057$; without Brazil, lag $-2$ falls to $p = 0.019$. The alignment share of the excess
+in world swing is sample-sensitive: $39\%$ on the 26, $19\%$ on the 30 and $33\%$ on the 30 without Iran. Replacing
+Maddison's 1991–2011 growth for Norway, Switzerland and South Africa, which runs two to three points above national
+accounts, with the Global Macro Database's changes no conclusion on the 30 (on the 26, lead-2 moves to $p = 0.057$)."
 
-Each of the four added economies was left out in turn. Lead-1 stays at $p \le 0.038$ in every case; lead-2 moves to
-$p = 0.057$ without China and lag $-2$ to $p = 0.019$ without Brazil; the synchronization–amplitude link stays between
-$+0.621$ and $+0.649$ and the variance trend at $p \le 0.043$. Iran and Saudi Arabia have cycles $2.9$ and $2.2$ times
-the median size of the original 26. The order parameter uses phases only, but the decomposition weighs swing size, so
-the two were also left out together: the synchronization–amplitude link is then $+0.620$, the cross-term's share of
-the excess $82.5\%$ GDP-weighted and $96.8\%$ equal-weighted, and its rise splits $41\%$ correlation, $44\%$ swing size.
-Finally, Maddison's per-capita growth for Norway, Switzerland and South Africa runs two to three points above national
-accounts in 1991–2011; replacing it with the Global Macro Database's real GDP per capita growth leaves lead-1 at
-$+0.224$ ($p = 0.019$) and changes no conclusion."
+**Why:** Sid's decision: one paragraph here, the full table in an Appendix. The leave-outs were mandatory under the
+pre-registration. The S26 values are under the pre-registered conventions, so several differ from the first-run values
+the current Methods quote; old and new are in the decision log (rule 6).
 
-**Why:** the pre-registration made the leave-out of each added economy and of Iran and Saudi Arabia together
-mandatory (Sid). The S26 values are under the pre-registered conventions, so several differ from the first-run values
-the current Methods quote; old and new are in the decision log (rule 6). **For Sid:** this section is long for a
-Methods; part of it could be a table in the Appendix.
+## Appendix Table A1 (new)
+
+**Proposed:** "**Table A1.** Key results on the original 26 economies, the 30, and the 30 without each added economy
+and without Iran and Saudi Arabia together. Convention P; one-sided $p$ in brackets (circular-shift floor $0.019$,
+surrogate floor $0.0002$)."
+
+| Quantity | S26 | S30 | without China | without Brazil | without Saudi Arabia | without Iran | without Iran and Saudi Arabia |
+|---|---|---|---|---|---|---|---|
+| A1 Arc lead-2 | +0.230 (0.038) | +0.226 (0.038) | +0.215 (0.057) | +0.215 (0.038) | +0.243 (0.019) | +0.234 (0.038) | — |
+| A2 Arc lead-1 | +0.216 (0.019) | +0.217 (0.019) | +0.216 (0.019) | +0.209 (0.019) | +0.216 (0.038) | +0.227 (0.019) | — |
+| A13 Lead-1, past data only | +0.374 (0.038) | +0.369 (0.038) | +0.345 (0.057) | +0.380 (0.038) | +0.394 (0.019) | +0.363 (0.038) | — |
+| A5 Arc after-2 (lower) | −0.277 (0.019) | −0.236 (0.057) | −0.239 (0.075) | −0.253 (0.019) | −0.237 (0.057) | −0.250 (0.057) | — |
+| C1 r–swing size, detrended | +0.608 (0.019; surr. 0.0002) | +0.641 (0.019; surr. 0.0002) | +0.649 (0.019; surr. 0.0002) | +0.622 (0.019; surr. 0.0004) | +0.621 (0.019; surr. 0.0002) | +0.644 (0.019; surr. 0.0002) | +0.620 (0.019; surr. 0.0002) |
+| D1 Cross share of excess, GDP weights | 80.2% | 83.3% | 82.3% | 82.4% | 82.9% | 83.0% | 82.5% |
+| D3 Same, equal weights | 96.5% | 96.8% | 96.7% | 96.6% | 97.1% | 96.5% | 96.8% |
+| D7 Cross-term rise: correlation / swing / interaction | 33 / 53 / 14% | 44 / 41 / 15% | 39 / 46 / 15% | 43 / 43 / 15% | 43 / 42 / 15% | 42 / 43 / 15% | 41 / 44 / 15% |
+| D11 Alignment share of swing excess (p) | 39.3% (0.103) | 18.9% (0.356) | 26.7% (0.247) | 15.7% (0.379) | 17.4% (0.361) | 33.0% (0.184) | 37.4% (0.141) |
+| E1 MST decade means 1979–89 vs 2013–22 | 0.677 vs 0.379 (1.79×) | 0.680 vs 0.421 (1.62×) | 0.675 vs 0.415 (1.63×) | 0.687 vs 0.410 (1.68×) | 0.678 vs 0.412 (1.64×) | 0.677 vs 0.408 (1.66×) | — |
+| E7 Phase-lead spread (lower p) | 0.445 yr (0.0002) | 0.535 yr (0.0004) | 0.519 yr (0.0002) | 0.534 yr (0.0002) | 0.533 yr (0.0002) | 0.465 yr (0.0002) | — |
+| F1 Autocorrelation trend | +0.027 (0.456) | −0.098 (0.676) | −0.205 (0.830) | −0.062 (0.608) | +0.027 (0.450) | −0.116 (0.699) | — |
+| F2 Variance trend | +0.438 (0.033) | +0.420 (0.037) | +0.473 (0.021) | +0.402 (0.043) | +0.438 (0.028) | +0.455 (0.022) | — |
+| F4 Recovery-rate change | +0.078 (0.534) | +0.024 (0.507) | +0.002 (0.493) | +0.010 (0.493) | +0.053 (0.513) | +0.090 (0.534) | — |
+| G1 Short-rate synchronization, lead-2 [economies] | +0.266 (0.019) [18] | +0.273 (0.019) [19] | +0.273 (0.019) [19] | +0.266 (0.019) [18] | +0.273 (0.019) [19] | +0.273 (0.019) [19] | — |
+
+"— : not run; the variant without Iran and Saudi Arabia together was pre-registered for the swing-size tests only. With
+Maddison's 1991–2011 growth for Norway, Switzerland and South Africa replaced by the Global Macro Database's: on the
+30, lead-2 $+0.230$ ($0.038$), lead-1 $+0.224$ ($0.019$), lag $-2$ $-0.256$ ($0.075$), C1 $+0.635$, D1 $83.3\%$, D3
+$96.8\%$; on the 26, lead-2 $+0.233$ ($0.057$), lead-1 $+0.222$ ($0.038$), lag $-2$ $-0.298$ ($0.019$), C1 $+0.606$,
+D1 $80.2\%$, D3 $96.5\%$."
+
+**Why:** values from `results/<variant>/P/*.json` (formatted from those files; row labels are registry IDs). For the
+paper, the row labels become plain names.
 
 ## §8 Reproducibility (B2, B4, C)
 
@@ -473,18 +535,20 @@ lower-tail result at the ensemble floor."
 
 ---
 
-## Outside the Methods: Results and Limitations text (L1–L3)
+## Outside the Methods: Results, Limitations and Discussion text (L1–L7, D1–D2)
 
-For the paper's Results and Limitations sections (`docs/paper_plan.md`), not for `docs/methods.md`. Drafted from Sid's
-decisions of 11 October 2026.
+For the paper's Results, Limitations and Discussion sections (`docs/paper_plan.md`), not for `docs/methods.md`.
+Drafted from Sid's decisions of 11 October 2026 (both rounds).
 
 ### L1. Results: the pre-crisis rise (Sid's wording)
 
 "Synchronization rises in the year before global recessions (lead-1 $+0.217$, $p = 0.019$, the floor of the
-permutation test). The rise holds with any one of the 30 economies left out, under the edge-robust convention and with
-phases built from past data only ($+0.369$, $p = 0.038$). It rests on 2009 and 2020: without either it is not
-significant (§7.3). It is a property of the tightly coupled modern economy, not a fifty-year regularity, and not a
-forecast. The two-year lead (lead-2 $+0.226$, $p = 0.038$) does not survive past-only phases and is not claimed."
+permutation test). It does not pass a correction for testing five lags, which with 53 circular shifts a lag cannot do
+on its own (§7.4); its support is that it survives phases built from past data only ($+0.369$, $p = 0.038$) and the removal
+of any one of the 30 economies, and it holds under the edge-robust convention. With past-only phases and China left out
+together it is $p = 0.057$. It rests on 2009 and 2020: without either it is not significant (§7.3). It is a property of
+the tightly coupled modern economy, not a fifty-year regularity, and not a forecast. The two-year lead (lead-2
+$+0.226$, $p = 0.038$) does not survive past-only phases and is not claimed."
 
 ### L2. Results: the channels inside the economies (Sid: the rate lead dropped as a lead claim)
 
@@ -504,5 +568,62 @@ none of the alternative phase conventions, including phases from past data only 
 $-0.17$ ($p = 0.17$). It also sits where the filters are least reliable: the lag $-2$ test for 2020 uses $r(2022)$, the
 last observation. We report it and do not claim it."
 
-The other Limitations items in `docs/paper_plan.md` (the lead rests on 2009 and 2020; five events; annual data) stand;
-the variance rise of §6.7 joins the first of them.
+### L4. Limitations: what multiplicity correction can show (Sid)
+
+"No lag survives a correction for testing five lags. With 53 circular shifts the smallest $p$ the test can return is
+$0.019$, so a single lag can never pass Bonferroni and passes Benjamini–Hochberg only alongside another lag at the
+floor, which happened on the original 26 but not on the 30. The pre-crisis rise therefore rests on its survival under
+past-only phases and leave-one-economy-out, not on corrected significance, and on two events, 2009 and 2020."
+
+### L5. Results: loss of diversification (Sid: the Results term)
+
+"In global recessions the world economy loses diversification: the economies' cycles stop offsetting one another. The
+co-movement (cross) term supplies $83.3\%$ of the extra world variance in recession windows GDP-weighted ($96.8\%$
+equal-weighted), a descriptive magnitude (§7.6). Co-movement and larger swings contribute about equally to that rise
+($44\%$ and $41\%$ GDP-weighted, interaction $15\%$; on the original 26, $33\%$ and $53\%$)."
+
+### L6. Results: the alignment share is sample-sensitive (Sid: Results builds nothing on it)
+
+"Splitting the recession excess in world swing (the identity $|Z| = \bar A R_A$) into alignment and swing size gives
+an alignment share of $39\%$ on the original 26, $19\%$ on the 30 and $33\%$ on the 30 without Iran. The swing-size
+part is significant on every sample ($p = 0.0002$, the floor); the alignment part on none ($p = 0.10$–$0.36$). The
+share depends on which economies are in the sample, and we draw no conclusion from it."
+
+### L7. Results: the variance of synchronization (Sid: consistent with loss of diversification)
+
+"Before recessions the variance of synchronization rises ($\tau = +0.420$, $p = 0.037$) while its lag-1
+autocorrelation does not ($-0.098$, $p = 0.68$). That is not the slowing-down signature, which needs both; it is
+consistent with loss of diversification — shocks stop cancelling, so synchronization swings more widely without
+recovering more slowly. It rests on 2009 and 2020 (before them alone $+0.857$, $p = 0.005$; before 1982 and 1991,
+$-0.018$, $p = 0.53$)."
+
+The other Limitations items in `docs/paper_plan.md` (five events; annual data; the end of the sample is edge-affected)
+stand; L4 and the variance rise's dependence on 2009 and 2020 join the item on the lead.
+
+### D1. Discussion: what the transition is, and what it is not (Sid's framing)
+
+"We first asked whether global recessions arrive the way a system approaches a bifurcation, with recovery slowing as a
+threshold nears. They do not: before recessions the autocorrelation of synchronization does not rise, and after them
+the recovery rate does not fall (§6.7). That 'what it isn't' led to the mechanism the paper proposes: loss of
+diversification. In recessions the economies' cycles stop offsetting one another, and co-movement supplies most of the
+extra world variance. Because co-movement and larger swings contribute about equally, we read the recession excess as
+amplification transmitted by alignment: shocks that would have cancelled across economies are passed along instead.
+The rise in the variance of synchronization before recessions, without a rise in its autocorrelation, fits the same
+reading — when shocks stop cancelling, synchronization swings more widely without recovering more slowly — though it
+rests on 2009 and 2020 and is a reading of the data, not a separate test."
+
+### D2. Discussion: diversification-type tipping (Sid: our own term)
+
+"We call a transition of this kind diversification-type tipping: a transition caused by losing the cancellation
+between economies rather than by slowing recovery. It differs from bifurcation-induced tipping (B-tipping in the
+taxonomy of Ashwin et al. 2012), which shows the slowing-down signature we do not find. This paper does not show that
+loss of diversification has a threshold — a level of coupling beyond which cancellation fails abruptly rather than
+gradually. Testing for one is future work, in the simulator of coupled economies planned for the graph-neural-network
+study, where the coupling is known and can be raised step by step."
+
+**Notes for Sid.** A quick search found no earlier use of the phrase "diversification-type tipping"; check again before
+submission. In finance, "diversification" and systemic risk usually describe a different mechanism: institutions that
+each diversify their portfolios become alike and more connected, so diversification itself spreads distress (for
+example Burkholz, Garas and Schweitzer, arXiv 1503.00925, on damage diversification). One sentence in the Discussion
+should set our sense — cycles that stop offsetting one another — apart from that one. D2 says nothing about noise- or
+rate-induced tipping; `docs/paper_plan.md` still lists rate-induced tipping ("the rocket") as a Paper 2 hypothesis.
