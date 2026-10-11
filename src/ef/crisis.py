@@ -41,15 +41,18 @@ def bootstrap_mean_ci(v, rng, nb=10000):
     return float(np.mean(v)), float(np.percentile(bs, 2.5)), float(np.percentile(bs, 97.5))
 
 
-def tau_pre(ind, years, events=RECESSIONS, pre=8):
+def tau_pre(ind, years, events=RECESSIONS, pre=8, strict=False):
     """Mean over events of a Kendall-type trend of `ind` over the `pre` years before each event:
-    (pairs rising - pairs falling) / all pairs, on the last axis. Events without a full pre-window are skipped."""
+    (pairs rising - pairs falling) / all pairs, on the last axis. Events whose pre-window lies outside `years` are
+    skipped. strict=False (as run) keeps a pre-window with some undefined values and scores their pairs as 0, which
+    pulls that event's trend towards 0; strict=True (Phase 3) skips any event whose pre-window is not fully defined."""
     yi = {int(y): i for i, y in enumerate(years)}; iu = np.triu_indices(pre, 1); taus = []
     for o in events:
         idx = [yi[y] for y in range(o - pre, o) if y in yi]
         if len(idx) < pre: continue
         seg = ind[..., idx]
         if np.isnan(seg).all(axis=-1).any(): continue
+        if strict and np.isnan(seg).any(): continue
         d = seg[..., iu[1]] - seg[..., iu[0]]
         taus.append(np.nansum(np.sign(d), axis=-1) / (0.5 * pre * (pre - 1)))
     return np.nanmean(np.stack(taus, axis=-1), axis=-1)

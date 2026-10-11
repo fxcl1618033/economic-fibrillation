@@ -1,0 +1,45 @@
+# Phase 3, as pre-registered in docs/preregistration_S30.md (committed with it, before any S30 run).
+# Convention P throughout; every rolling window inside 1970-2022 with strict pre-crisis windows; the as-run seeds.
+# `samples` and `variants` are run by the Phase 3 driver, still to be written; each run writes
+# results/<sample or variant>/<convention>/<test>.json. Nothing here runs before Sid signs the pre-registration.
+
+name: phase3
+samples: [S26, S30]
+band: [9.0, 0.49]
+span: [1950, 2022]
+window: [1970, 2022]
+recessions: [1975, 1982, 1991, 2009, 2020]
+downturns: [1998, 2001, 2012]
+
+tests:
+  arc:              {convention: P, bootstrap: 10000, seed: 11}
+  conventions:      {conventions: [P, W, N, E, C], detrend_sigma: 8.0}
+  amplitude:        {convention: P, detrend_sigma: 8.0, surrogates: 5000, seed: 404, batch: 250}
+  diversification:  {win: 10, weights: [gdp_mean, equal], surrogates: 5000, seed: 707, batch: 200}
+  cross_split:      {win: 10, weights: [gdp_mean, equal]}
+  structure:        {convention: P, surrogates: 5000, seed: 909, batch: 250}
+  mst:              {window: [1970, 2022], win: 10, pre: 8, strict: true, detrend_sigma: 8.0,
+                     decades: [[1979, 1989], [2013, 2022]], surrogates: 5000, seed: 303, batch: 100}
+  phase_lags:       {convention: P, surrogates: 5000, seed: 505, batch: 250}
+  csd:              {convention: P, window: [1970, 2022], win: 15, sigma: 5.0, pre: 8, strict: true,
+                     surrogates: 5000, seed: 101, batch: 250}
+  bifurcation:      {convention: P, window: [1970, 2022], win: 12, sigma: 5.0, surrogates: 5000, seed: 202, batch: 250}
+  robustness:       {convention: P, drop_economies: all}
+
+variants:
+  conventions: [W, N, E, C]                    # E mirrors 9 years; C: circular-shift tests only
+  drop_one_added: [CHN, BRA, SAU, IRN]          # every test, on S30 (mandatory)
+  swing_size:                                   # amplitude, diversification, cross_split, structure, on S30 (mandatory)
+    - [IRN]
+    - [SAU]
+    - [IRN, SAU]
+  as_run_windows: {mst: [1962, 2022], csd: [1962, 2022], bifurcation: [1962, 2022], strict: false}
+  gmd_growth_swap: {economies: [NOR, CHE, ZAF], years: [1991, 2011], tests: [arc, amplitude, diversification]}
+  past_only_leads: [arc.lead1, arc.lead2, channels.strate.lead2]
+
+channels:
+  samples: [S26, S30]
+  panel: build/data/atlas                       # repaired atlas panel, GMD read as float64
+  coverage_from: 1965                           # an economy enters a channel only with continuous data 1965-2022
+  surrogates: 2000
+  seed: 2610

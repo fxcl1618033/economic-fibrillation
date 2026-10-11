@@ -1,8 +1,9 @@
 """Early-warning (tipping) indicators on r(t) (Methods 6.7).
 
 Fluctuations of r around a Gaussian-smoothed trend; on trailing windows: lag-1 autocorrelation phi, variance, the
-recovery rate lambda = -ln(phi) and the restoring time 1/lambda. Critical slowing down before a bifurcation means
-phi and variance rise and the recovery rate falls (the restoring time rises).
+recovery rate lambda = -ln(phi). Critical slowing down before a bifurcation means phi and variance rise and the
+recovery rate falls. The battery is phi and variance plus the coupling test below (the restoring time 1/lambda was
+dropped: it moves with phi).
 
 Coupling as the bifurcation parameter: inverting the mean-field Kuramoto relation r = sqrt(1 - Kc/K) gives the
 implied coupling K/Kc = 1 / (1 - r^2).
@@ -42,7 +43,9 @@ def recovery_rate(r, win=12, sigma=5.0):
 
 def restoring_time(r, win=15, sigma=5.0):
     """1 / lambda in years, from the same trailing lag-1 autocorrelation as rolling_ar1_var. A reconstruction of the
-    third indicator, whose script (csd_fast.py) was lost (open issue 10): its exact definition is not recorded."""
+    third indicator, whose script (csd_fast.py) was lost (open issue 10). Not used: it is a monotone function of the
+    lag-1 autocorrelation, so it adds no independent information, and it was dropped from the battery (open issue 22,
+    decision of 11 October 2026). Kept so the reason can be shown (tests/test_library.py)."""
     return 1.0 / recovery_rate(r, win, sigma)
 
 

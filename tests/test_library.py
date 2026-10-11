@@ -140,3 +140,30 @@ def test_tipping_formulas():
     assert tipping.implied_coupling(np.array([0.0, np.sqrt(0.5)])) == pytest.approx([1.0, 2.0])
     r = np.random.default_rng(10).uniform(0.2, 0.8, 61)
     assert np.allclose(tipping.restoring_time(r, 15, 5.0), 1 / tipping.recovery_rate(r, 15, 5.0), equal_nan=True)
+
+
+def test_restoring_time_moves_with_the_autocorrelation():
+    """Why it was dropped (open issue 22): 1/(-ln phi) is increasing in phi, so its rank trend equals phi's."""
+    r = np.random.default_rng(11).uniform(0.2, 0.8, 61); years = np.arange(1962, 2023)
+    phi = np.clip(tipping.rolling_ar1_var(r, 15, 5.0)[0], 1e-4, 0.9999)
+    assert crisis.tau_pre(tipping.restoring_time(r, 15, 5.0), years) == pytest.approx(crisis.tau_pre(phi, years))
+
+
+def test_strict_pre_windows_skip_partly_undefined_events():
+    years = np.arange(1970, 2023); x = years.astype(float); x[years < 1979] = np.nan   # defined from 1979, like L(t)
+    assert crisis.tau_pre(x, years, (1982, 2009), strict=False) < crisis.tau_pre(x, years, (1982, 2009), strict=True) == 1.0
+
+
+@needs_data
+def test_mst_decade_means_with_windows_inside_1970_2022():
+    """Registry E1/E3 and Methods edits A2/A3: 0.677 vs 0.379 (1.8x); 0.652 was L(1979) alone; windows reaching back
+    to 1962 leave every value from 1979 onward unchanged."""
+    from ef.paper1 import load_data
+    from ef.phases import window_cycles
+    D = load_data('S26'); out = {}
+    for w in ((1970, 2022), (1962, 2022)):
+        L, _ = network.mst_stats(network.corr_windows(window_cycles(D.logs, D.years, w), 10)[None], 10)
+        out[w] = dict(zip(range(w[0], 2023), L[0]))
+    a = np.mean([out[(1970, 2022)][y] for y in range(1979, 1990)]); b = np.mean([out[(1970, 2022)][y] for y in range(2013, 2023)])
+    assert (round(a, 3), round(b, 3), round(a / b, 1), round(out[(1970, 2022)][1979], 3)) == (0.677, 0.379, 1.8, 0.652)
+    assert np.isnan(out[(1970, 2022)][1978]) and all(out[(1970, 2022)][y] == out[(1962, 2022)][y] for y in range(1979, 2023))

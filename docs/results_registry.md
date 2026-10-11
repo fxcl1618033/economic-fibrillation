@@ -23,7 +23,7 @@ p = 0.019 means "no shift did better". Surrogates: 5,000 spectrum-preserving set
 | A5 | after-2 (one-sided down) | −0.277 | 0.019 | same | headline |
 | A6 | Superposed epoch: mean r at t−1 / t+2 | 0.70 / 0.35 | — | same | descriptive |
 | A7 | Mean r: recessions / downturns / normal years (95% bootstrap CI) | 0.65 [0.45, 0.86] / 0.37 [0.23, 0.62] / 0.54 [0.47, 0.61] | — | same | descriptive |
-| A8 | Bonferroni over five lags: lead-1 and after-2 / lead-2 | p_adj 0.095 / 0.189 | — | Methods §7.4 | robustness |
+| A8 | Bonferroni over five lags: lead-1 and after-2 / lead-2 | p_adj 0.094 / 0.189 | — | `ef.crisis.bonferroni`; Methods §7.4 (printed 0.095, edit proposed) | robustness |
 | A9 | Benjamini–Hochberg: lead-1 and after-2 / lead-2 | q 0.047 / 0.063 | — | Methods §7.4 | robustness |
 | A10 | Same arc under convention W (Hilbert on 1970–2022 only): lead-2 / lead-1 / after-2 | +0.210 / +0.178 / −0.144 | 0.057 / 0.094 / 0.170 | runin_convention_check.json | **flag** (issue 1) |
 | A11 | Same arc under convention N (no run-in): lead-2 / lead-1 / after-2 | +0.210 / +0.178 / −0.197 | 0.038 / 0.094 / 0.094 | runin_convention_check.json | **flag** (issue 1) |
@@ -84,10 +84,10 @@ to the band or to growth rates, and no single large economy drives the result.
 
 | ID | Quantity | Value | p | Source | Status |
 |---|---|---|---|---|---|
-| E1 | MST mean edge length, decade means: 1970s vs 2013–22 | 0.706 vs 0.379 (1.9×) | — | Methods §6.5 | headline (descriptive) |
-| E2 | Single-year endpoints 1971 vs 2022 (the old "~3×") | 0.781 vs 0.249 | — | mst_results.json | superseded wording |
-| E3 | Windows kept inside 1970–2022: 1979–89 vs 2013–22 | 0.652 vs 0.379 | — | Methods §7.7 | robustness |
-| E4 | Pre-crisis MST contraction, Kendall τ (raw / detrended) | −0.171 / −0.086 | 0.167 / 0.316 | mst_results.json; Methods §6.5 | null |
+| E1 | MST mean edge length, decade means, windows inside 1970–2022: 1979–89 vs 2013–22 | 0.677 vs 0.379 (1.8×) | — | `ef.paper1.run_mst` (S26, window 1970–2022) | headline (descriptive); replaces 0.706 vs 0.379 (1.9×), which needed windows reaching into the run-in |
+| E2 | Single-year endpoints 1971 vs 2022 (the old "~3×") | 0.781 vs 0.249 | — | mst_results.json | dropped (Sid, 11 Oct 2026); Methods' 0.771 matched no result |
+| E3 | Windows reaching back into the run-in (from 1962): L from 1971; 1979–89 and 2013–22 means unchanged | 0.677 vs 0.379 | — | `ef.network` | robustness; replaces 0.652, which was L(1979) alone |
+| E4 | Pre-crisis MST contraction, Kendall τ (raw / detrended) | −0.171 / −0.086 | 0.167 / 0.316 | mst_results.json; Methods §6.5 | null; detrended values not reproduced (open issue 23); both rerun in Phase 3 under the new windows |
 | E5 | The old "p = 0.47" for E4 | — | not reproducible | — | do not cite |
 | E6 | Largest-eigenvalue fragility trend | τ +0.10 | 0.306 | mst_results.json | null |
 | E7 | Phase-lead spread (s.d. of 26 leads) | 0.403 yr | 0.0002 lower tail (surrogate mean 0.942, min 0.446) | phase_lag_results.json; Methods §6.6 | headline, but computed with convention W: recompute under P (issue 1) |
@@ -102,7 +102,7 @@ to the band or to growth rates, and no single large economy drives the result.
 |---|---|---|---|---|---|
 | F1 | Pre-crisis trend of AR(1) of r(t) | τ −0.152 | 0.757 | csd_surrogate_results.json | null |
 | F2 | Pre-crisis trend of variance of r(t) | τ +0.295 | 0.107 | same | null |
-| F3 | Restoring time (third indicator) | null | — | csd_fast.py (lost) | null, to rebuild (issue 10) |
+| F3 | Restoring time (third indicator) | — | — | — | dropped (Sid, 11 Oct 2026): as 1/(−ln φ) it is a monotone function of the lag-1 autocorrelation, so not independent (open issue 22) |
 | F4 | Post-crisis change in recovery rate λ (coupling as bifurcation parameter) | +0.098 | 0.542 | kuramoto_bifurcation_results.json | null |
 | F5 | Implied K/K_c around onsets, mean t−1 / t0 | 6.4 / 7.1 | — | printed/kuramoto_bifurcation_output.txt | descriptive (a transform of r) |
 

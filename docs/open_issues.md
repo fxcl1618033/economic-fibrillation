@@ -93,7 +93,7 @@ one of 5,000 surrogates larger). Fix the script; the Methods already reports the
 Band, detrending, leave-one-economy-out, split-sample and leave-one-crisis-out results exist only as printed text
 (`paper1/results/printed/robustness_output.txt`). Save them as JSON in the rerun.
 
-## 10. The restoring-time indicator was lost — LOW
+## 10. The restoring-time indicator was lost — CLOSED 11 October 2026 (see issue 22: dropped)
 
 `csd_fast.py` (the third critical-slowing-down indicator) and its figure were lost with the September workspace;
 Methods §6.7 reports it as null. Rebuild it in the rerun so all three indicators come from code in the repository.
@@ -171,13 +171,13 @@ The paper's r(t) uses Maddison GDP per capita. The atlas `sync.json` uses Global
 differ year by year (1970: 0.28 against 0.34). Keep them apart in the text; quote the Maddison series for Paper 1
 claims and the GMD series only for the channel comparison.
 
-## 20. Bonferroni value in Methods 7.4 is rounded twice — LOW (wording)
+## 20. Bonferroni value in Methods 7.4 is rounded twice — DECIDED 11 October 2026: use 0.094 (edit A1 in `docs/methods_proposed_edits.md`)
 
 Found in Phase 2. Bonferroni over the five lags for lead-1 and after-2 is 5 × 1/53 = 0.0943, so "0.094"; Methods 7.4 and
 registry A8 print 0.095 (5 × the rounded 0.019). Benjamini–Hochberg (0.047, 0.063) is right. **What to do:** propose the
 corrected text in the Phase 3 text-changes file; Sid decides.
 
-## 21. MST decade means in Methods 6.5 and 7.7 — MEDIUM (definition)
+## 21. MST decade means in Methods 6.5 and 7.7 — DECIDED 11 October 2026: windows inside 1970–2022, 0.677 vs 0.379 (1.8×); 0.706, 0.652 and 0.771 dropped (edits A2, A3). 0.652 turned out to be L(1979) alone
 
 Found in Phase 2 (`src/ef/network.py`; the stored `mst_results.json` reproduces exactly). The Methods' 0.706 (1970s)
 reproduces only if the 10-year windows may reach back into the 1950–69 run-in, so that 1970 counts (mean of 1970–79,
@@ -187,7 +187,7 @@ endpoint 0.771 in 6.5 disagrees with the stored 0.781 (registry E2). 2013–2022
 unaffected in substance. **What to do:** fix one stated window convention in Phase 3, recompute all three numbers from
 code, and propose the text; Sid decides.
 
-## 22. The restoring-time indicator needs a definition that adds information — MEDIUM (issue 10 continued)
+## 22. The restoring-time indicator needs a definition that adds information — DECIDED 11 October 2026: dropped; two indicators plus the coupling test (edit A4)
 
 Phase 2 reconstructs it as 1/(−ln φ), the inverse of the recovery rate used in the bifurcation test. That is a
 monotone function of the lag-1 autocorrelation φ, so its rank-based pre-crisis trend is the same as the autocorrelation's
@@ -195,3 +195,10 @@ monotone function of the lag-1 autocorrelation φ, so its rank-based pre-crisis 
 indicator. **What to do:** before Phase 3, choose a definition that measures something else (for example the decay
 time of r after its own deviations, fitted on levels, or the e-folding time of the windowed autocorrelation function
 beyond lag 1), pre-register it, and report it beside the other two; Sid decides.
+
+## 23. The detrended pre-crisis MST trend does not reproduce — LOW
+
+Methods 6.5 and registry E4 give τ = −0.086, p = 0.316 for Gaussian-detrended L. Detrending with σ = 5, 8 or 10 years
+on the as-run windows (from 1962, seed 303) gives τ between −0.043 and −0.057 and p between 0.36 and 0.42; the
+original script is not in the repository. The conclusion (null) is the same. **What to do:** the pre-registration fixes
+σ = 8 and the new windows; Phase 3 reports that value and edit B5 rewrites the sentence.

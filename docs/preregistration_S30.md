@@ -1,0 +1,168 @@
+# Pre-registration — Paper 1 rerun on the 30 economies (S30)
+
+Written 11 October 2026, before any test is run on S30 (`CLAUDE.md` rule 3). **Status: draft for Sid's sign-off.**
+Nothing runs on S30 until Sid signs below and this file is committed with the sign-off date. Any later change is
+added as a dated amendment at the end; results obtained before an amendment are kept and reported beside the new ones.
+
+The S26 results that S30 is compared with are the stored Paper 1 results (`docs/results_registry.md`), reproduced
+exactly by the library (`docs/golden_check.md`). Where this document changes a convention (section 3), S26 is rerun
+under the new convention too, so each comparison is like with like.
+
+## 1. Hypotheses
+
+Stated as Paper 1 states them, with the direction fixed in advance.
+
+1. **Synchronization rises before global recessions** (arc lead-1 and lead-2 positive).
+2. **Synchronization collapses after them** (arc after-2 negative).
+3. **When the world synchronizes it also swings harder** (r and mean swing size positively correlated, detrended).
+4. **Most of the excess world variance in recessions arrives through co-movement** (the cross term), and inside the
+   cross term both larger swings and higher correlation contribute ("amplification transmitted by alignment").
+5. **The network of cycles has tightened** over the sample (MST mean edge length lower in 2013–22 than in 1979–89).
+6. **The economies move nearly together**: the spread of phase leads is smaller than in uncoupled surrogate worlds.
+7. **No critical slowing down precedes recessions** (S26 nulls; their continuation is expected, not claimed as a test).
+8. **Synchronized short-rate rises lead recessions by two years** (inside the economies, on the repaired atlas panel).
+
+## 2. What is fixed and never tuned
+
+| Item | Setting |
+|---|---|
+| Sample | **S30**: USA, GBR, DEU, FRA, ITA, JPN, CAN, ESP, AUS, KOR, IND, MEX, NLD, SWE, CHE, BEL, ZAF, TUR, NOR, AUT, DNK, FIN, GRC, PRT, IDN, THA, CHN, BRA, SAU, IRN. **S26** (the first 26) is the frozen reference. The UAE is excluded: its Maddison series misses 1991–92 (Sid, 11 October 2026); there is no S31 run. |
+| Inclusion rule | Maddison real GDP per capita and population complete for every year 1950–2022, no interpolation, no splices (enforced in `src/ef/data/maddison.py`; per-economy report `docs/data_validation.md`) |
+| Data | Maddison Project Database 2023, `sbgraves237/maddisondata` at commit `3ed424b6`, `MaddisonData.rda` sha256 `63a3cff9…` (`data/sources.yaml`). Channel tests: the repaired atlas panel built by `make data` (Global Macro Database read as float64) |
+| Cycle | log real GDP per capita minus its 1950–2022 mean; Butterworth band-pass, order 2, 2.04–9 years, forward–backward (scipy defaults); run-in span 1950–2022 |
+| Statistics window | 1970–2022 (T = 53) |
+| Recessions | 1975, 1982, 1991, 2009, 2020 (Kose, Sugawara and Terrones 2020). Downturns 1998, 2001, 2012 for description only |
+| Nulls | Circular shift of the recession indicator (k = 1…52; floor 1/53 = 0.019). 5,000 spectrum-preserving surrogate economy sets (floor 1/5001 = 0.0002), drawn in the as-run order |
+| Seeds | As run, per test: arc bootstrap 11, amplitude 404, decomposition 707, structure 909, MST 303, phase lags 505, early warning 101, coupling 202, channel anatomy 2610. The same seeds for S26, S30 and every variant |
+| Directions | As in section 4, fixed now |
+
+## 3. Conventions
+
+**Phase conventions.** Convention **P** is primary: band-pass and Hilbert transform on 1950–2022, statistics on
+1970–2022. Sensitivity, reported beside P for every test that uses phases or swing sizes:
+
+| | Definition | Used for |
+|---|---|---|
+| W | band-pass on 1950–2022, cut to the window, then Hilbert | all phase-based tests |
+| N | band-pass and Hilbert on 1970–2022 only | all tests (for the network and decomposition tests N is the only variant: they use no Hilbert transform) |
+| E | as P, each cycle mirrored by **9 years** at both ends before the Hilbert transform | all phase-based tests |
+| C | for each year t, band-pass and Hilbert on 1950…t only, keeping year t (past data only) | circular-shift tests only: surrogates are cycles, which cannot be re-filtered year by year. Required for every lead claim (CLAUDE.md rule 7): A1, A2, G1 |
+
+Surrogates under P and E are drawn from the 1950–2022 cycles and passed through the same steps as the real data
+(as `structure_tests.py` did); under W and N from the window cycles.
+
+**Rolling windows.** Every rolling-window statistic uses windows kept inside 1970–2022. This extends Sid's decision
+for the network measure (11 October 2026) to all rolling statistics, so that no reported number reaches into the
+1950–69 run-in. **Sid to confirm this extension**, because it shrinks the early-warning tests:
+
+| Test | Window | First defined year | Recessions usable |
+|---|---|---|---|
+| MST length and largest eigenvalue (E1–E6) | 10 years | 1979 | pre-crisis trends: 1991, 2009, 2020 |
+| Decomposition (D1–D9) | 10 years | 1979 | recession windows 1982, 1991, 2009, 2020 (as before) |
+| Lag-1 autocorrelation and variance of r (F1, F2) | 15 years | 1984 | pre-crisis trends: 2009, 2020 |
+| Recovery rate, coupling test (F4) | 12 years | 1981 | post-crisis windows: 1982, 1991, 2009, 2020 |
+
+Pre-crisis trend windows (8 years) must be fully defined (`tau_pre(strict=True)`); the as-run code kept partly
+undefined windows and pulled their trends towards zero. The as-run windows (reaching back to 1962) are reported as
+sensitivity.
+
+## 4. Tests, directions and what counts as replication
+
+**Reading the last column.** For a test that was significant on S26, *replicates* means the same sign and p < 0.05 on
+S30; *weakens* means the same sign with p ≥ 0.05; *reverses* means the opposite sign. For an S26 null, *stays null*
+means p ≥ 0.05; if it becomes significant that is reported as a change, not claimed as a finding. Descriptive
+quantities have no test; the criterion says what would count as the same qualitative statement.
+
+| ID | Test | Statistic and direction | Null | S26 (as run) | Counts as the same on S30 if |
+|---|---|---|---|---|---|
+| A1 | Arc, lead-2 | corr(r(t), G(t+2)), upper | shift | +0.230, p 0.038 | same sign, p < 0.05 |
+| A2 | Arc, lead-1 | corr(r(t), G(t+1)), upper | shift | +0.216, p 0.019 | same sign, p < 0.05 |
+| A3 | Arc, crisis year | corr(r(t), G(t)), upper | shift | +0.149, p 0.189 | stays null |
+| A4 | Arc, after-1 | corr(r(t+1), G(t)), lower | shift | +0.078, p 0.679 | stays null |
+| A5 | Arc, after-2 | corr(r(t+2), G(t)), lower | shift | −0.277, p 0.019 | same sign, p < 0.05 |
+| A6, A7 | Superposed epoch; mean r in recessions, downturns, normal years (bootstrap 95% CI, 10,000) | descriptive | — | 0.70 / 0.35; 0.65, 0.37, 0.54 | recession mean above normal |
+| A8, A9 | Bonferroni and Benjamini–Hochberg over A1–A5: **the primary family** | — | — | 0.094 / 0.189; q 0.047 / 0.063 | reported as is |
+| B1–B15 | Bands 2–8 and 3–10 years; HP filter (λ = 100); growth rates; split sample 1970–95 and 1996–2022; leave each recession out; without 2009 and 2020 | A1, A2, A3, A5 | shift | `docs/results_registry.md` §2 | reported as a table; no claim rests on a single row |
+| B-LOO | Leave each of the 30 economies out in turn (S26 did USA, DEU, JPN only) | A1, A2, A3, A5 | shift | — | reported as a table |
+| C1 | r against mean swing size, detrended (σ = 8 years) | Pearson, upper | shift; surrogates | +0.608, p 0.019 (W surrogate p 0.0006) | positive, p < 0.05 (shift) |
+| C2 | Same, raw | Pearson, upper | shift | +0.530, p 0.019 | positive, p < 0.05 |
+| D1, D3 | Cross term's share of the recession excess in world variance; weights: **within-window mean GDP** (the Methods) and equal | descriptive | — | 82.4% / 96.9% | above 50% under both weights |
+| D4 | Cross share of world variance, recession vs normal windows | descriptive | — | 0.723 vs 0.669; 0.880 vs 0.818 | recession share above normal |
+| D6 | Nominal surrogate p of the share ratio, and tests of the unnormalized Δcross and Δown | upper | surrogates | 0.48 / 0.35; 0.0002 | disclosure only (Methods 7.6) |
+| D7, D8 | Cross term's rise split into correlation, swing size and interaction | descriptive | — | 35/50/14%; 41/46/13% | both correlation and swing size positive |
+| D9 | Mean pairwise correlation and cycle s.d., normal → recession windows | descriptive | — | 0.376 → 0.490; × 1.14 | both rise |
+| D10 | Fibrillation identity |Z| = Ā × R_A | holds exactly | — | below 10⁻¹⁸ | below 10⁻¹² |
+| D11 | Share of the recession excess in log world swing² from alignment vs swing size | upper (each part) | surrogates | 39.3% / 60.7%; p 0.103 / 0.0002 | swing part positive with p < 0.05 |
+| D12 | corr(R_A, r) | descriptive | — | +0.942 | positive |
+| E1 | MST mean edge length, decade means 1979–89 vs 2013–22 (windows inside 1970–2022) | descriptive | — | 0.677 vs 0.379 (1.8×) | 1979–89 above 2013–22 |
+| E4 | Pre-crisis MST contraction, Kendall τ over 8 years, raw and detrended (σ = 8) | lower | surrogates | null (τ −0.171, p 0.167 as run; detrended not reproduced, open issue 23) | stays null |
+| E6 | Pre-crisis trend in the largest eigenvalue | upper | surrogates | τ +0.10, p 0.306 | stays null |
+| E7 | Spread (s.d.) of phase leads | **lower** | surrogates | 0.403 yr, p 0.0002 (W) | p < 0.05 lower tail |
+| E9 | Mean cycle period | descriptive | — | 5.85 yr | reported |
+| E10, E11 | Fiedler blocs; arc within and between blocs | descriptive; exploratory | shift | λ2 0.868 | reported |
+| F1 | Pre-crisis trend in lag-1 autocorrelation of r | upper | surrogates | τ −0.152, p 0.757 | stays null |
+| F2 | Pre-crisis trend in variance of r | upper | surrogates | τ +0.295, p 0.107 | stays null |
+| F4 | Post-crisis change in the recovery rate (coupling as bifurcation parameter) | lower | surrogates | +0.098, p 0.542 | stays null |
+| F5 | Implied coupling K/Kc around onsets | descriptive | — | 6.4 / 7.1 | reported |
+| G1 | Short-rate synchronization, lead-2 (atlas panel) | upper | shift | +0.266, p 0.019 (18 economies) | same sign, p < 0.05; **and under C** |
+| G2 | Investment synchronization, lead-2 | upper | shift | +0.293, p 0.038 | exploratory |
+| G3 | Real GDP (GMD) synchronization, lead-1 / after-2 | upper / lower | shift | +0.237 / −0.332 | as A2 / A5 |
+| G4 | Each channel's synchronization against surrogates (2,000, seed 2610) | upper | surrogates | all p 0.0005 | p < 0.05 |
+| G5 | Mean pairwise cycle correlation before and after 1990, by channel | descriptive | — | registry §7 | rises |
+| G7, G8 | Economies contracting in recession years; coupling to the rest | descriptive | — | registry §7 | reported |
+
+Channel tests (G) run on the repaired atlas panel (open issue 12), on S26 and on S30. An economy enters a channel only
+if that channel has continuous data from 1965 to 2022 (the as-run rule); the number of economies per channel is
+reported. Missing values are never filled in beyond the as-run two-year interpolation.
+
+## 5. Mandatory checks for the wider sample (Sid, 11 October 2026)
+
+1. **Leave each added economy out.** Every test in section 4 is rerun under P on S30 without China, without Brazil,
+   without Saudi Arabia and without Iran (four runs). A result *depends on* an economy if dropping it reverses the
+   sign or moves p across 0.05.
+2. **Iran and Saudi Arabia in the swing-size tests.** Their cycles are 2.9× and 2.2× the median size of the 26, so
+   C1, C2, D1, D3, D4, D7, D8 and D11 are reported on S30, S30 without Iran, S30 without Saudi Arabia and S30 without
+   both.
+
+## 6. Open-issue checks folded in
+
+| Issue | Check |
+|---|---|
+| 1 | Every phase-based test under P, W, N, E and C (section 3) |
+| 2 | The arc with 2020 excluded (B14 and the after-2 lag) shown beside the full arc, and under E |
+| 4 | Decomposition weights are the within-window mean GDP the Methods state; the end-of-window version is not rerun |
+| 6 | The surrogate p of the recession cross share is not reported as evidence for the share claim |
+| 8 | The phase-lead spread is tested in the lower tail (the stated question) |
+| 9 | Every robustness row saved as JSON |
+| 12 | Channel anatomy on the repaired panel |
+| 13 | Norway, Switzerland and South Africa with Maddison growth replaced by GMD real GDP per capita growth for 1991–2011: A1–A5, C1, D1 and D3 on S26 and S30 |
+| 14 | A1, A2 and G1 under C (past-only phases) |
+| 21, 23 | MST under windows inside 1970–2022; detrended trend with σ = 8 |
+| 22 | The early-warning battery is two indicators (F1, F2) plus the coupling test (F4); the restoring time is dropped |
+
+## 7. Not rerun
+
+H1–H4 (superseded history); D2 (end-of-window weights, kept as the as-run record); D5 (not a test of the claim); E2
+and E5 (single-year endpoints; the irreproducible "p = 0.47"); F3 (dropped); G6 (the US–Japan comparison is about two
+economies, not the sample).
+
+## 8. Reporting
+
+- One file per test and variant: `results/<sample>/<convention>/<test>.json` (variants as subfolders, for example
+  `results/S30_minus_IRN/P/`), each with its config, seed, code version and timestamp.
+- `results/COMPARISON.md`: one row per registry ID with columns S26 · S30, flagging every sign change and every
+  crossing of p = 0.05, in plain words; then the sensitivity tables.
+- Everything run is reported, nulls included, with the same prominence (rule 1). p-values at a floor are labelled as
+  floors (rule 4). The lead rests on 2009 and 2020 (n ≈ 2) and is described that way (rule 5).
+- Multiplicity: A1–A5 on S30 under P is the primary family (Bonferroni and Benjamini–Hochberg); all other p-values
+  are robustness or exploratory and are reported raw with that label.
+- No change to `docs/methods.md`; text changes go to `docs/methods_proposed_edits.md`.
+
+## Sign-off
+
+- [ ] Sid has read this pre-registration, including the rolling-window extension in section 3.
+- Signed off on: ____________
+
+## Amendments
+
+None.

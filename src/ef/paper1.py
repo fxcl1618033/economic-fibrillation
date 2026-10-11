@@ -166,16 +166,18 @@ def run_mst(D, cfg, t):
     w = t['window']; yrs = _years(w); rec = cfg['recessions']
     X = window_cycles(D.logs, D.years, w, cfg['band'])
     C = network.corr_windows(X, t['win']); L, M = network.mst_stats(C[None], t['win']); L, M = L[0], M[0]
-    tauL = float(crisis.tau_pre(L, yrs, rec, t['pre'])); tauM = float(crisis.tau_pre(M, yrs, rec, t['pre'])); nL, nM = [], []
+    k = dict(pre=t['pre'], strict=t.get('strict', False))
+    tauL = float(crisis.tau_pre(L, yrs, rec, **k)); tauM = float(crisis.tau_pre(M, yrs, rec, **k)); nL, nM = [], []
     for Xs in nulls.surrogates(X, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
         Ls, Ms = network.mst_stats(network.corr_windows(Xs, t['win']), t['win'])
-        nL.append(crisis.tau_pre(Ls, yrs, rec, t['pre'])); nM.append(crisis.tau_pre(Ms, yrs, rec, t['pre']))
+        nL.append(crisis.tau_pre(Ls, yrs, rec, **k)); nM.append(crisis.tau_pre(Ms, yrs, rec, **k))
     nL, nM = np.concatenate(nL), np.concatenate(nM)
     yi = {int(y): i for i, y in enumerate(yrs)}
-    dec = lambda a, b: float(np.nanmean(L[yi[a]:yi[b] + 1]))
+    dec = lambda a, b: float(np.nanmean(L[yi[a]:yi[b] + 1])) if a in yi and b in yi else None
+    periods = t.get('decades', [[1979, 1989], [2013, 2022]])
     return {'tau_L': tauL, 'p_contraction': float(nulls.p_lower(tauL, nL)), 'tau_lambdamax': tauM,
             'p_fragility': float(nulls.p_upper(tauM, nM)),
-            'L_decade_means': {'1970s': dec(1970, 1979), '2013-2022': dec(2013, 2022), '1979-1989': dec(1979, 1989)},
+            'L_decade_means': {f'{a}-{b}': dec(a, b) for a, b in periods},
             'centrality': dict(zip(D.isos, network.mst_degree(C, t['win']).tolist())),
             'L_by_year': {int(y): (None if np.isnan(v) else float(v)) for y, v in zip(yrs, L)},
             'lambdamax_by_year': {int(y): (None if np.isnan(v) else float(v)) for y, v in zip(yrs, M)}}
@@ -200,17 +202,19 @@ def run_phase_lags(D, cfg, t):
 
 
 def run_csd(D, cfg, t):
-    """csd_surrogate.py: pre-crisis trends in the lag-1 autocorrelation and variance of r, plus the restoring time
-    (a reconstruction of the lost third indicator, open issue 10), against surrogates."""
+    """csd_surrogate.py: pre-crisis trends in the lag-1 autocorrelation and variance of r, against surrogates.
+    The restoring time is not in the battery: it is a monotone function of the lag-1 autocorrelation, so its trend
+    test repeats the autocorrelation's (open issue 22, decision of 11 October 2026)."""
     w = t['window']; yrs = _years(w); rec = cfg['recessions']; k = dict(win=t['win'], sigma=t['sigma'])
+    kt = dict(pre=t['pre'], strict=t.get('strict', False))
     r = order.r(analytic(D.logs, D.years, w, t['convention'], cfg['band']))
-    ar, va = tipping.rolling_ar1_var(r, **k); rt = tipping.restoring_time(r, **k)
-    tau = {n: float(crisis.tau_pre(x, yrs, rec, t['pre'])) for n, x in (('ar1', ar), ('var', va), ('restoring', rt))}
+    ar, va = tipping.rolling_ar1_var(r, **k)
+    tau = {n: float(crisis.tau_pre(x, yrs, rec, **kt)) for n, x in (('ar1', ar), ('var', va))}
     X, to_z = surrogate_source(D, w, t['convention'], cfg['band']); nulls_ = {n: [] for n in tau}
     for Xs in nulls.surrogates(X, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
-        rs = order.r(to_z(Xs)); a_, v_ = tipping.rolling_ar1_var(rs, **k)
-        for n, x in (('ar1', a_), ('var', v_), ('restoring', tipping.restoring_time(rs, **k))):
-            nulls_[n].append(crisis.tau_pre(x, yrs, rec, t['pre']))
+        a_, v_ = tipping.rolling_ar1_var(order.r(to_z(Xs)), **k)
+        for n, x in (('ar1', a_), ('var', v_)):
+            nulls_[n].append(crisis.tau_pre(x, yrs, rec, **kt))
     return {f'tau_{n}': tau[n] for n in tau} | {f'p_{n}': float(nulls.p_upper(tau[n], np.concatenate(nulls_[n]))) for n in tau}
 
 
