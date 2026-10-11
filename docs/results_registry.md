@@ -76,7 +76,7 @@ to the band or to growth rates, and no single large economy drives the result.
 | D7 | Inside the cross term's rise, GDP-weighted: from higher correlation / from bigger swings / interaction | 35% / 50% / 14% | — | printed/crossterm_split_output.txt | headline (correction) |
 | D8 | same, equal-weighted | 41% / 46% / 13% | — | same | headline (correction) |
 | D9 | Mean pairwise correlation, normal → crisis windows; mean cycle s.d. ratio | 0.376 → 0.490; × 1.14 | — | same | descriptive |
-| D10 | Fibrillation identity |Z| = Ā × R_A, max error | 4 × 10⁻¹⁹ | — | structure_results.json | descriptive |
+| D10 | Fibrillation identity |Z| = Ā × R_A, max error | below 10⁻¹⁸ (machine rounding) | — | structure_results.json | descriptive |
 | D11 | Share of the crisis excess in log world swing² from alignment / from swing size | 39.3% / 60.7% | alignment 0.103; swing 0.0002 (surrogates) | structure_results.json | headline |
 | D12 | corr(R_A, r) | +0.942 | — | printed/structure_tests_output.txt | descriptive |
 

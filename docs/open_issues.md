@@ -144,7 +144,9 @@ date (a one-sided filter, or re-estimating phases on an expanding window). Repor
 
 **Decision (Sid):** S30 is the main sample for Paper 1 and the GNN; no S31 run, because the UAE's 1991–92 gap breaks the
 filter. The inclusion rule below is now enforced in code (`src/ef/data/maddison.py`) and reported per economy in
-`docs/data_validation.md` (`make data`). Still to do in the S30 rerun: leave each added economy out in turn.
+`docs/data_validation.md` (`make data`). **Mandatory in Phase 3 (Sid, 11 October 2026):** leave each of the four added
+economies out in turn for every test, and report the amplitude link and the variance decomposition with and without
+Iran and Saudi Arabia (their cycles are 2.9× and 2.2× the median size of the 26).
 
 
 Working assumption: main sample S30 = the 26 + China, Brazil, Saudi Arabia and Iran; S26 is the frozen reference;

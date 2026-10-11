@@ -1,7 +1,7 @@
 """Channel anatomy for the 26 economies: which channel carries the synchronization signature.
 
-Port of paper1/scripts/eraB_claude_code/panel26.py (frozen). The arithmetic and its order are unchanged so the
-output is byte-identical to the as-run script on the same machine; only the paths come from the config.
+Port of paper1/scripts/eraB_claude_code/panel26.py (frozen). The arithmetic and its order are unchanged; with
+float64=False the output is byte-identical to the as-run script on the same machine. Paths come from the config.
 
 Data: Global Macro Database, read raw (before the atlas repairs; open issue 12). Channels (real = nominal /
 deflator): consumption, investment, exports, imports, budget spending, budget balance (% of GDP, level), short rate
@@ -9,6 +9,8 @@ deflator): consumption, investment, exports, imports, budget spending, budget ba
 series start, convention P) -> Kuramoto r_k(t) across the 26; mean pairwise correlation before and after 1990;
 lead-lag against the Kose-Terrones recessions (circular shift, floor 1/53); and a surrogate test of the level of
 r_k (2,000 spectrum-preserving sets, seed 2610, floor 1/2001).
+
+One deliberate change from the as-run script: GMD values are converted to float64 before any log (ef.data.gmd).
 """
 import json
 
@@ -18,6 +20,7 @@ from scipy.signal import butter, filtfilt, hilbert
 from scipy.stats import pearsonr
 
 from ef import config
+from ef.data import gmd
 
 C = ['USA', 'GBR', 'DEU', 'FRA', 'ITA', 'JPN', 'CAN', 'ESP', 'AUS', 'KOR', 'IND', 'MEX', 'NLD', 'SWE', 'CHE', 'BEL',
      'ZAF', 'TUR', 'NOR', 'AUT', 'DNK', 'FIN', 'GRC', 'PRT', 'IDN', 'THA']
@@ -28,10 +31,12 @@ NAME = {'GDP': 'real GDP', 'cons': 'consumption', 'inv': 'investment', 'exports'
 SEED = 2610
 
 
-def run(out_path, gmd_path=None, verbose=True):
-    """Compute the channel anatomy and write it to out_path (JSON, as panel26_results.json)."""
+def run(out_path, gmd_path=None, verbose=True, float64=True):
+    """Compute the channel anatomy and write it to out_path (JSON, as panel26_results.json).
+
+    float64=False reads GMD as float32, exactly as the as-run script did."""
     RNG = np.random.default_rng(SEED)
-    G = pd.read_stata(gmd_path or config.raw_file('gmd', 'data/final/data_final.dta')); G = G[G.ISO3.isin(C)]
+    G = gmd.read(gmd_path or config.raw_file('gmd', 'data/final/data_final.dta'), float64=float64); G = G[G.ISO3.isin(C)]
     b, a = butter(2, [(1/9)/0.5, 0.49/0.5], btype='band')
     YEARS = np.arange(1970, 2023); T = len(YEARS); Gv = np.isin(YEARS, GL).astype(float)
 

@@ -1,6 +1,7 @@
 """Phase 1 'done when': the data build reproduces every atlas file, and the S26 Maddison panel reproduces r(t) to 1e-12.
 
-The build is run once into a temporary folder from the pinned sources (about 10 seconds).
+The build runs twice into temporary folders from the pinned sources (about 10 seconds each): as used (GMD read as
+float64, decision of 11 October 2026) and with --float32, the precision of the frozen as-run scripts.
 """
 import hashlib
 import json
@@ -29,6 +30,13 @@ def built(tmp_path_factory):
     return out
 
 
+@pytest.fixture(scope='module')
+def built32(tmp_path_factory):
+    out = tmp_path_factory.mktemp('data32')
+    build.main(['--out', str(out), '--quiet', '--float32'])
+    return out
+
+
 @pytest.mark.slow
 @pytest.mark.parametrize('name', ATLAS)
 def test_atlas_file_reproduces_stored(built, name):
@@ -43,12 +51,18 @@ def test_channel_anatomy_reproduces_stored(built):
 
 
 @pytest.mark.slow
+def test_float64_changes_no_repair_decision(built):
+    """Every data repair (meta.json) is the same as in the stored atlas: the threshold rules all fall the same way."""
+    assert sha(built / 'atlas' / 'meta.json') == sha(os.path.join(ROOT, 'atlas', 'meta.json'))
+
+
+@pytest.mark.slow
 @pytest.mark.parametrize('name', ['panel26_results.json'] + [f'atlas/{f}' for f in ATLAS])
-def test_port_is_byte_identical_to_asrun_scripts(built, name):
-    """Same machine, same bytes: the ported code is the as-run code. Needs make asrun to have run."""
+def test_port_at_asrun_precision_is_byte_identical_to_asrun_scripts(built32, name):
+    """Same machine, same precision, same bytes: the ported code is the as-run code. Needs make asrun to have run."""
     asrun = os.path.join(ROOT, 'build/asrun', 'internal/panel26_results.json' if name == 'panel26_results.json' else name)
     if not os.path.exists(asrun): pytest.skip("run make asrun first")
-    assert sha(built / name) == sha(asrun)
+    assert sha(built32 / name) == sha(asrun)
 
 
 def r_convention_P(wide, y0=1970, y1=2022):

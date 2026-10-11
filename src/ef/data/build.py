@@ -2,6 +2,8 @@
 
     python -m ef.data.build [--out build/data]
 
+GMD values are read as float64 (ef.data.gmd); --float32 reproduces the as-run scripts' precision byte for byte.
+
 1. verify the sha256 of every pinned file the build reads (stop if any differs);
 2. channel anatomy of the 26 (ef.data.channels)          -> panel26_results.json
 3. atlas panel, global factors, statistics, sync (ef.data.atlas) -> atlas/panel.csv, global.csv, meta.json, stats.json, sync.json
@@ -45,15 +47,16 @@ def main(argv=None):
     cfg = config.load()
     ap = argparse.ArgumentParser(); ap.add_argument('--out', default=os.path.join(cfg['paths']['build'], 'data'))
     ap.add_argument('--quiet', action='store_true')
-    args = ap.parse_args(argv); out = args.out; v = not args.quiet
+    ap.add_argument('--float32', action='store_true', help='read GMD as float32, as the frozen as-run scripts did')
+    args = ap.parse_args(argv); out = args.out; v = not args.quiet; f64 = not args.float32
     os.makedirs(os.path.join(out, 'atlas'), exist_ok=True)
     warnings.filterwarnings('ignore', message='invalid value encountered in log')   # log of zero or negative values -> NaN, as in the as-run scripts
 
     verify(); print("pinned sources verified")
     p26 = os.path.join(out, 'panel26_results.json')
-    channels.run(p26, verbose=v); print(f"wrote {p26}")
+    channels.run(p26, verbose=v, float64=f64); print(f"wrote {p26}")
     A = os.path.join(out, 'atlas')
-    atlas.build_panel(A, p26, verbose=v); atlas.build_stats(A, verbose=v); atlas.build_sync(A, verbose=v)
+    atlas.build_panel(A, p26, verbose=v, float64=f64); atlas.build_stats(A, verbose=v); atlas.build_sync(A, verbose=v, float64=f64)
     print(f"wrote {A}/panel.csv, global.csv, meta.json, stats.json, sync.json")
     for s, p in maddison.write(out).items(): print(f"wrote {p}")
 

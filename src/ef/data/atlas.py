@@ -1,7 +1,9 @@
 """The country atlas data: panel, global factors, per-economy statistics and channel synchronization.
 
-Port of atlas/data.py, atlas/stats.py and atlas/sync.py (frozen). The arithmetic and its order are unchanged, so
-the outputs are byte-identical to the as-run scripts on the same machine; only the paths come from the config.
+Port of atlas/data.py, atlas/stats.py and atlas/sync.py (frozen). The arithmetic and its order are unchanged; with
+float64=False the outputs are byte-identical to the as-run scripts on the same machine. Paths come from the config.
+One deliberate change: GMD values are converted to float64 before any log or ratio (ef.data.gmd; decision of
+11 October 2026). It moves atlas numbers by about 1e-6 and changes no repair, printed value or p-value.
 
 build_panel  -> panel.csv, global.csv, meta.json   (data.py; reads the channel anatomy written by ef.data.channels)
 build_stats  -> stats.json                         (stats.py)
@@ -35,6 +37,7 @@ from scipy.signal import butter, filtfilt, hilbert
 from scipy.stats import pearsonr
 
 from ef import config
+from ef.data import gmd
 
 ORDER = [('USA', 'United States', 'North America'), ('CAN', 'Canada', 'North America'), ('MEX', 'Mexico', 'North America'),
  ('DEU', 'Germany', 'Western Europe'), ('FRA', 'France', 'Western Europe'), ('GBR', 'United Kingdom', 'Western Europe'), ('ITA', 'Italy', 'Western Europe'),
@@ -66,11 +69,11 @@ def _gmd(): return config.raw_file('gmd', 'data/final/data_final.dta')
 def _imf(name): return config.raw_file('gmd', f'data/clean/aggregators/IMF/IMF_{name}.dta')
 
 
-def build_panel(out_dir, panel26_path, verbose=True):
+def build_panel(out_dir, panel26_path, verbose=True, float64=True):
     """data.py: the country-year panel (1950-2022) with every repair logged, and the global factors."""
-    G = pd.read_stata(_gmd())
+    G = gmd.read(_gmd(), float64=float64)
     G = G[G.ISO3.isin(ALLS) & (G.year >= 1950) & (G.year <= 2022)].copy(); G['year'] = G.year.astype(int)
-    WEO = pd.read_stata(_imf('WEO')); FPP = pd.read_stata(_imf('FPP')); HDD = pd.read_stata(_imf('HDD'))
+    WEO = gmd.read(_imf('WEO'), float64=float64); FPP = gmd.read(_imf('FPP'), float64=float64); HDD = gmd.read(_imf('HDD'), float64=float64)
     for d_ in (WEO, FPP, HDD): d_['year'] = d_.year.astype(int)
     PWT = pyreadr.read_r(config.raw_file('pwt'))['pwt10.01']; PWT['year'] = PWT.year.astype(int)
     b, a = butter(2, [(1/9)/0.5, 0.49/0.5], btype='band')
@@ -254,7 +257,7 @@ def build_panel(out_dir, panel26_path, verbose=True):
     bp = pd.read_csv(config.raw_file('oil_bp'))
     bp = bp[bp.Entity == 'World'].set_index('Year')['Crude oil price (BP Statistics (2016))']
     br = pd.read_csv(config.raw_file('oil_brent')); br['year'] = br.Date.str[:4].astype(int); br = br.set_index('year').Price
-    Gu = pd.read_stata(_gmd()); cpi = Gu[Gu.ISO3 == 'USA'].assign(year=lambda d: d.year.astype(int)).set_index('year').CPI
+    Gu = gmd.read(_gmd(), float64=float64); cpi = Gu[Gu.ISO3 == 'USA'].assign(year=lambda d: d.year.astype(int)).set_index('year').CPI
     br_real = br*cpi.loc[2015]/cpi.reindex(br.index)
     ov = pd.concat([bp, br_real], axis=1, keys=['bp', 'eia']).loc[1988:2015].dropna()
     oil = bp.reindex(range(1965, 2023)).copy(); oil.loc[2016:2022] = br_real.loc[2016:2022]
@@ -376,7 +379,7 @@ def build_stats(out_dir, verbose=True):
     return S
 
 
-def build_sync(out_dir, verbose=True):
+def build_sync(out_dir, verbose=True, float64=True):
     """sync.py: channel synchronization r(t) across the 26 on the repaired panel.
 
     Band-pass 2-9y on each economy's series (1950-2022 run-in, needs coverage from 1965), Hilbert phase,
@@ -385,7 +388,7 @@ def build_sync(out_dir, verbose=True):
     build_panel), short-term interest rate (level)."""
     P = pd.read_csv(os.path.join(out_dir, 'panel.csv')); META = json.load(open(os.path.join(out_dir, 'meta.json')))
     FIX = META['fixes']; ISOS_ = [o[0] for o in META['order']]
-    G = pd.read_stata(_gmd(), columns=['ISO3', 'year', 'inv', 'CPI']); G['year'] = G.year.astype(int)
+    G = gmd.read(_gmd(), columns=['ISO3', 'year', 'inv', 'CPI'], float64=float64); G['year'] = G.year.astype(int)
     b, a = butter(2, [(1/9)/0.5, 0.49/0.5], btype='band'); YEARS = np.arange(1970, 2023); T = len(YEARS)
     Gv = np.isin(YEARS, GL).astype(float)
 
