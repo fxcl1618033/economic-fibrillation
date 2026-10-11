@@ -73,6 +73,20 @@ def cross_share_null(X, W, years, events, n, rng, win=10, batch=200):
     return float(obs), float(p_upper(obs, null))
 
 
+def surrogate_excess(X, W, years, events, n, rng, win=10, batch=200, cut=None):
+    """One surrogate pass giving, per surrogate, the recession cross share (as diversification.py), and the recession
+    excess in the own and cross terms (for the disclosure tests of Methods 7.6). cut maps a surrogate batch to the
+    span W covers (for surrogates drawn from the 1950-2022 cycles)."""
+    rec = np.isin(years, events); sh, d_own, d_cross = [], [], []
+    for Xs in surrogates(X, n, rng, batch):
+        Xs = Xs if cut is None else cut(Xs)
+        own, cs, to, _ = rolling(Xs, np.broadcast_to(W, Xs.shape), win)
+        sh.append(np.nanmean(np.where(rec[None, :], cs / np.clip(to, 1e-18, None), np.nan), axis=1))
+        ok = ~np.isnan(to[0]); g, m = rec & ok, ~rec & ok
+        d_own.append(own[:, g].mean(1) - own[:, m].mean(1)); d_cross.append(cs[:, g].mean(1) - cs[:, m].mean(1))
+    return np.concatenate(sh), np.concatenate(d_own), np.concatenate(d_cross)
+
+
 def cross_split(X, W, years, events, win=10):
     """Split the recession rise of the cross term into correlation, swing size and their interaction, from mean
     correlation matrices, cycle s.d. and weights over recession and normal windows (crossterm_split.py)."""

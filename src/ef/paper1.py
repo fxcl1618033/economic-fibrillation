@@ -38,17 +38,46 @@ class Data:
     levels: np.ndarray      # real GDP (per capita x population), economies x years
 
 
-def load_data(sample, span=(1950, 2022)):
-    L = maddison.panel(sample, years=tuple(span))
+def load_data(sample, span=(1950, 2022), drop=(), gmd_growth=None):
+    """Maddison panel for a sample (a name in configs/default.yaml or a list of ISO codes), leaving out `drop`.
+
+    gmd_growth = {'economies': [...], 'years': [a, b]} replaces Maddison's year-on-year growth of GDP per capita in
+    years a..b with the Global Macro Database's real GDP per capita growth and re-chains the levels (open issue 13,
+    pre-registration amendment 1.7); population is unchanged."""
+    isos = [i for i in (config.sample(sample) if isinstance(sample, str) else list(sample)) if i not in drop]
+    L = maddison.panel(isos, years=tuple(span))
     g, p = maddison.wide(L, 'gdppc'), maddison.wide(L, 'pop')
-    return Data(sample, list(g.columns), g.index.to_numpy(), np.log(g.values.T.astype(float)),
-                (g.values.astype(float) * p.values.astype(float)).T)
+    G = g.values.astype(float); years = g.index.to_numpy()
+    if gmd_growth:
+        from ef.data import gmd
+        M = gmd.read(config.raw_file('gmd', 'data/final/data_final.dta'), columns=['ISO3', 'year', 'rGDP_pc'])
+        M['year'] = M.year.astype(int); a, b = gmd_growth['years']; G = G.copy()
+        for iso in [i for i in gmd_growth['economies'] if i in isos]:
+            j = isos.index(iso); s = M[M.ISO3 == iso].set_index('year').rGDP_pc; old = G[:, j].copy()
+            for k in range(1, len(years)):
+                y = int(years[k]); f = s[y] / s[y - 1] if a <= y <= b else old[k] / old[k - 1]
+                G[k, j] = G[k - 1, j] * f
+    name = sample if isinstance(sample, str) else '+'.join(isos)
+    return Data(name, isos, years, np.log(G.T), (G * p.values.astype(float)).T)
 
 
 def _years(window): return np.arange(window[0], window[1] + 1)
 
 
 def _g(x, s): return x - gaussian_filter1d(x, s, axis=-1)
+
+
+def cycle_source(D, span, convention, band):
+    """For tests without a Hilbert transform (MST, decomposition): the cycles on the span, the cycles surrogates are drawn
+    from, and the map from a surrogate batch to the span. As run (convention None): surrogates of the span's cycles.
+    P: surrogates of the 1950-2022 cycles, cut to the span (pre-registration section 3). N: band-pass on the span only."""
+    m = (D.years >= span[0]) & (D.years <= span[1])
+    if convention == 'N':
+        X = bandpass(D.logs[:, m], *band); return X, X, lambda Xs: Xs
+    X = window_cycles(D.logs, D.years, span, band)
+    if convention in ('P', 'E', 'W'):
+        return X, cycles(D.logs, lo_period=band[0], hi_freq=band[1]), lambda Xs: Xs[..., m]
+    return X, X, lambda Xs: Xs
 
 
 def surrogate_source(D, window, convention, band):
@@ -118,16 +147,23 @@ def run_diversification(D, cfg, t):
     """diversification.py and diversification_equal.py, with the Methods' within-window mean GDP weights added.
     t['window'] sets the span the rolling windows may use (default: the statistics window, as run)."""
     w = t.get('window', cfg['window']); yrs = _years(w); m = (D.years >= w[0]) & (D.years <= w[1]); rec = cfg['recessions']
-    X = window_cycles(D.logs, D.years, w, cfg['band']); lev = D.levels[:, m]; out = {}
+    X, Xsrc, cut = cycle_source(D, w, t.get('convention'), cfg['band']); lev = D.levels[:, m]; out = {}
     for kind in t['weights']:
         W = decomposition.weights(lev, kind, t['win'])
         own, cross, tot, rbar = decomposition.rolling(X, W, t['win'])
         res = decomposition.crisis_excess(own, cross, tot, yrs, rec)
+        res['recession_windows'] = [int(y) for y in yrs[np.isin(yrs, rec) & ~np.isnan(tot)]]
         rw = np.abs((W * np.exp(1j * np.angle(hilbert(X, axis=-1)))).sum(axis=0)); ok = ~np.isnan(rbar)
         res['corr_rbar_r'] = float(pearsonr(rbar[ok], rw[ok])[0])
         if t.get('surrogates'):
-            _, res['p_surrogate'] = decomposition.cross_share_null(X, W, yrs, rec, t['surrogates'],
-                                                                   np.random.default_rng(t['seed']), t['win'], t['batch'])
+            sh, do, dc = decomposition.surrogate_excess(Xsrc, W, yrs, rec, t['surrogates'], np.random.default_rng(t['seed']),
+                                                        t['win'], t['batch'], cut)
+            res['p_surrogate'] = float(nulls.p_upper(res['cross_share_crisis'], sh))
+            ratio = dc / (do + dc)
+            res['d6'] = {'n_ratio_at_least_observed': int(np.sum(ratio >= res['cross_fraction_of_excess'])),
+                         'p_ratio_nominal': float(nulls.p_upper(res['cross_fraction_of_excess'], ratio)),
+                         'p_excess_cross': float(nulls.p_upper(res['excess_from_cross'], dc)),
+                         'p_excess_own': float(nulls.p_upper(res['excess_from_own'], do))}
         out[kind] = res
     return out
 
@@ -136,7 +172,7 @@ def run_cross_split(D, cfg, t):
     """crossterm_split.py: the cross term's recession rise split into correlation and swing size.
     t['window'] as in run_diversification; t['weights'] defaults to the as-run pair."""
     w = t.get('window', cfg['window']); yrs = _years(w); m = (D.years >= w[0]) & (D.years <= w[1])
-    X = window_cycles(D.logs, D.years, w, cfg['band']); lev = D.levels[:, m]
+    X = cycle_source(D, w, t.get('convention'), cfg['band'])[0]; lev = D.levels[:, m]
     return {k: decomposition.cross_split(X, decomposition.weights(lev, k, t['win']), yrs, cfg['recessions'], t['win'])
             for k in t.get('weights', ('gdp_end', 'equal'))}
 
@@ -165,24 +201,41 @@ def run_structure(D, cfg, t):
 
 def run_mst(D, cfg, t):
     """mst_network.py: mean MST edge length and largest eigenvalue on 10-year windows, pre-crisis trends vs surrogates."""
-    w = t['window']; yrs = _years(w); rec = cfg['recessions']
-    X = window_cycles(D.logs, D.years, w, cfg['band'])
+    w = t['window']; yrs = _years(w); rec = cfg['recessions']; sig = t.get('detrend_sigma')
+    X, Xsrc, cut = cycle_source(D, w, t.get('convention'), cfg['band'])
     C = network.corr_windows(X, t['win']); L, M = network.mst_stats(C[None], t['win']); L, M = L[0], M[0]
     k = dict(pre=t['pre'], strict=t.get('strict', False))
-    tauL = float(crisis.tau_pre(L, yrs, rec, **k)); tauM = float(crisis.tau_pre(M, yrs, rec, **k)); nL, nM = [], []
-    for Xs in nulls.surrogates(X, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
-        Ls, Ms = network.mst_stats(network.corr_windows(Xs, t['win']), t['win'])
+
+    def detr(x):
+        ok = ~np.isnan(x[..., :]).any(axis=tuple(range(x.ndim - 1))) if x.ndim > 1 else ~np.isnan(x)
+        d = np.full_like(x, np.nan); d[..., ok] = x[..., ok] - gaussian_filter1d(x[..., ok], sig, axis=-1); return d
+    tauL = float(crisis.tau_pre(L, yrs, rec, **k)); tauM = float(crisis.tau_pre(M, yrs, rec, **k))
+    tauLd = float(crisis.tau_pre(detr(L), yrs, rec, **k)) if sig else None; nL, nM, nLd = [], [], []
+    for Xs in nulls.surrogates(Xsrc, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
+        Ls, Ms = network.mst_stats(network.corr_windows(cut(Xs), t['win']), t['win'])
         nL.append(crisis.tau_pre(Ls, yrs, rec, **k)); nM.append(crisis.tau_pre(Ms, yrs, rec, **k))
+        if sig: nLd.append(crisis.tau_pre(detr(Ls), yrs, rec, **k))
     nL, nM = np.concatenate(nL), np.concatenate(nM)
+    det = {'tau_L_detrended': tauLd, 'p_contraction_detrended': float(nulls.p_lower(tauLd, np.concatenate(nLd)))} if sig else {}
     yi = {int(y): i for i, y in enumerate(yrs)}
     dec = lambda a, b: float(np.nanmean(L[yi[a]:yi[b] + 1])) if a in yi and b in yi else None
     periods = t.get('decades', [[1979, 1989], [2013, 2022]])
-    return {'tau_L': tauL, 'p_contraction': float(nulls.p_lower(tauL, nL)), 'tau_lambdamax': tauM,
-            'p_fragility': float(nulls.p_upper(tauM, nM)),
+    return det | {'tau_L': tauL, 'p_contraction': float(nulls.p_lower(tauL, nL)), 'tau_lambdamax': tauM,
+            'p_fragility': float(nulls.p_upper(tauM, nM)), 'pre_crisis_events': _events_used(L, yrs, rec, t['pre'], k['strict']),
             'L_decade_means': {f'{a}-{b}': dec(a, b) for a, b in periods},
             'centrality': dict(zip(D.isos, network.mst_degree(C, t['win']).tolist())),
             'L_by_year': {int(y): (None if np.isnan(v) else float(v)) for y, v in zip(yrs, L)},
             'lambdamax_by_year': {int(y): (None if np.isnan(v) else float(v)) for y, v in zip(yrs, M)}}
+
+
+def _events_used(x, yrs, rec, pre, strict):
+    """The recessions a pre-crisis trend actually uses, with how many of the pre-window years are defined."""
+    yi = {int(y): i for i, y in enumerate(yrs)}; out = {}
+    for o in rec:
+        idx = [yi[y] for y in range(o - pre, o) if y in yi]
+        n = int((~np.isnan(x[idx])).sum()) if len(idx) == pre else 0
+        if n and not (strict and n < pre): out[int(o)] = f"{n}/{pre}"
+    return out
 
 
 def run_phase_lags(D, cfg, t):
@@ -217,7 +270,8 @@ def run_csd(D, cfg, t):
         a_, v_ = tipping.rolling_ar1_var(order.r(to_z(Xs)), **k)
         for n, x in (('ar1', a_), ('var', v_)):
             nulls_[n].append(crisis.tau_pre(x, yrs, rec, **kt))
-    return {f'tau_{n}': tau[n] for n in tau} | {f'p_{n}': float(nulls.p_upper(tau[n], np.concatenate(nulls_[n]))) for n in tau}
+    return ({f'tau_{n}': tau[n] for n in tau} | {f'p_{n}': float(nulls.p_upper(tau[n], np.concatenate(nulls_[n]))) for n in tau}
+            | {'pre_crisis_events': _events_used(ar, yrs, rec, t['pre'], kt['strict'])})
 
 
 def run_bifurcation(D, cfg, t):
@@ -228,9 +282,11 @@ def run_bifurcation(D, cfg, t):
     X, to_z = surrogate_source(D, w, t['convention'], cfg['band']); null = []
     for Xs in nulls.surrogates(X, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
         null.append(tipping.post_minus_base(tipping.recovery_rate(order.r(to_z(Xs)), **k), yrs, rec))
-    null = np.concatenate(null); KK = tipping.implied_coupling(r)
+    null = np.concatenate(null); KK = tipping.implied_coupling(r); lam = tipping.recovery_rate(r, **k)
+    post_used = [int(o) for o in rec if any((o + j) in set(yrs[~np.isnan(lam)].tolist()) for j in (0, 1, 2))]
     _, ek = crisis.epoch(KK, yrs, rec, range(-3, 4))
     return {'stat_real': stat, 'p_slowing_post': float(nulls.p_lower(stat, null)), 'null_mean': float(null.mean()),
+            'post_crisis_events': post_used,
             'epoch_KKc_mean_t-3..t+3': ek.tolist(), 'KKc_by_year': {int(y): float(v) for y, v in zip(yrs, KK)}}
 
 
@@ -251,7 +307,8 @@ def run_robustness(D, cfg, t):
     base = phases(); out = {'baseline': arc(base)}
     out['band 2-8 yr'] = arc(phases((8.0, 0.49))); out['band 3-10 yr'] = arc(phases((10.0, 1 / 3.)))
     out['HP filter (lambda=100)'] = arc(phases(method='hp')); out['growth rates'] = arc(phases(method='growth'))
-    for c in t.get('drop_economies', ['USA', 'DEU', 'JPN']):
+    drops = t.get('drop_economies', ['USA', 'DEU', 'JPN']); drops = D.isos if drops == 'all' else drops
+    for c in drops:
         out[f'without {c}'] = arc(base, np.array([i != c for i in D.isos]))
     out['1970-1995 (1975,82,91)'] = arc(base, y0=1970, y1=1995, events=[1975, 1982, 1991])
     out['1996-2022 (2009,2020)'] = arc(base, y0=1996, y1=2022, events=[2009, 2020])
