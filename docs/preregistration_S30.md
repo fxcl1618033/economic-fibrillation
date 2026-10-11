@@ -176,8 +176,8 @@ economies, not the sample).
 
 ## Sign-off
 
-- [ ] Sid has read this pre-registration, including the rolling-window rule and its two consequences in section 3.
-- Signed off on: ____________
+- [x] Sid has read this pre-registration, including the rolling-window rule and its two consequences in section 3.
+- Signed off on: 11 October 2026
 
 ## Amendments
 
