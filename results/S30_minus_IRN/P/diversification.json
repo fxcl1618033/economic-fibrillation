@@ -1,0 +1,100 @@
+{
+ "sample": "S30_minus_IRN",
+ "economies": [
+  "USA",
+  "GBR",
+  "DEU",
+  "FRA",
+  "ITA",
+  "JPN",
+  "CAN",
+  "ESP",
+  "AUS",
+  "KOR",
+  "IND",
+  "MEX",
+  "NLD",
+  "SWE",
+  "CHE",
+  "BEL",
+  "ZAF",
+  "TUR",
+  "NOR",
+  "AUT",
+  "DNK",
+  "FIN",
+  "GRC",
+  "PRT",
+  "IDN",
+  "THA",
+  "CHN",
+  "BRA",
+  "SAU"
+ ],
+ "convention": "P",
+ "test": "diversification",
+ "settings": {
+  "window": [
+   1962,
+   2022
+  ],
+  "win": 10,
+  "weights": [
+   "gdp_mean",
+   "equal"
+  ],
+  "surrogates": 5000,
+  "seed": 707,
+  "batch": 200,
+  "convention": "P"
+ },
+ "seed": 707,
+ "code_version": "07bbdd8c8c67057997b8bb592dc0c5ca607e3513",
+ "run_at": "2026-10-11T07:53:46+00:00",
+ "results": {
+  "gdp_mean": {
+   "cross_share_crisis": 0.7152841456673795,
+   "cross_share_normal": 0.6400878361456992,
+   "excess_from_own": 9.202212956741763e-06,
+   "excess_from_cross": 4.5054227950080645e-05,
+   "cross_fraction_of_excess": 0.8303940914122024,
+   "recession_windows": [
+    1975,
+    1982,
+    1991,
+    2009,
+    2020
+   ],
+   "corr_rbar_r": 0.2283138628134339,
+   "p_surrogate": 0.0001999600079984003,
+   "d6": {
+    "n_ratio_at_least_observed": 1555,
+    "p_ratio_nominal": 0.3111377724455109,
+    "p_excess_cross": 0.0001999600079984003,
+    "p_excess_own": 0.033793241351729654
+   }
+  },
+  "equal": {
+   "cross_share_crisis": 0.8495990118984522,
+   "cross_share_normal": 0.788824028626791,
+   "excess_from_own": 1.841780170371782e-06,
+   "excess_from_cross": 5.0627917272961826e-05,
+   "cross_fraction_of_excess": 0.9648982124899638,
+   "recession_windows": [
+    1975,
+    1982,
+    1991,
+    2009,
+    2020
+   ],
+   "corr_rbar_r": 0.4975787475772276,
+   "p_surrogate": 0.0001999600079984003,
+   "d6": {
+    "n_ratio_at_least_observed": 2356,
+    "p_ratio_nominal": 0.47130573885222954,
+    "p_excess_cross": 0.0001999600079984003,
+    "p_excess_own": 0.0001999600079984003
+   }
+  }
+ }
+}

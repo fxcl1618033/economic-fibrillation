@@ -1,0 +1,88 @@
+{
+ "sample": "S30",
+ "economies": [
+  "USA",
+  "GBR",
+  "DEU",
+  "FRA",
+  "ITA",
+  "JPN",
+  "CAN",
+  "ESP",
+  "AUS",
+  "KOR",
+  "IND",
+  "MEX",
+  "NLD",
+  "SWE",
+  "CHE",
+  "BEL",
+  "ZAF",
+  "TUR",
+  "NOR",
+  "AUT",
+  "DNK",
+  "FIN",
+  "GRC",
+  "PRT",
+  "IDN",
+  "THA",
+  "CHN",
+  "BRA",
+  "SAU",
+  "IRN"
+ ],
+ "convention": "P",
+ "test": "cross_split",
+ "settings": {
+  "window": [
+   1962,
+   2022
+  ],
+  "win": 10,
+  "weights": [
+   "gdp_mean",
+   "equal"
+  ],
+  "convention": "P"
+ },
+ "seed": null,
+ "code_version": "07bbdd8c8c67057997b8bb592dc0c5ca607e3513",
+ "run_at": "2026-10-11T07:52:06+00:00",
+ "results": {
+  "gdp_mean": {
+   "recession_windows": [
+    1975,
+    1982,
+    1991,
+    2009,
+    2020
+   ],
+   "corr_normal": 0.29422525459888815,
+   "corr_crisis": 0.39202575147827495,
+   "sd_normal": 0.015351532523094022,
+   "sd_crisis": 0.017000555716266373,
+   "rise": 4.9889632366059395e-05,
+   "from_correlation": 0.4356389322567964,
+   "from_swing_size": 0.4137950756778207,
+   "interaction": 0.1505659920653829
+  },
+  "equal": {
+   "recession_windows": [
+    1975,
+    1982,
+    1991,
+    2009,
+    2020
+   ],
+   "corr_normal": 0.29422525459888815,
+   "corr_crisis": 0.39202575147827495,
+   "sd_normal": 0.015351532523094022,
+   "sd_crisis": 0.017000555716266373,
+   "rise": 4.407427795276955e-05,
+   "from_correlation": 0.4920368577740961,
+   "from_swing_size": 0.3769576595673376,
+   "interaction": 0.1310054826585663
+  }
+ }
+}

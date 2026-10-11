@@ -1,0 +1,61 @@
+{
+ "sample": "S26",
+ "economies": [
+  "USA",
+  "GBR",
+  "DEU",
+  "FRA",
+  "ITA",
+  "JPN",
+  "CAN",
+  "ESP",
+  "AUS",
+  "KOR",
+  "IND",
+  "MEX",
+  "NLD",
+  "SWE",
+  "CHE",
+  "BEL",
+  "ZAF",
+  "TUR",
+  "NOR",
+  "AUT",
+  "DNK",
+  "FIN",
+  "GRC",
+  "PRT",
+  "IDN",
+  "THA"
+ ],
+ "convention": "N",
+ "test": "csd",
+ "settings": {
+  "convention": "N",
+  "window": [
+   1970,
+   2022
+  ],
+  "win": 15,
+  "sigma": 5.0,
+  "pre": 8,
+  "strict": false,
+  "surrogates": 5000,
+  "seed": 101,
+  "batch": 250
+ },
+ "seed": 101,
+ "code_version": "07bbdd8c8c67057997b8bb592dc0c5ca607e3513",
+ "run_at": "2026-10-11T07:51:37+00:00",
+ "results": {
+  "tau_ar1": -0.0357142857142857,
+  "tau_var": 0.36904761904761907,
+  "p_ar1": 0.5740851829634073,
+  "p_var": 0.09058188362327535,
+  "pre_crisis_events": {
+   "1991": "7/8",
+   "2009": "8/8",
+   "2020": "8/8"
+  }
+ }
+}

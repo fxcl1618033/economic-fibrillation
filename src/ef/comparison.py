@@ -160,7 +160,10 @@ def judge(rid, kind, ref, new):
     if kind == 'info' or b is None: return '', ''
     if kind == 'pos':
         return '', ('holds' if b[0] is not None and b[0] > 0 else '**does not hold**')
-    if kind == 'null': return flag(a, b), verdict(a, b, 'null')
+    if kind == 'null':
+        if a is not None and a[1] < 0.05 and b[1] < 0.05:
+            return flag(a, b), '**significant on S26 and S30 under P** (the registry null came from another convention)'
+        return flag(a, b), verdict(a, b, 'null')
     if rid == 'E7': return flag(a, b), ('replicates' if b[1] < 0.05 else '**weakens**')
     if rid == 'D11': return flag(a, b), ('replicates' if b[0] > 0 and b[1] < 0.05 else '**weakens**')
     if rid == 'G4': return '', ('replicates' if b[1] < 0.05 else '**weakens**')
@@ -168,14 +171,24 @@ def judge(rid, kind, ref, new):
     return flag(a, b), verdict(a, b, 'sig')
 
 
+def past_only(T, sample):
+    """A1, A2 (arc) and G1 (short rates) under convention C: (corr, p)."""
+    c, ch = T(sample, 'P', 'conventions'), T(sample, 'C', 'channels'); out = {}
+    if c: out['A1'], out['A2'] = ((c['C']['arc'][k]['corr'], c['C']['arc'][k]['p']) for k in ('lead2', 'lead1'))
+    if ch: out['G1'] = tuple(ch['sync']['strate']['tests']['lead2'])
+    return out
+
+
 def main_table(T):
-    s26, s30 = extract(T, 'S26'), extract(T, 'S30')
+    s26, s30 = extract(T, 'S26'), extract(T, 'S30'); c30 = past_only(T, 'S30')
     L = ["| ID | Quantity | Registry (S26 as stored) | S26 (P) | S30 (P) | Flag S26 → S30 | Pre-registered reading for S30 |", "|---|---|---|---|---|---|---|"]
     for rid, label, kind in ROWS:
         a, b = s26.get(rid), s30.get(rid)
         f, v = judge(rid, kind, a, b)
         if rid == 'G3':
             f2, v2 = judge('G3b', kind, s26.get('G3b'), s30.get('G3b')); f = '; '.join(x for x in (f, f2) if x); v = f"{v} / {v2}"
+        if rid in c30:
+            x = c30[rid]; v += f"; past data only (C): {cp(*x)} — " + ('holds' if x[0] > 0 and x[1] < 0.05 else '**fails**')
         L.append(f"| {rid} | {label} | {STORED.get(rid, '')} | {a[0] if a else '—'} | {b[0] if b else '—'} | {f} | {v} |")
     return L
 
@@ -327,6 +340,7 @@ def write(root):
          "the pre-registered criterion: *replicates*, *weakens* (same sign, p ≥ 0.05), *reverses*, *stays null* or *becomes "
          "significant*; descriptive quantities *hold* or *do not hold*. " + FLOORS + ". The lead rests on 2009 and 2020 "
          "(n ≈ 2): read A1 and A2 as a property of the modern economy, not a fifty-year law.", "",
+         ] + ([open(os.path.join(root, 'SUMMARY.md')).read().strip(), ""] if os.path.exists(os.path.join(root, 'SUMMARY.md')) else []) + [
          "## 1. Every registry quantity", ""] + main_table(T)
     L += ["", "Recessions each rolling test actually uses (with defined years of each pre-crisis window):", ""] + events_note(T)
     L += ["", "## 2. Phase conventions: the arc and the r–swing-size link (circular shift)", ""] + conventions_table(T)
