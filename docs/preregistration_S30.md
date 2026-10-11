@@ -181,4 +181,33 @@ economies, not the sample).
 
 ## Amendments
 
-None.
+### Amendment 1 — implementation clarifications (11 October 2026, after sign-off, before any S30 run)
+
+Written by Claude to settle details the signed text leaves open; no test has been run on S30 before it, so no result
+predates it. None changes a hypothesis, direction, sample, window rule or replication criterion. For Sid's review with
+the Phase 3 results.
+
+1. **Tests without a Hilbert transform** (MST, largest eigenvalue, decomposition) depend on the band-pass span only.
+   Conventions W, E and C do not apply to them; N means the band-pass on 1970–2022 only, so their windows start in
+   1970.
+2. **Rolling tests with a Hilbert transform** (early-warning, coupling): W applies the Hilbert transform to the test's
+   span (1962–2022) after the 1950–2022 band-pass, as first run; N uses 1970–2022 only for both steps, so windows start
+   in 1970; E mirrors the 1950–2022 cycle by 9 years and keeps 1962–2022.
+3. **Convention C** (past data only) is run for the circular-shift tests: the arc (A1–A5), the r–swing-size shift tests
+   (C1, C2) and channel synchronization (G1–G3). Surrogate tests and the robustness rows are not run under C.
+4. **Issue 2 under E**: the full robustness table (B1–B15) is also run under E.
+5. **Channel anatomy on the repaired panel** (issue 12; S26 and S30): real GDP, consumption, investment, exports and
+   imports as logs of the panel's real series; budget spending as log(spending share × real GDP); budget balance and
+   short rate as levels; real money as a log index cumulated from the panel's real money growth, a missing year's
+   growth interpolated linearly only within the as-run two-year limit. An economy enters a channel only with
+   continuous data from 1965, as before. Short-rate, investment and real GDP synchronization (G1–G3) follow
+   `atlas/sync.py` on the chosen sample.
+6. **G7 and G8 on S30**: G7 counts the sample's economies with negative growth in each recession year; G8 averages,
+   over the sample, each economy's correlation with the mean standardized cycle of the rest of the sample (the atlas
+   used the 26 as the rest for everyone).
+7. **Issue 13**: for Norway, Switzerland and South Africa, Maddison's year-on-year growth of GDP per capita in
+   1991–2011 is replaced by GMD's real GDP per capita growth, and levels are re-chained from 1990; population is unchanged.
+8. **D6**: the share statistic Δcross / (Δown + Δcross) and the unnormalized Δcross and Δown, each against the
+   decomposition's 5,000 surrogates (seed 707), upper tail, both weightings; reported as disclosure only.
+9. **E4 detrended**: L minus its Gaussian-smoothed copy (σ = 8 years) over the years L is defined, then the same trend.
+10. **Variant folders**: `results/<sample>[_minus_<ISO>…|_strict|_gmd_growth]/<convention>/<test>.json`.
