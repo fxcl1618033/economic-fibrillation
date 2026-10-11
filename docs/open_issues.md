@@ -7,7 +7,7 @@ copies are listed in `docs/FIGURES.md`.
 
 ---
 
-## 1. The crisis arc depends on where the Hilbert transform is applied — CRITICAL
+## 1. The crisis arc depends on where the Hilbert transform is applied — DECIDED 11 October 2026: P primary with W, N, E and C reported; the claim is the rise one year before recessions, which survives past-only phases; the post-crisis fall goes to Limitations (edits B1, L1, L3)
 
 **Evidence** (`tools/check_runin_conventions.py`, `paper1/results/runin_convention_check.json`). Same data, filter and
 permutation test; correlation of r(t) with the recession indicator, one-sided p in brackets:
@@ -38,7 +38,7 @@ Methods §7.2. (b) Add an edge-robust variant (for example mirror-padding the cy
 causal phase estimate) and report it too. (c) Fix the convention before running anything on the 30 economies, and
 write that decision down first (`docs/decisions.md`). **Sid decides** the wording; the numbers are not in doubt.
 
-## 2. The end of the sample is edge-affected in every convention — HIGH
+## 2. The end of the sample is edge-affected in every convention — HIGH; Phase 3 reported without 2020 under P and E (registry A12, A14); Limitations text drafted (edit L3)
 
 2020 sits two years from the last observation (2022), and the after-2 test for 2020 uses r(2022), the very last
 point. Both the forward–backward filter and the Hilbert transform are least reliable there, and leave-one-crisis-out
@@ -47,7 +47,7 @@ shows the lead rests on 2009 and 2020. **What to do:** report the arc with 2020 
 in Limitations that the most recent event is the least well measured. When data for 2023–2025 are available, extend
 the series and re-test: that is the cleanest fix.
 
-## 3. "+0.51 vs +0.608" for the amplitude link — RESOLVED, needs a text update
+## 3. "+0.51 vs +0.608" for the amplitude link — RESOLVED; text drafted (edit B2)
 
 `amplitude_test.py` applies the Hilbert transform to 1970–2022 only (convention W), which gives +0.509. The paper's
 convention P gives +0.608; N gives +0.531. Methods §8 says "we were unable to recover the exact amplitude convention
@@ -60,7 +60,7 @@ Methods §6.1 says GDP weights are the within-window mean of real GDP and report
 that reproduces exactly. `diversification.py` weights each window by its last year and gives 82.6% (0.724 and 0.668).
 **What to do:** make the code match the Methods text; quote 82.4%.
 
-## 5. "Correlation events, not volatility events" is wrong — MEDIUM (wording)
+## 5. "Correlation events, not volatility events" is wrong — MEDIUM (wording); edit B3 drafted with S30 values (correlation 44%, swing size 41%)
 
 The cross term supplies 82–97% of the excess crisis variance, but inside the cross term's rise, bigger swings
 contribute 46–50%, higher correlation 35–41% and their interaction 13–14% (`printed/crossterm_split_output.txt`). The
@@ -106,20 +106,20 @@ synchronized than chance") draws an r(t) that matches no stored series. **What t
 convention P (and say in one plain sentence that the most recent crisis carries the result), fix the diversification
 sentence in issue 5, then re-export the PDF and Word file. **Sid decides** whether to send a corrected copy.
 
-## 12. Imports and budget-spending channels predate the data repairs — MEDIUM
+## 12. Imports and budget-spending channels predate the data repairs — DONE in Phase 3: anatomy rerun on the repaired panel; the budget channels drop to 9 economies (registry G4, G5, G5b)
 
 `panel26.py` (the channel anatomy, F7.2) reads the raw Global Macro Database. The atlas later repaired budget
 splices, debt splices, net exports and money breaks (`atlas/meta.json`, "fixes"). Rerun the channel anatomy on the
 repaired panel, especially imports and budget spending, and report any change.
 
-## 13. Maddison growth for Norway, Switzerland and South Africa — MEDIUM
+## 13. Maddison growth for Norway, Switzerland and South Africa — DONE in Phase 3: no conclusion changes (registry B18)
 
 For 1991–2011, the atlas comparison found Maddison's per-capita growth for these three running 2–3 percentage
 points above national-accounts growth.
 Robustness run: swap in GMD (national accounts) real GDP per capita for these three and rerun the arc, the amplitude
 link and the decomposition.
 
-## 14. The two-year rate lead needs past-only phases — HIGH for the channel claim and for any GNN
+## 14. The two-year rate lead needs past-only phases — DONE 11 October 2026: it fails (S30 +0.165, p 0.15); dropped as a lead claim, channel order kept as description only (Sid)
 
 The band-pass and Hilbert transform both use future data, so a lead found with them can partly come from the future.
 Re-test G1 (short rates lead recessions by two years, p = 0.019) with phases built only from data available at each
@@ -133,7 +133,7 @@ date (a one-sided filter, or re-estimating phases on an expanding window). Repor
   Research Working Paper 9172, and the 2015 IMF book *Collapse and Revival* by Kose and Terrones). Check the exact
   references before the paper goes out.
 - Methods §8: cite the Maddison commit and file checksum from `data/sources.yaml`, not only the package version
-  (1.1.0 then, 1.1.1 now; the data file is unchanged).
+  (1.1.0 then, 1.1.1 now; the data file is unchanged). Drafted as edit B4.
 
 ## 16. Banking-crisis history not re-verified — LOW
 
@@ -196,7 +196,7 @@ indicator. **What to do:** before Phase 3, choose a definition that measures som
 time of r after its own deviations, fitted on levels, or the e-folding time of the windowed autocorrelation function
 beyond lag 1), pre-register it, and report it beside the other two; Sid decides.
 
-## 23. The detrended pre-crisis MST trend does not reproduce — LOW
+## 23. The detrended pre-crisis MST trend does not reproduce — LOW; Phase 3 value with σ = 8 in edit B5 (S30 +0.057, p 0.66; S26 −0.057, p 0.36)
 
 Methods 6.5 and registry E4 give τ = −0.086, p = 0.316 for Gaussian-detrended L. Detrending with σ = 5, 8 or 10 years
 on the as-run windows (from 1962, seed 303) gives τ between −0.043 and −0.057 and p between 0.36 and 0.42; the

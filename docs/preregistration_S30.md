@@ -181,6 +181,8 @@ economies, not the sample).
 
 ## Amendments
 
+Amendments 1 and 2 were approved by Sid on 11 October 2026, after the Phase 3 run.
+
 ### Amendment 1 — implementation clarifications (11 October 2026, after sign-off, before any S30 run)
 
 Written by Claude to settle details the signed text leaves open; no test has been run on S30 before it, so no result
