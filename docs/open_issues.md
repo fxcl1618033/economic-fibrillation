@@ -170,3 +170,28 @@ corrected p-values). It was described in Claude Science and never saved here. Dr
 The paper's r(t) uses Maddison GDP per capita. The atlas `sync.json` uses Global Macro Database real GDP (total). They
 differ year by year (1970: 0.28 against 0.34). Keep them apart in the text; quote the Maddison series for Paper 1
 claims and the GMD series only for the channel comparison.
+
+## 20. Bonferroni value in Methods 7.4 is rounded twice — LOW (wording)
+
+Found in Phase 2. Bonferroni over the five lags for lead-1 and after-2 is 5 × 1/53 = 0.0943, so "0.094"; Methods 7.4 and
+registry A8 print 0.095 (5 × the rounded 0.019). Benjamini–Hochberg (0.047, 0.063) is right. **What to do:** propose the
+corrected text in the Phase 3 text-changes file; Sid decides.
+
+## 21. MST decade means in Methods 6.5 and 7.7 — MEDIUM (definition)
+
+Found in Phase 2 (`src/ef/network.py`; the stored `mst_results.json` reproduces exactly). The Methods' 0.706 (1970s)
+reproduces only if the 10-year windows may reach back into the 1950–69 run-in, so that 1970 counts (mean of 1970–79,
+windows from 1961); but the same paragraph says L is defined only from 1971, where the 1971–79 mean is 0.696. The 7.7
+value 0.652 (1979–89, windows inside 1970–2022) is not reproduced by any variant tried (0.669–0.679), and the single-year
+endpoint 0.771 in 6.5 disagrees with the stored 0.781 (registry E2). 2013–2022 (0.379) and the 1.9× contrast are
+unaffected in substance. **What to do:** fix one stated window convention in Phase 3, recompute all three numbers from
+code, and propose the text; Sid decides.
+
+## 22. The restoring-time indicator needs a definition that adds information — MEDIUM (issue 10 continued)
+
+Phase 2 reconstructs it as 1/(−ln φ), the inverse of the recovery rate used in the bifurcation test. That is a
+monotone function of the lag-1 autocorrelation φ, so its rank-based pre-crisis trend is the same as the autocorrelation's
+(τ −0.152; surrogate p 0.769 against 0.757, the gap coming only from clipping). As defined it is not a third
+indicator. **What to do:** before Phase 3, choose a definition that measures something else (for example the decay
+time of r after its own deviations, fitted on levels, or the e-folding time of the windowed autocorrelation function
+beyond lag 1), pre-register it, and report it beside the other two; Sid decides.

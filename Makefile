@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test paper1 golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -42,8 +42,11 @@ asrun: fetch                   ## rerun every frozen script; EXACT or MATCH ever
 	$(PY) tools/rerun_asrun.py
 	$(PY) tools/check_reported_precision.py > /dev/null && echo "reported-precision check: build/asrun/PRECISION.md"
 
-test: $(STAMP)                 ## run the test suite
+test: $(STAMP)                 ## run the test suite (includes the golden numbers, about 25 s)
 	$(PY) -m pytest -q
+
+paper1: build-data             ## every Paper 1 test, as run, on S26; compare with the golden numbers (build/paper1/GOLDEN.md)
+	$(PY) -m ef.paper1 --golden
 
 golden: $(STAMP)               ## rewrite tests/golden_paper1.json from paper1/results
 	$(PY) tools/make_golden.py

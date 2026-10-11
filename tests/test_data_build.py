@@ -12,29 +12,17 @@ import pytest
 from scipy.signal import butter, filtfilt, hilbert
 
 from ef import config
-from ef.data import build, maddison
+from ef.data import maddison
 from ef.repro import compare
 
 ROOT = config.repo_root()
 ATLAS = ('panel.csv', 'global.csv', 'meta.json', 'stats.json', 'sync.json')
-pytestmark = pytest.mark.skipif(not os.path.exists(config.raw_file('maddison')), reason="pinned data not fetched: run make data")
+from conftest import needs_data
+
+pytestmark = needs_data
 
 
 def sha(p): return hashlib.sha256(open(p, 'rb').read()).hexdigest()
-
-
-@pytest.fixture(scope='module')
-def built(tmp_path_factory):
-    out = tmp_path_factory.mktemp('data')
-    build.main(['--out', str(out), '--quiet'])
-    return out
-
-
-@pytest.fixture(scope='module')
-def built32(tmp_path_factory):
-    out = tmp_path_factory.mktemp('data32')
-    build.main(['--out', str(out), '--quiet', '--float32'])
-    return out
 
 
 @pytest.mark.slow

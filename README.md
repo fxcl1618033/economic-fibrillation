@@ -25,6 +25,20 @@ Working with Claude Code: it reads `CLAUDE.md` automatically; point it at `HANDO
 `figures/08_country_atlas/`. The atlas PDF is not in either zip: use `EF_Figures_08_Country_Atlas.pdf` or run
 `make atlas-pdf`. Sid's reference PDFs are listed in `references/README.md`.
 
+## The library (`src/ef/`)
+
+| Module | What it does |
+|---|---|
+| `ef.filters` | 2–9 year band-pass, HP filter, growth rates |
+| `ef.phases` | phase and swing size under conventions P (paper), W, N, E (edge-robust) and C (past data only) |
+| `ef.order` | r(t), mean phase, mean swing, world phasor, amplitude-weighted alignment, the fibrillation identity |
+| `ef.nulls` | circular-shift test and spectrum-preserving surrogate economies (as-run draw order) |
+| `ef.crisis` | the arc, superposed epoch, bootstrap, pre-crisis trends, Bonferroni and Benjamini–Hochberg |
+| `ef.decomposition` | own and cross terms (end-of-window, window-mean and equal weights) and the cross-term split |
+| `ef.network`, `ef.phaselags`, `ef.tipping` | MST and eigenvalue, Fiedler blocs; phase leads; early-warning indicators and implied coupling |
+| `ef.paper1` | every Paper 1 test from a run config (`configs/runs/*.yaml`); `make paper1` checks the golden numbers |
+| `ef.data` | the data build (`make data`): Maddison panels, atlas, channel anatomy, validation |
+
 ## Where to look
 
 | You want | Open |
@@ -36,7 +50,7 @@ Working with Claude Code: it reads `CLAUDE.md` automatically; point it at `HANDO
 | The 31 economies in detail | `atlas/The 26 Economies 1970-2022 - Atlas.pdf` |
 | What has been tried with GNNs elsewhere | `docs/literature_review_gnn.md` |
 | The plan for Claude Code | `HANDOFF.md` |
-| Proof that it all reproduces | `docs/reproduction_check.md` (Linux) and `docs/reproduction_check_mac.md` (Sid's Mac) |
+| Proof that it all reproduces | `docs/reproduction_check.md` (Linux), `docs/reproduction_check_mac.md` (Sid's Mac), `docs/golden_check.md` (the library) |
 | Decisions and why | `docs/decisions.md` |
 
 ## Figure books
