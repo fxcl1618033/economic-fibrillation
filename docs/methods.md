@@ -1,0 +1,408 @@
+# Methods
+
+## 1. Data
+
+We use annual real GDP per capita from the Maddison Project Database
+(2023 release), PPP-adjusted, for a fixed panel of
+$N = 26$ economies: Australia, Austria, Belgium, Canada, Denmark, Finland,
+France, Germany, Greece, India, Indonesia, Italy, Japan, Mexico, the
+Netherlands, Norway, Portugal, South Africa, South Korea, Spain, Sweden,
+Switzerland, Thailand, Turkey, the United Kingdom and the United States.
+The panel is balanced: every economy has an uninterrupted annual
+observation from 1950 to 2022, so no interpolation, gap-filling or
+unbalanced-panel weighting enters the pipeline at any stage.
+
+We do not assert a price base year, and none is needed. The pipeline
+operates on demeaned logs: any multiplicative rebasing constant
+$\kappa$ common to a series enters as
+$\ln(\kappa\,\mathrm{GDPpc}) = \ln\kappa + \ln \mathrm{GDPpc}$ and is
+removed exactly by the subsequent mean subtraction. Every quantity in
+this paper — cycles, phases, correlations, order parameter — is
+therefore invariant to the choice of base year and to PPP rebasing.
+
+Two distinct date ranges are used deliberately and should not be
+conflated. Filtering and phase extraction are performed on the full
+1950–2022 series, so that the band-pass filter and the Hilbert transform
+have run-in on both sides of the analysis window. All statistics are then
+computed on the **1970–2022** window ($T = 53$ annual observations),
+discarding the first two decades. This protects every reported quantity
+from the filter and Hilbert edge transients, which are severe in short
+annual records. It is a consequential choice rather than a formality:
+recomputing phases on a 1970–2022 series alone, with no run-in, changes
+the order parameter materially in individual years and shifts the
+synchronization–amplitude coefficient of §6.2 by roughly $0.08$ (§7.2).
+
+## 2. Cycle extraction
+
+For each economy $i$ we take the natural log of real GDP per capita,
+$y_i(t) = \ln \mathrm{GDPpc}_i(t)$, and remove its sample mean. We
+isolate business-cycle frequencies with a second-order Butterworth
+band-pass filter applied by forward–backward filtering (`filtfilt`),
+which is zero-phase and therefore introduces no artificial lead or lag
+between economies — a necessary property, since the phase relationships
+between economies are the object of study.
+
+The pass-band is $2$–$9$ years. In normalized frequency units at an
+annual sampling rate ($f_{\mathrm{Nyq}} = 0.5\ \mathrm{yr}^{-1}$) the
+band edges are $f_{\mathrm{low}} = 1/9\ \mathrm{yr}^{-1}$ and
+$f_{\mathrm{high}} = 0.49\ \mathrm{yr}^{-1}$. The upper edge is set at
+$0.49$ rather than the nominal $0.5$ because a Butterworth design
+requires the critical frequency to lie strictly inside the open interval
+$(0, f_{\mathrm{Nyq}})$; the resulting cycle band is thus effectively
+$2.04$–$9$ years. The band brackets the conventional
+business-cycle range and is not tuned to any outcome; §7.1 reports the
+sensitivity of every result to the band edges.
+
+Write the filtered cycle for economy $i$ as $c_i(t)$. We form the
+analytic signal by Hilbert transform,
+$$ z_i(t) = c_i(t) + \mathrm{i}\,\mathcal{H}[c_i](t) = A_i(t)\,e^{\mathrm{i}\theta_i(t)}, $$
+which yields an instantaneous phase $\theta_i(t) = \arg z_i(t)$ and an
+instantaneous amplitude $A_i(t) = |z_i(t)|$ for each economy and year.
+
+## 3. Synchronization measure
+
+Treating the 26 economies as a population of phase oscillators, we
+measure collective synchronization by the Kuramoto order parameter
+$$ r(t)\,e^{\mathrm{i}\psi(t)} = \frac{1}{N}\sum_{i=1}^{N} e^{\mathrm{i}\theta_i(t)}, $$
+where $r(t) \in [0,1]$ is the modulus of the mean phase vector and
+$\psi(t)$ is the collective phase. $r = 0$ corresponds to uniformly
+dispersed phases and $r = 1$ to identical phases. We also define the
+mean cycle amplitude $\bar{A}(t) = N^{-1}\sum_i A_i(t)$, a measure of
+how large the swings are, independent of whether they are aligned.
+Throughout, $A_i(t)$ denotes a single economy's instantaneous amplitude
+and $\bar{A}(t)$ the cross-sectional mean; no other amplitude symbol is
+used.
+
+Because $r(t)$ is a modulus, it is non-negative and biased away from
+zero in finite samples; with $N = 26$ the expected value under
+independent uniform phases is $\approx N^{-1/2} \approx 0.20$. We
+therefore never interpret the level of $r$ against zero, only its
+variation over time and against matched surrogates (§5).
+
+## 4. Crisis dating
+
+Crisis years are taken exogenously from the Kose–Terrones definition of
+a **global recession**, which identifies contractions in world real GDP
+per capita accompanied by broad-based declines in other measures of
+global activity. This yields five dates in our window: **1975, 1982,
+1991, 2009 and 2020**. These dates are fixed before any statistic is
+computed and are never adjusted, re-weighted, or selected on the basis
+of the synchronization series. We use only the crisis *onset* years; no
+crisis is assigned a duration.
+
+The count matters for interpretation and is stated plainly: five events
+in 53 years. Every crisis-conditioned test in this paper therefore rests
+on five degrees of freedom at most, and the leave-one-out analysis of
+§7.3 shows that the effective count for the pre-crisis result is smaller
+still.
+
+## 5. Null models
+
+Two nulls are used, for two different purposes.
+
+**5.1 Circular-shift permutation.** For any test that correlates a
+continuous series with the crisis indicator, we build the null by
+circularly shifting the crisis indicator vector $G$ — a binary vector
+with ones at the five crisis years — through all $T-1 = 52$ non-identity
+rotations, recomputing the statistic each time (53 configurations in
+total, counting the unshifted one). This preserves both the
+autocorrelation of the continuous series and the number and relative
+spacing of the crisis dates, and destroys only their alignment with the
+series. The $p$-value is the fraction of shifts whose statistic equals
+or exceeds the observed one, with the usual $+1$ correction in numerator
+and denominator.
+
+This null has a hard resolution limit that must be quoted alongside any
+$p$ it produces: with 52 shifts, the smallest attainable $p$-value is
+$1/53 = 0.019$. A reported $p = 0.019$ therefore means "no shift beat
+the observed value" and cannot be read as evidence of a smaller
+effect size than $p = 0.019$; it is a floor, not a measurement.
+
+**5.2 Spectrum-preserving surrogate economy sets.** For tests concerning
+the structure of the oscillator population, we generate 5,000 surrogate
+26-economy sets by Fourier phase randomization. We take the real FFT of
+each economy's band-passed cycle, retain the amplitude spectrum exactly,
+replace each non-trivial Fourier phase with an independent draw from
+$U(0, 2\pi)$ (holding the DC and, for even record length, Nyquist phases
+real), and invert the transform. Each surrogate economy therefore has the
+same power spectrum, and hence the same autocorrelation and cycle
+periodicity, as its real counterpart, but its phase relationship to every
+other economy is destroyed. Phases are randomized independently across
+economies, so the surrogate ensemble is the null of *spectrally identical
+but mutually unsynchronized* economies. Surrogate $p$-values with 5,000
+draws have a floor of $1/5001 = 2\times10^{-4}$.
+
+## 6. Tests
+
+**6.1 Loss-of-diversification decomposition.** The world output cycle is
+the weighted aggregate of the 26 band-passed economy cycles,
+$$ C_w(t) = \sum_{i=1}^{N} w_i\, c_i(t), $$
+with weights $w_i \ge 0$, $\sum_i w_i = 1$. On each rolling 10-year
+window its variance decomposes exactly into an own-term and a
+cross-term,
+$$ \mathrm{Var}[C_w] \;=\; \underbrace{\sum_{i} w_i^2\, \sigma_i^2}_{\text{own}} \;+\; \underbrace{\sum_{i \ne j} w_i w_j\, \sigma_{ij}}_{\text{cross}}, $$
+where $\sigma_i^2$ is economy $i$'s within-window cycle variance and
+$\sigma_{ij}$ the pairwise covariance. Variances are computed with the
+population convention (dividing by the window length $W = 10$). The
+own-term is what world output would fluctuate by if the 26 economies
+were uncorrelated; the cross-term is the co-movement surcharge. The
+decomposition is an identity, not a model, and holds window by window.
+
+The test is deliberately *not* "does world variance rise with average
+correlation." That is algebraically guaranteed: for equal weights the
+cross share is
+$\mathrm{cross}/\mathrm{total} = (N-1)\bar\rho / (1 + (N-1)\bar\rho)$,
+so with $N = 26$ the $325$ covariance pairs outnumber the $26$ variances
+by more than an order of magnitude and the cross-term dominates at any
+$\bar\rho$ above a few hundredths. Observed $\bar\rho$ ranges from
+$0.13$ to $0.88$ across our windows, which alone forces a cross share
+between $0.76$ and $0.96$. Reporting a high cross share as a finding
+would therefore be reporting arithmetic. The non-circular question is
+which term supplies the *excess* variance in global-recession years
+relative to normal years:
+$$ \Delta_{\text{own}} = \langle \text{own}\rangle_{\mathrm{crisis}} - \langle \text{own}\rangle_{\mathrm{normal}}, \qquad \Delta_{\text{cross}} = \langle \text{cross}\rangle_{\mathrm{crisis}} - \langle \text{cross}\rangle_{\mathrm{normal}}, $$
+summarized as the cross-term's share of the excess,
+$\Delta_{\text{cross}} / (\Delta_{\text{own}} + \Delta_{\text{cross}})$.
+
+Two weightings are computed and both are reported. **GDP-weighted**
+($w_i$ proportional to the economy's within-window mean real GDP, i.e.
+GDP per capita times population) is the primary framing, since it is the
+actual world economy. **Equal-weighted** ($w_i = 1/N$) is the robustness
+check and ties directly to the equal-weight order parameter of §3, which
+gives every economy one vote. Because the 10-year window is taken
+entirely inside the analysis window, the decomposition is defined from
+1979 onward, leaving four of the five global recessions (1982, 1991,
+2009, 2020) inside its support; 1975 falls before the first complete
+window and does not enter this test. This is a material reduction in an
+already small event count and is carried into the interpretation.
+
+Across 1979--2022 the cross-term supplies the great majority of the
+excess crisis variance under both weightings: $82.4\%$ GDP-weighted and
+$96.9\%$ equal-weighted. The underlying cross-shares are $0.723$ in
+crisis windows against $0.669$ in normal windows (GDP-weighted), and
+$0.880$ against $0.818$ (equal-weighted). The direction is consistent
+across weightings and the gap is in the third decimal place of the
+share --- a shift of five to six percentage points on a base already
+above two-thirds, exactly as the algebraic baseline above would lead one
+to expect. The equal-weighted figure is the larger because equal weights
+give the 325 covariance pairs their maximum leverage; the GDP-weighted
+figure, in which a few large economies carry most of the own-term, is
+the one we treat as describing the world economy.
+
+Significance is assessed against the spectrum-preserving surrogate
+ensemble of §5.2. §7.6 reports the outcome of that test, which does not
+behave as a well-posed significance test for the share statistic, and
+states what we do and do not claim as a result.
+
+**6.2 Synchronization–amplitude coupling.** We correlate $r(t)$ with
+$\bar{A}(t)$ over 1970–2022 by Pearson correlation, in two versions: on
+the raw series, and after removing a slow trend from each by subtracting
+a Gaussian-smoothed copy ($\sigma = 8$ yr). The detrended version is the
+headline: both series carry secular drift over five decades, and the raw
+correlation cannot distinguish co-movement at business-cycle timescales
+from two coincident long-run trends. The two versions agree closely —
+$+0.530$ raw against $+0.608$ detrended, at the same $p = 0.019$ — so
+the result does not hinge on the detrending choice; we report the
+detrended value because it isolates business-cycle timescales, not
+because it is the larger. Significance is assessed by the circular-shift
+null of §5.1 applied to the paired series, and separately against the
+surrogate ensemble of §5.2. This test uses no crisis dates at all.
+
+**6.3 Crisis-relative lead–lag profile.** For each lag $\ell \in
+\{+2, +1, 0, -1, -2\}$ we correlate $r(t)$ with the crisis indicator
+shifted by $\ell$, so that positive $\ell$ tests whether synchronization
+*precedes* crises and negative $\ell$ whether it falls after them.
+Leading lags are tested one-sided upward and trailing lags one-sided
+downward, matching the pre-registered direction of the hypothesis; the
+contemporaneous lag is tested upward. Significance uses §5.1.
+
+Five lags are tested, and the raw $p$-values are reported as such
+alongside a multiplicity correction over the five (§7.4). We report the
+raw values because they are the natural output of the permutation
+scheme, and the corrected values because five lags were in fact
+examined.
+
+**6.4 Composite crisis epoch.** We average $r$ and $\bar{A}$ over a
+$\pm 4$-year window centred on each of the five crisis onsets and take
+the mean across events, giving a composite epoch profile for each
+quantity. The peak lag of each profile is read off directly. This is a
+descriptive alignment, not a test, and is reported with no $p$-value.
+
+**6.5 Network geometry.** On 10-year rolling windows we compute the
+$26\times26$ Pearson correlation matrix of the band-passed cycles,
+convert it to the standard ultrametric-compatible distance
+$d_{ij} = \sqrt{2(1-\rho_{ij})}$, build the minimum spanning tree by
+Prim's algorithm, and record its mean edge length
+$L(t) = (N-1)^{-1}\sum_{e \in \mathrm{MST}} d_e$. Falling $L$ indicates
+a tightening network. Because the 10-year window needs nine years of
+run-in, $L(t)$ is defined from 1971 onward. Two questions are asked of
+$L$: whether it trends secularly — reported as a description via decade means
+($0.706$ in the 1970s against $0.379$ in 2013–2022, a factor of
+$1.9\times$; the single-year endpoints $0.771$ and $0.250$ are noisy
+individual windows and are not the interpreted quantity) — and whether
+contraction
+coincides with the pre-crisis windows. The latter is
+quantified by a Kendall-$\tau$ trend over the 8 years preceding each
+onset, averaged over crises, and tested one-sided downward against the
+surrogate ensemble of §5.2, both on raw $L$ and on Gaussian-detrended
+$L$. Both are null: $\tau = -0.171$, $p = 0.167$ on raw $L$ and
+$\tau = -0.086$, $p = 0.316$ detrended. The test is described here so
+that it is on record as having been run and failed, not inferred from
+its absence.
+
+**6.6 Phase-lag structure.** For each economy we compute its mean phase
+offset from the collective phase, $\langle
+\arg e^{\mathrm{i}(\theta_i - \psi)}\rangle$, and convert it to years by
+dividing by the mean angular frequency $\bar\omega$ (estimated as the
+mean year-on-year phase increment across economies, giving a mean cycle
+period of 5.85 years). An economy with a consistently positive offset sits ahead of the
+collective phase; whether that constitutes economic leadership is a
+question for Paper 2 and is not addressed here. The test statistic is
+the standard deviation of these 26 lags, observed at $0.403$ years: a
+large spread would leave leader–follower structure recoverable, a small
+spread implies the economies move near-simultaneously. It is compared
+to the surrogate ensemble of §5.2. Because the scientific question is
+whether the observed spread is *smaller* than chance, the test is
+one-sided **downward**: the observed $0.403$ yr lies below all 5,000
+surrogate values (surrogate mean $0.942$, minimum $0.446$), giving
+$p = 2\times10^{-4}$, the ensemble resolution floor. The economies are
+phase-locked tightly enough that no epicenter is recoverable.
+
+**6.7 Critical slowing down.** We test the standard early-warning
+battery — rising lag-1 autocorrelation, rising variance, and rising
+restoring-time — on the pre-crisis windows. All three are reported as
+null in Results. Annual data over 8-year pre-crisis windows gives these
+estimators very few effective degrees of freedom, so the null is weak
+evidence in the statistical sense and we do not read it as establishing
+an absence.
+
+It is not, however, an empty result. Rising autocorrelation and variance
+are the specific signature of a system approaching a *bifurcation* — the
+slow eigenvalue going to zero as a fixed point loses stability. In the
+Ashwin–Wieczorek–Vitolo–Cox (2012) taxonomy this is B-tipping, and it is
+only one of three routes; noise-induced (N-) and rate-induced (R-)
+tipping produce no such precursor, because in neither case does the
+system's restoring rate vanish before the transition. The absence of the
+slowing-down fingerprint is therefore consistent with a non-bifurcation
+transition, and is informative about *which class* of tipping is in play
+even where it is uninformative about proximity to a threshold. We record
+the classification here and leave the mechanism argument to the
+Discussion; nothing in this paper identifies which non-bifurcation route
+applies.
+
+## 7. Robustness and disclosure
+
+Every check in this section was run on the final pipeline, and all
+outcomes are reported whether or not they support the paper's claims.
+
+**7.1 Filter band.** Results are recomputed for pass-bands of 2–8 and
+3–10 years. The pre-crisis lead is present in all three bands but its
+$p$-value moves across the conventional threshold: lead-1 gives
+$p = 0.019$ (2–9 yr), $0.057$ (2–8 yr) and $0.038$ (3–10 yr). The
+post-crisis decline is not robust to the band: the lag $-2$ coefficient
+is $-0.28$ ($p=0.019$) at 2–9 years but only $-0.02$ ($p=0.45$) at
+3–10 years.
+
+**7.2 Detrending method.** Substituting an HP filter ($\lambda = 100$)
+for the band-pass leaves the lead result materially unchanged
+(lead-1 $+0.27$, $p=0.019$). Using first differences of log GDP per
+capita instead weakens the lead-2 term to $p=0.094$ and eliminates the
+post-crisis decline entirely ($-0.01$, $p=0.51$). The
+post-crisis result is thus method-dependent in a way the pre-crisis
+result is not. Separately, as noted in §1, the run-in
+convention moves this coefficient materially: computing both $r$ and
+$\bar{A}$ on the 1970–2022 window without run-in gives $+0.531$
+detrended against $+0.608$ with run-in, at the same $p = 0.019$. We
+report the run-in-protected value throughout, on the ground that the
+edge transients it removes are an artifact, not because it is the
+larger; the sign and significance of the result are the same either
+way.
+
+**7.3 Leave-one-crisis-out.** Dropping each crisis in turn and refitting
+§6.3 shows that the pre-crisis lead is not evenly carried by the five
+events. It survives removal of 1975, 1982 and 1991, but dropping either
+2009 or 2020 destroys the lead-1 significance, and dropping both leaves
+no lead at all. A split-sample fit tells the same story: 1970–1995
+(crises 1975, 1982, 1991) shows no significant lead, while 1996–2022
+(crises 2009, 2020) does. The effective event count behind the
+pre-crisis claim is therefore $n \approx 2$, both in the modern era, and
+the claim is stated in the paper as an era-specific property of the
+tightly-coupled economy rather than a fifty-year regularity.
+
+**7.4 Multiplicity.** Across the five lags of §6.3, no coefficient
+survives a Bonferroni correction (lead-1 and lag $-2$: $p_{\mathrm{adj}} =
+0.095$; lead-2: $0.189$). Under Benjamini–Hochberg control of the false
+discovery rate, lead-1 and lag $-2$ reach $q = 0.047$ and lead-2
+$q = 0.063$. The permutation floor of §5.1 caps how much correction the
+raw values can absorb: $0.019$ is already the smallest value the test
+can return.
+
+**7.5 Leave-one-economy-out.** Removing the United States, Germany or
+Japan individually leaves the lead–lag profile essentially unchanged
+(lead-1 $p = 0.038$, $0.019$, $0.019$ respectively). No single large
+economy drives the result.
+
+**7.6 Surrogate test of the decomposition.** The share statistic of §6.1
+does not admit a well-behaved surrogate test, and we report this rather
+than substituting a statistic that does. Its denominator
+$\Delta_{\text{own}} + \Delta_{\text{cross}}$ is a difference of window
+means that is near zero and of either sign under the surrogate null, so
+the ratio is unbounded and its null distribution is heavy-tailed and
+non-monotone in the quantity of interest. Against 5,000 surrogate sets,
+2,385 draws exceed the observed equal-weighted share and 1,741 exceed
+the GDP-weighted share — nominal $p$-values of $0.48$ and $0.35$, which
+reflect the pathology of the ratio rather than the strength of the
+effect. Tested on the unnormalized components instead, both
+$\Delta_{\text{cross}}$ and $\Delta_{\text{own}}$ exceed every one of the
+5,000 surrogates ($p = 2\times10^{-4}$, the ensemble resolution floor),
+but that test is uninformative for our purpose: it rejects the null that
+crisis windows resemble phase-randomized ones at all, which is a much
+weaker statement than the decomposition claim, and it rejects for the
+own-term too.
+
+We therefore state the decomposition result as a descriptive magnitude
+with an explicit floor, not as a significance claim: the cross-term
+supplies the large majority of the excess crisis variance under both
+weightings, on four events, and the algebraic baseline of §6.1 already
+guarantees a high cross share before any economics enters. What the
+data add beyond arithmetic is the *gap* between crisis and normal
+windows (§6.1), which is modest in absolute terms. A defensible
+significance test for this statistic — one whose null distribution is
+proper — is not available to us and we do not report one.
+
+**7.7 Window-convention sensitivity of the network measure.** $L(t)$ is
+reported on 10-year windows, and its early values depend on whether the
+window is allowed to reach back into the 1950–69 run-in. Restricting
+windows to 1970 onward, $L$ is defined from 1979 and the decade-mean
+comparison becomes $0.652$ (1979–89) against $0.379$ (2013–2022). The
+convention is stated wherever $L$ is quoted.
+
+## 8. Reproducibility
+
+The input data are the Maddison Project Database (2023 release) as
+distributed in the `MaddisonData` R package (v1.1.0). The pipeline is
+deterministic apart from the surrogate ensembles, which are seeded.
+Rebuilt from the raw database, it reproduces the order-parameter series
+to floating-point round-off ($3\times10^{-16}$) and reproduces every
+lead–lag coefficient and $p$-value exactly. The equal-weighted variance
+decomposition of §6.1 reproduces to $1.5\times10^{-18}$.
+
+Two quantities in earlier internal result files could not be reproduced
+from the raw data and are reported here at their rebuilt values: the
+synchronization–amplitude correlation (§6.2, rebuilt $+0.608$ detrended)
+and the correlation between mean pairwise cycle correlation and the
+order parameter (rebuilt $+0.45$ to $+0.51$ depending on the run-in
+convention). We were unable to recover the exact amplitude convention
+behind the earlier figures; the qualitative conclusions are unaffected
+in both cases, and the rebuilt values are the ones stated throughout.
+
+---
+
+*Figure — Methods diagnostics.* Panel **a**: MST mean edge length by
+year (grey) with decade means (blue) and the single-year endpoints (red)
+that produce the $\sim3\times$ ratio; decade means give $1.9\times$ and
+are the interpreted quantity. Panel **b**: the phase-lag spread against
+its 5,000-member surrogate null — the observed $0.403$ yr lies below
+every surrogate, a lower-tail result at the ensemble floor. Panel
+**c**: raw and Bonferroni-corrected $p$-values for the five lags of
+§6.3, against the $1/53$ permutation floor (dotted) and $0.05$ (dashed).

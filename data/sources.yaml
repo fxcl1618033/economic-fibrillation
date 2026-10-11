@@ -1,0 +1,124 @@
+# Pinned data sources for Economic Fibrillation (Paper 1 and the atlas).
+# Verified 2026-10-11: cloning these commits and running the as-run scripts reproduces every
+# stored results file and every atlas data file byte-for-byte (see docs/reproduction_check.md).
+#
+# Fetch rule (the shell sandbox that built Paper 1 could reach GitHub but not the official
+# statistical APIs, so every source is a GitHub repository):
+#   git clone --filter=blob:none --no-checkout https://github.com/<repo> data/raw/<dir>
+#   cd data/raw/<dir> && git checkout <commit> && git sparse-checkout set --no-cone <paths>
+#   GIT_LFS_SKIP_SMUDGE=1 is harmless and was set for maddisondata.
+# After fetching, verify sha256 of every listed file before building anything.
+
+sources:
+
+  - id: maddison
+    what: Maddison Project Database 2023 (real GDP per capita, population), as packaged in the MaddisonData R package
+    repo: sbgraves237/maddisondata
+    dir: maddisondata
+    commit: 3ed424b63c660390d82430030cd43f970ab65fd8   # HEAD on 2026-10-10 (package v1.1.1)
+    data_last_changed_in: 8316aec341a57e184dc9ede3570b8838373563bc   # 2025-10-12; the .rda is identical at both commits
+    files:
+      - path: data/MaddisonData.rda
+        sha256: 63a3cff96da51b1e6b9a774326f7d6de3285098239767e79d586c1e595106fa7
+        bytes: 184511
+    read_with: pyreadr.read_r(path)['MaddisonData']  # columns ISO, year, gdppc, pop (use md['pop'], not md.pop)
+    used_by: every Paper 1 test script (they expect it at MaddisonData-main/data/MaddisonData.rda)
+    cite: Bolt, J. and van Zanden, J. L. (2024). Maddison style estimates of the evolution of the world economy. A new 2023 update. Journal of Economic Surveys. doi:10.1111/joes.12618
+
+  - id: gmd
+    what: Global Macro Database (Mueller, Xu, Lehbib and Chen 2025), 2026 release, plus the IMF and JST source files it aggregates
+    repo: KMueller-Lab/Global-Macro-Database
+    dir: gmd
+    commit: 2930dade4a9afefee614eb79091b6de3d90933e3   # 2026-10-01 "Merge pull request #34 from KMueller-Lab/release/2026"
+    files:
+      - path: data/final/data_final.dta
+        sha256: 1e509644a0f7da067f105aa0d5d0c5bc89f54bd40d345f10191e0b4ea071dbe9
+        bytes: 12678368
+      - path: data/clean/aggregators/IMF/IMF_WEO.dta
+        sha256: b655e05d49da70590088e6da7eddfbd480fe5bb15d5fdcfb58468083ef7ba3ed
+        bytes: 2136945
+      - path: data/clean/aggregators/IMF/IMF_FPP.dta
+        sha256: 242b91feeb27aa811c20d07a87ecb3668b49a7229ee6248fb70d97b45bdcfaf4
+        bytes: 1464714
+      - path: data/clean/aggregators/IMF/IMF_HDD.dta
+        sha256: c5be013cc80aab30a02dfc753d635fbec8550615a1db05b2440888136718746e
+        bytes: 535432
+      - path: data/clean/aggregators/JST/JST.dta     # not used yet; the closest available stand-in for jst.xlsx
+        sha256: dd577cfb61bc278def61b80aa8613e2f37692dc6959810917e8f26fc5b0bb4c6
+        bytes: 477974
+    used_by: atlas/data.py, atlas/sync.py, paper1/scripts/eraB_claude_code/panel26.py and usjp.py
+    cite: Mueller, K., Xu, C., Lehbib, M. and Chen, Z. (2025). The Global Macro Database. NBER Working Paper 33714.
+
+  - id: pwt
+    what: Penn World Table 10.01 (used to choose CPI vs GDP-deflator deflation of demand contributions, and in usjp.py)
+    repo: cran/pwt10
+    dir: pwt10
+    commit: 957b298fd706a567af96ccb1663ad68d5e5d07ba   # 2023-02-27 "version 10.01-0"
+    files:
+      - path: data/pwt10.01.rda
+        sha256: 6d9e028a69669e1550d6dea48ae8383bf0b629af9467fc826d2ed9ab222ead1a
+        bytes: 1357636
+    used_by: atlas/data.py, paper1/scripts/eraB_claude_code/usjp.py
+    cite: Feenstra, R. C., Inklaar, R. and Timmer, M. P. (2015). The Next Generation of the Penn World Table. American Economic Review 105(10).
+
+  - id: oil_bp
+    what: BP Statistical Review crude oil price (via Our World in Data, archived repository)
+    repo: owid/owid-datasets
+    dir: owid
+    commit: 6155d4ca1ea14ef30e753010a25521eeb416e8a2   # 2025-04-14, repository archived
+    files:
+      - path: "datasets/Crude Oil Consumption vs. Price - BP Statistics (2016)/Crude Oil Consumption vs. Price - BP Statistics (2016).csv"
+        sha256: 49bf1fd04b34953a8903bc693888f799f13143cf5a1c680ce23d7ea7e4e067b1
+        bytes: 1867
+    used_by: atlas/data.py (real oil price, early years)
+
+  - id: oil_brent
+    what: EIA Brent annual price (datasets/oil-prices data package)
+    repo: datasets/oil-prices
+    dir: oilprices
+    commit: b1d944f94308b9ad0a44a37fc424492b77c362e0   # 2026-10-10. WARNING: this repository auto-updates daily; always pin the commit
+    files:
+      - path: data/brent-year.csv
+        sha256: acfd0d8a75e06d53bf204762256d515f464f7317ddf6796bbaef0f2862cec16b
+        bytes: 716
+    used_by: atlas/data.py (real oil price, later years)
+
+  - id: wb_gdp_current_usd
+    what: World Bank GDP in current US dollars (NY.GDP.MKTP.CD), datasets/gdp mirror. Superseded first-pass data, kept for the crisis-dating history figures
+    repo: datasets/gdp
+    dir: wbgdp
+    commit: 36d761dc5617982d3e50b213e02b9a1b47c4e958   # 2026-07-27; reproduces paper1/results/crisis_results.json exactly
+    files:
+      - path: data/gdp.csv
+        sha256: 8d84ef6bcaccf740c01c5ed7566aae8f7b149d0e2c20001e441efd3cb5b2fa86
+        bytes: 562767
+    used_by: paper1/scripts/eraA_claude_ai/crisis_analysis.py (reads gdp.csv); prepare_data.py built paper1/data/gdp_panel_*.csv from it
+
+not_pinned:
+  - id: jst_xlsx
+    what: Jordà–Schularick–Taylor Macrohistory Database (jst.xlsx), used only by crisis_dating_test.py (banking-crisis dating, superseded)
+    status: original download not recorded; macrohistory.net was unreachable from the sandbox. GMD's data/clean/aggregators/JST/JST.dta is the candidate replacement. crisis_dating_results.json has not been re-verified.
+  - id: bis_lbs
+    what: BIS Locational Banking Statistics (bilateral bank claims), planned edge data for the coupling network
+    status: never downloaded; see docs/specs/BIS_download_spec.md and paper1/scripts/eraA_claude_ai/build_coupling_matrix.py
+  - id: kose_terrones_dates
+    what: Global recession years 1975, 1982, 1991, 2009, 2020 and downturns 1998, 2001, 2012 (Kose, Sugawara and Terrones)
+    status: hard-coded constants, not a file. Cite Kose, Sugawara and Terrones (2020), Global Recessions, World Bank Policy Research Working Paper 9172.
+
+derived_checksums:   # outputs of atlas/data.py -> stats.py -> sync.py at the commits above
+  atlas/panel.csv:  22531e3a8838d58c61f2bd974691c7a25548467e4d4b31e08227a74f6e2c65cc
+  atlas/global.csv: 2369d20a78fee4cea43822ff05f6d807f5938e480b6f78d07f4a7d99a0b06ac8
+  atlas/meta.json:  cdd0efed11d2e83875b35a41faa6661a822aa4700faf2e37851c6c029831a947
+  atlas/stats.json: a8f11aab1ec76ddb8f1497a03efc5ffce9355529dfac8468f6416d3d53ba5988
+  atlas/sync.json:  d1c78f726f2290f22701f8b5d7d094e06fa7eea0d67bd39538ea27a3245f13cb
+
+environment_used_for_verification:
+  python: 3.13.16
+  numpy: 2.5.3
+  scipy: 1.18.1
+  pandas: 3.0.5
+  matplotlib: 3.11.2
+  pyreadr: 0.5.7
+  networkx: 3.6.1
+  openpyxl: 3.1.5
+  tex: XeTeX (TeX Live 2023); fonts TeX Gyre Pagella, Inter, Latin Modern Math

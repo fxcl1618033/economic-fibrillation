@@ -1,0 +1,26 @@
+mean cycle period = 5.8 years  (omega=1.074 rad/yr)
+
+=== who leads the world business cycle? (years ahead of global phase) ===
+  LEADERS:
+    TUR: +1.41 yr
+    IND: +0.56 yr
+    GBR: +0.45 yr
+    DNK: +0.44 yr
+    USA: +0.41 yr
+    KOR: +0.33 yr
+  LAGGARDS:
+    PRT: -0.20 yr
+    ESP: -0.29 yr
+    MEX: -0.37 yr
+    ZAF: -0.41 yr
+    AUT: -0.42 yr
+    IDN: -0.53 yr
+
+  spread (max-min) = 1.94 yr   sd = 0.403 yr
+  vs 5000 surrogates: null sd mean 0.942, 95th 1.143 -> p = 1.0000
+
+=== who led INTO each modern crisis? (8-yr window before onset) ===
+  2009: leaders THA(+1.54), TUR(+0.88), AUS(+0.70), USA(+0.54)  |  laggards DEU(-0.54), KOR(-0.86), IDN(-2.67)
+  2020: leaders SWE(+0.76), GRC(+0.68), ESP(+0.48), DNK(+0.43)  |  laggards IDN(-0.65), THA(-0.70), CAN(-0.74)
+
+saved phase_lag_results.json

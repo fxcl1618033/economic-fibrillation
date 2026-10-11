@@ -1,0 +1,970 @@
+{
+ "order": [
+  [
+   "USA",
+   "United States",
+   "North America"
+  ],
+  [
+   "CAN",
+   "Canada",
+   "North America"
+  ],
+  [
+   "MEX",
+   "Mexico",
+   "North America"
+  ],
+  [
+   "DEU",
+   "Germany",
+   "Western Europe"
+  ],
+  [
+   "FRA",
+   "France",
+   "Western Europe"
+  ],
+  [
+   "GBR",
+   "United Kingdom",
+   "Western Europe"
+  ],
+  [
+   "ITA",
+   "Italy",
+   "Western Europe"
+  ],
+  [
+   "NLD",
+   "Netherlands",
+   "Western Europe"
+  ],
+  [
+   "BEL",
+   "Belgium",
+   "Western Europe"
+  ],
+  [
+   "AUT",
+   "Austria",
+   "Western Europe"
+  ],
+  [
+   "CHE",
+   "Switzerland",
+   "Western Europe"
+  ],
+  [
+   "SWE",
+   "Sweden",
+   "Nordics"
+  ],
+  [
+   "NOR",
+   "Norway",
+   "Nordics"
+  ],
+  [
+   "DNK",
+   "Denmark",
+   "Nordics"
+  ],
+  [
+   "FIN",
+   "Finland",
+   "Nordics"
+  ],
+  [
+   "ESP",
+   "Spain",
+   "Southern Europe & Turkey"
+  ],
+  [
+   "PRT",
+   "Portugal",
+   "Southern Europe & Turkey"
+  ],
+  [
+   "GRC",
+   "Greece",
+   "Southern Europe & Turkey"
+  ],
+  [
+   "TUR",
+   "Turkey",
+   "Southern Europe & Turkey"
+  ],
+  [
+   "JPN",
+   "Japan",
+   "Asia-Pacific"
+  ],
+  [
+   "KOR",
+   "South Korea",
+   "Asia-Pacific"
+  ],
+  [
+   "AUS",
+   "Australia",
+   "Asia-Pacific"
+  ],
+  [
+   "IND",
+   "India",
+   "Asia-Pacific"
+  ],
+  [
+   "IDN",
+   "Indonesia",
+   "Asia-Pacific"
+  ],
+  [
+   "THA",
+   "Thailand",
+   "Asia-Pacific"
+  ],
+  [
+   "ZAF",
+   "South Africa",
+   "Africa"
+  ]
+ ],
+ "extra": [
+  [
+   "CHN",
+   "China",
+   "Added \u00b7 East Asia"
+  ],
+  [
+   "BRA",
+   "Brazil",
+   "Added \u00b7 Latin America"
+  ],
+  [
+   "SAU",
+   "Saudi Arabia",
+   "Added \u00b7 Middle East"
+  ],
+  [
+   "ARE",
+   "United Arab Emirates",
+   "Added \u00b7 Middle East"
+  ],
+  [
+   "IRN",
+   "Iran",
+   "Added \u00b7 Middle East"
+  ]
+ ],
+ "fixes": {
+  "USA": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.94,
+    "I": 0.98,
+    "NX": 0.84
+   },
+   "fiscal": {
+    "weo_from": 2001,
+    "hist_from": 1960,
+    "level_adj_exp": 0.0,
+    "level_adj_bal": -0.0
+   },
+   "debt_interp": [
+    1979
+   ],
+   "debt": {
+    "weo_from": 2001,
+    "hdd_ratio": 1.002
+   }
+  },
+  "CAN": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.95,
+    "I": 0.96,
+    "NX": 0.87
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1961,
+    "level_adj_exp": -0.6,
+    "level_adj_bal": 0.0
+   },
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 0.982
+   },
+   "money_dropped": [
+    2001,
+    2007
+   ]
+  },
+  "MEX": {
+   "contrib_blank": [
+    1993
+   ],
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.85,
+    "I": 0.93,
+    "NX": 0.86
+   },
+   "ltrate_dropped": [
+    2021,
+    2022
+   ],
+   "fiscal": {
+    "weo_from": 1990,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     6.3,
+     -0.5
+    ]
+   },
+   "debt_interp": [
+    1981
+   ],
+   "debt": {
+    "weo_from": 1996,
+    "hdd_ratio": 0.913
+   },
+   "money_dropped": [
+    1976,
+    1977,
+    1988,
+    1989,
+    1997,
+    2000
+   ]
+  },
+  "DEU": {
+   "contrib_blank": [
+    1991
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.91,
+    "I": 0.96,
+    "NX": 0.84
+   },
+   "fiscal": {
+    "weo_from": 1991,
+    "hist_from": 1970,
+    "level_adj_exp": 0.3,
+    "level_adj_bal": -0.4
+   },
+   "debt_interp": [
+    1976
+   ],
+   "debt": {
+    "weo_from": 1991,
+    "hdd_ratio": 0.999
+   }
+  },
+  "FRA": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.91,
+    "I": 0.97,
+    "NX": 0.79
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1978,
+    "level_adj_exp": 0.9,
+    "level_adj_bal": 1.0
+   },
+   "debt_gapfill": [
+    1978,
+    1979
+   ],
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 1.013
+   },
+   "money_dropped": [
+    1978
+   ]
+  },
+  "GBR": {
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.92,
+    "I": 0.89,
+    "NX": 0.72
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     -8.6,
+     2.8
+    ]
+   },
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 0.994
+   }
+  },
+  "ITA": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.97,
+    "I": 0.95,
+    "NX": 0.82
+   },
+   "fiscal": {
+    "weo_from": 1988,
+    "hist_from": 1968,
+    "level_adj_exp": -2.1,
+    "level_adj_bal": 0.5
+   },
+   "debt": {
+    "weo_from": 1988,
+    "hdd_ratio": 1.054
+   },
+   "money_dropped": [
+    1999
+   ]
+  },
+  "NLD": {
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.92,
+    "I": 0.96,
+    "NX": 0.89
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     -4.6,
+     -0.2
+    ]
+   },
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 0.977
+   },
+   "money_dropped": [
+    1982
+   ]
+  },
+  "BEL": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.89,
+    "I": 0.94,
+    "NX": 0.81
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1970,
+    "level_adj_exp": 2.2,
+    "level_adj_bal": -0.3
+   },
+   "debt_gapfill": [
+    1952,
+    1965
+   ],
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 1.009
+   }
+  },
+  "AUT": {
+   "growth_patch": [
+    [
+     1988,
+     1.0,
+     3.3
+    ]
+   ],
+   "contrib_blank": [
+    1988
+   ],
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.95,
+    "I": 0.89,
+    "NX": 0.75
+   },
+   "fiscal": {
+    "weo_from": 1988,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     -5.5,
+     0.1
+    ]
+   },
+   "debt": {
+    "weo_from": 1988,
+    "hdd_ratio": 0.974
+   }
+  },
+  "CHE": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.94,
+    "I": 0.94,
+    "NX": 0.85
+   },
+   "fiscal": {
+    "weo_from": 1983,
+    "hist_from": 1970,
+    "level_adj_exp": -2.2,
+    "level_adj_bal": 0.7
+   },
+   "debt": {
+    "weo_from": 1990,
+    "hdd_ratio": 0.971
+   },
+   "money_dropped": [
+    1974,
+    2000
+   ]
+  },
+  "SWE": {
+   "growth_patch": [
+    [
+     1981,
+     4.5,
+     0.5
+    ]
+   ],
+   "contrib_blank": [
+    1981
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.91,
+    "I": 0.98,
+    "NX": 0.84
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     18.7,
+     6.1
+    ]
+   },
+   "debt": {
+    "weo_from": 1993,
+    "hdd_ratio": 0.842
+   }
+  },
+  "NOR": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.95,
+    "I": 0.97,
+    "NX": 0.95
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1962,
+    "level_adj_exp": -2.2,
+    "level_adj_bal": -0.2
+   },
+   "debt_gapfill": [
+    1952,
+    1959,
+    1966
+   ],
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 1.292
+   }
+  },
+  "DNK": {
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.89,
+    "I": 0.99,
+    "NX": 0.85
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1971,
+    "level_adj_exp": 0.1,
+    "level_adj_bal": -1.4
+   },
+   "debt": {
+    "weo_from": 1992,
+    "hdd_ratio": 1.046
+   }
+  },
+  "FIN": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.95,
+    "I": 0.96,
+    "NX": 0.84
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     3.8,
+     -0.8
+    ]
+   },
+   "debt_gapfill": [
+    1959,
+    1964,
+    1965,
+    1966,
+    1979
+   ],
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 0.987
+   }
+  },
+  "ESP": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.98,
+    "I": 0.97,
+    "NX": 0.88
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     13.9,
+     0.5
+    ]
+   },
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 0.936
+   },
+   "money_dropped": [
+    1999
+   ]
+  },
+  "PRT": {
+   "growth_patch": [
+    [
+     1988,
+     5.3,
+     7.5
+    ],
+    [
+     1990,
+     7.9,
+     4.0
+    ]
+   ],
+   "contrib_blank": [
+    1988,
+    1990
+   ],
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.91,
+    "I": 0.95,
+    "NX": 0.79
+   },
+   "fiscal": {
+    "weo_from": 1986,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     13.6,
+     -2.8
+    ],
+    "breaks": [
+     1987
+    ]
+   },
+   "debt": {
+    "weo_from": 1990,
+    "hdd_ratio": 1.129
+   }
+  },
+  "GRC": {
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.94,
+    "I": 0.95,
+    "NX": 0.88
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1957,
+    "level_adj_exp": 0.0,
+    "level_adj_bal": 0.0,
+    "breaks": [
+     1995
+    ]
+   },
+   "debt_interp": [
+    1976,
+    1977,
+    1978
+   ],
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 1.0
+   },
+   "money_dropped": [
+    1994,
+    1999
+   ]
+  },
+  "TUR": {
+   "contrib_blank": [
+    1981,
+    1983,
+    1984,
+    1985,
+    1987,
+    1995,
+    1996,
+    1998
+   ],
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.67,
+    "I": 0.9,
+    "NX": 0.71
+   },
+   "fiscal": {
+    "weo_from": 2000,
+    "hist_from": null,
+    "level_adj_exp": 0.0,
+    "level_adj_bal": -0.0
+   },
+   "debt": {
+    "weo_from": 2000,
+    "hdd_ratio": 1.0
+   }
+  },
+  "JPN": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.98,
+    "I": 0.94,
+    "NX": 0.81
+   },
+   "fiscal": {
+    "weo_from": 1980,
+    "hist_from": 1950,
+    "level_adj_exp": -2.7,
+    "level_adj_bal": 0.2
+   },
+   "debt": {
+    "weo_from": 1980,
+    "hdd_ratio": 0.944
+   },
+   "money_dropped": [
+    1970,
+    2001
+   ]
+  },
+  "KOR": {
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.9,
+    "I": 0.96,
+    "NX": 0.82
+   },
+   "fiscal": {
+    "weo_from": 1995,
+    "hist_from": 1953,
+    "level_adj_exp": -0.5,
+    "level_adj_bal": -0.1
+   },
+   "debt": {
+    "weo_from": 1990,
+    "hdd_ratio": null,
+    "hdd_ratio_too_far": 1.514
+   }
+  },
+  "AUS": {
+   "contrib_blank": [
+    2010,
+    2021
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.39,
+    "I": 0.8,
+    "NX": 0.59
+   },
+   "fiscal": {
+    "weo_from": 1988,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     -3.9,
+     1.3
+    ]
+   },
+   "debt": {
+    "weo_from": 1989,
+    "hdd_ratio": null,
+    "hdd_ratio_too_far": 0.747
+   }
+  },
+  "IND": {
+   "contrib_blank": [
+    1973,
+    1974,
+    1975,
+    1980,
+    1991,
+    1999,
+    2000,
+    2001,
+    2008
+   ],
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.9,
+    "I": 0.82,
+    "NX": 0.41
+   },
+   "fiscal": {
+    "weo_from": 1988,
+    "hist_from": 1950,
+    "level_adj_exp": 0.4,
+    "level_adj_bal": -0.1
+   },
+   "debt_gapfill": [
+    1966,
+    1983,
+    1984
+   ],
+   "debt": {
+    "weo_from": 1991,
+    "hdd_ratio": 1.018
+   }
+  },
+  "IDN": {
+   "contrib_blank": [
+    1981,
+    1983,
+    1993,
+    2000,
+    2003,
+    2004,
+    2021,
+    2022
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.52,
+    "I": 0.73,
+    "NX": 0.21
+   },
+   "fiscal": {
+    "weo_from": 1993,
+    "hist_from": 1982,
+    "level_adj_exp": -0.0,
+    "level_adj_bal": -0.0
+   },
+   "debt": {
+    "weo_from": 2000,
+    "hdd_ratio": 1.0
+   }
+  },
+  "THA": {
+   "contrib_blank": [
+    1985
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.93,
+    "I": 0.97,
+    "NX": 0.92
+   },
+   "fiscal": {
+    "weo_from": 1995,
+    "hist_from": 1950,
+    "level_adj_exp": 1.8,
+    "level_adj_bal": -0.2
+   },
+   "debt": {
+    "weo_from": 1996,
+    "hdd_ratio": 1.029
+   }
+  },
+  "ZAF": {
+   "contrib_blank": [
+    1981,
+    1983
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.88,
+    "I": 0.87,
+    "NX": 0.76
+   },
+   "unemp_break": 1995,
+   "fiscal": {
+    "weo_from": 2000,
+    "hist_from": 1965,
+    "level_adj_exp": -0.0,
+    "level_adj_bal": -0.0
+   },
+   "debt": {
+    "weo_from": 2000,
+    "hdd_ratio": 0.876
+   },
+   "money_dropped": [
+    2000
+   ]
+  },
+  "CHN": {
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.64,
+    "I": 0.79,
+    "NX": 0.2
+   },
+   "fiscal": {
+    "weo_from": 1982,
+    "hist_from": null,
+    "hist_gap_too_large": [
+     -3.6,
+     1.6
+    ]
+   },
+   "debt": {
+    "weo_from": 1995,
+    "hdd_ratio": 1.008
+   },
+   "alt_growth": {
+    "official_mean_1978_2019": 9.4,
+    "pwt_mean_1978_2019": 6.6,
+    "official_1998": 7.9,
+    "pwt_1998": 0.6,
+    "official_2008": 9.6,
+    "pwt_2008": 5.8
+   }
+  },
+  "BRA": {
+   "components_from": 1981,
+   "contrib_from": 1996,
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.93,
+    "I": 0.96,
+    "NX": 0.82
+   },
+   "fiscal": {
+    "weo_from": 2001,
+    "hist_from": null,
+    "level_adj_exp": -1.6,
+    "level_adj_bal": 0.6
+   },
+   "debt": {
+    "weo_from": 2000,
+    "hdd_ratio": 0.909
+   },
+   "money_dropped": [
+    1988,
+    1989,
+    1990,
+    1992,
+    1993,
+    1994
+   ]
+  },
+  "SAU": {
+   "gdp_from": 1970,
+   "strate_is_policy_rate": [
+    1999,
+    2022
+   ],
+   "contrib_method": "gdp_deflator",
+   "contrib_validation": {
+    "C": 0.65,
+    "I": 0.96,
+    "NX": 0.79
+   },
+   "fiscal": {
+    "weo_from": 1990,
+    "hist_from": null,
+    "hist_gap_too_large": null
+   },
+   "debt": {
+    "weo_from": 1991,
+    "hdd_ratio": 0.822
+   }
+  },
+  "ARE": {
+   "gdp_from": 1975,
+   "components_from": 1975,
+   "infl_from": 1980,
+   "contrib_blank": [
+    1980,
+    1981,
+    1982,
+    1986,
+    1987,
+    1990,
+    1991,
+    1994
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.82,
+    "I": 0.64,
+    "NX": 0.77
+   },
+   "fiscal": {
+    "weo_from": 1991,
+    "hist_from": null,
+    "level_adj_exp": 0.0,
+    "level_adj_bal": -0.0,
+    "breaks": [
+     1992
+    ]
+   },
+   "debt": {
+    "weo_from": 1999,
+    "hdd_ratio": 0.981
+   },
+   "money_dropped": [
+    1984
+   ]
+  },
+  "IRN": {
+   "contrib_blank": [
+    1974,
+    1977,
+    1979,
+    2011
+   ],
+   "contrib_method": "cpi",
+   "contrib_validation": {
+    "C": 0.84,
+    "I": 0.84,
+    "NX": 0.81
+   },
+   "fiscal": {
+    "weo_from": 1990,
+    "hist_from": 1980,
+    "level_adj_exp": 0.0,
+    "level_adj_bal": 0.0,
+    "breaks": [
+     1993
+    ]
+   },
+   "debt_interp": [
+    1978,
+    1979
+   ],
+   "debt": {
+    "weo_from": 1996,
+    "hdd_ratio": 1.26
+   }
+  }
+ }
+}

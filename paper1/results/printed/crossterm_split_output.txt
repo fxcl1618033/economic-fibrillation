@@ -1,0 +1,10 @@
+
+GDP-weighted  (crisis windows: [np.int64(1982), np.int64(1991), np.int64(2009), np.int64(2020)])
+  mean pairwise corr: normal 0.376 -> crisis 0.490
+  mean cycle s.d.:    normal 0.0137 -> crisis 0.0156  (x1.14)
+  cross-term rise: total 5.56e-05 | from correlation alone 1.97e-05 (35%) | from swing size alone 2.79e-05 (50%) | interaction 14%
+
+equal-weighted  (crisis windows: [np.int64(1982), np.int64(1991), np.int64(2009), np.int64(2020)])
+  mean pairwise corr: normal 0.376 -> crisis 0.490
+  mean cycle s.d.:    normal 0.0137 -> crisis 0.0156  (x1.14)
+  cross-term rise: total 4.93e-05 | from correlation alone 2.03e-05 (41%) | from swing size alone 2.29e-05 (46%) | interaction 13%

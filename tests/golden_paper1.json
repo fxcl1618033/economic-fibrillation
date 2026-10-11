@@ -1,0 +1,712 @@
+{
+ "about": "Paper 1 golden numbers, 26 economies, Maddison 2023 at the pinned commit; see tools/make_golden.py",
+ "values": [
+  {
+   "key": "arc.P.lead2.corr",
+   "value": 0.23003849417134248,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.lead2.p_one_sided",
+   "value": 0.03773584905660377,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": "circular shift, floor 1/53"
+  },
+  {
+   "key": "arc.P.lead1.corr",
+   "value": 0.21554584338930002,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.lead1.p_one_sided",
+   "value": 0.018867924528301886,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": "circular shift, floor 1/53"
+  },
+  {
+   "key": "arc.P.crisis.corr",
+   "value": 0.14940974383470843,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.crisis.p_one_sided",
+   "value": 0.18867924528301888,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": "circular shift, floor 1/53"
+  },
+  {
+   "key": "arc.P.after1.corr",
+   "value": 0.07831118377442371,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.after1.p_one_sided",
+   "value": 0.6792452830188679,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": "circular shift, floor 1/53"
+  },
+  {
+   "key": "arc.P.after2.corr",
+   "value": -0.2769841676304071,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.after2.p_one_sided",
+   "value": 0.018867924528301886,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": "circular shift, floor 1/53"
+  },
+  {
+   "key": "epoch.P.peak_t-1",
+   "value": 0.7020678092350934,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "epoch.P.t+2",
+   "value": 0.3497884612746911,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "r.P.1970",
+   "value": 0.2821361058464413,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "r.P.2020",
+   "value": 0.9795318681514222,
+   "tol": 1e-09,
+   "source": "kose_terrones_results.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.lead2.corr",
+   "value": 0.23003849417134253,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.lead2.p_one_sided",
+   "value": 0.03773584905660377,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.lead1.corr",
+   "value": 0.21554584338930008,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.lead1.p_one_sided",
+   "value": 0.018867924528301886,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.crisis.corr",
+   "value": 0.14940974383470834,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.crisis.p_one_sided",
+   "value": 0.18867924528301888,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.after1.corr",
+   "value": 0.07831118377442371,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.after1.p_one_sided",
+   "value": 0.6792452830188679,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.after2.corr",
+   "value": -0.276984167630407,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.P.after2.p_one_sided",
+   "value": 0.018867924528301886,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.P.detrended",
+   "value": 0.6078884059189097,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.P.raw",
+   "value": 0.5296342896209391,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.lead2.corr",
+   "value": 0.2095000348600736,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.lead2.p_one_sided",
+   "value": 0.05660377358490566,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.lead1.corr",
+   "value": 0.177688508677951,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.lead1.p_one_sided",
+   "value": 0.09433962264150944,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.crisis.corr",
+   "value": 0.11205856852327348,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.crisis.p_one_sided",
+   "value": 0.20754716981132076,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.after1.corr",
+   "value": 0.08761793510342943,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.after1.p_one_sided",
+   "value": 0.6981132075471698,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.after2.corr",
+   "value": -0.14403805464250838,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.W.after2.p_one_sided",
+   "value": 0.16981132075471697,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.W.detrended",
+   "value": 0.5086312250099135,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.W.raw",
+   "value": 0.47095443132475556,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.lead2.corr",
+   "value": 0.21001668901020762,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.lead2.p_one_sided",
+   "value": 0.03773584905660377,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.lead1.corr",
+   "value": 0.17814089735546398,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.lead1.p_one_sided",
+   "value": 0.09433962264150944,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.crisis.corr",
+   "value": 0.12412109152637739,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.crisis.p_one_sided",
+   "value": 0.18867924528301888,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.after1.corr",
+   "value": 0.08889439316879855,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.after1.p_one_sided",
+   "value": 0.6792452830188679,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.after2.corr",
+   "value": -0.19714585383521457,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "arc.N.after2.p_one_sided",
+   "value": 0.09433962264150944,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.N.detrended",
+   "value": 0.530602519497819,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.N.raw",
+   "value": 0.4934417473160183,
+   "tol": 1e-09,
+   "source": "runin_convention_check.json",
+   "note": ""
+  },
+  {
+   "key": "amplitude.W.p_surrogate",
+   "value": 0.0005998800239952009,
+   "tol": 0.002,
+   "source": "amplitude_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "diversification.gdp_end_of_window.cross_fraction_of_excess",
+   "value": 0.826182116901133,
+   "tol": 1e-09,
+   "source": "diversification_results.json",
+   "note": ""
+  },
+  {
+   "key": "diversification.gdp_end_of_window.cross_share_crisis",
+   "value": 0.7239993183701873,
+   "tol": 1e-09,
+   "source": "diversification_results.json",
+   "note": ""
+  },
+  {
+   "key": "diversification.gdp_end_of_window.cross_share_normal",
+   "value": 0.6675663034322514,
+   "tol": 1e-09,
+   "source": "diversification_results.json",
+   "note": ""
+  },
+  {
+   "key": "diversification.equal.cross_fraction_of_excess",
+   "value": 0.9694405356640782,
+   "tol": 1e-09,
+   "source": "diversification_equal_results.json",
+   "note": ""
+  },
+  {
+   "key": "diversification.equal.cross_share_crisis",
+   "value": 0.8804347383115805,
+   "tol": 1e-09,
+   "source": "diversification_equal_results.json",
+   "note": ""
+  },
+  {
+   "key": "diversification.equal.cross_share_normal",
+   "value": 0.8177675510742699,
+   "tol": 1e-09,
+   "source": "diversification_equal_results.json",
+   "note": ""
+  },
+  {
+   "key": "identity.alignment_share_of_crisis_excess",
+   "value": 0.3927897198427209,
+   "tol": 1e-09,
+   "source": "structure_results.json",
+   "note": ""
+  },
+  {
+   "key": "identity.p_alignment",
+   "value": 0.10297940411917617,
+   "tol": 0.012894741703639667,
+   "source": "structure_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "identity.p_swing",
+   "value": 0.0001999600079984003,
+   "tol": 0.002,
+   "source": "structure_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "fiedler.lambda2",
+   "value": 0.8676574820893466,
+   "tol": 1e-09,
+   "source": "structure_results.json",
+   "note": ""
+  },
+  {
+   "key": "mst.L_1971",
+   "value": 0.7811703730633214,
+   "tol": 1e-09,
+   "source": "mst_results.json",
+   "note": ""
+  },
+  {
+   "key": "mst.L_2022",
+   "value": 0.24950723856623455,
+   "tol": 1e-09,
+   "source": "mst_results.json",
+   "note": ""
+  },
+  {
+   "key": "mst.pre_crisis_tau",
+   "value": -0.17142857142857143,
+   "tol": 1e-09,
+   "source": "mst_results.json",
+   "note": ""
+  },
+  {
+   "key": "mst.p_contraction",
+   "value": 0.16676664667066587,
+   "tol": 0.015815181251316625,
+   "source": "mst_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "phase.lead_sd_years",
+   "value": 0.4027399204423706,
+   "tol": 1e-09,
+   "source": "phase_lag_results.json",
+   "note": ""
+  },
+  {
+   "key": "phase.mean_period_years",
+   "value": 5.848526069760066,
+   "tol": 1e-09,
+   "source": "phase_lag_results.json",
+   "note": ""
+  },
+  {
+   "key": "csd.ar1_tau",
+   "value": -0.15178571428571427,
+   "tol": 1e-09,
+   "source": "csd_surrogate_results.json",
+   "note": ""
+  },
+  {
+   "key": "csd.ar1_p",
+   "value": 0.7574485102979404,
+   "tol": 0.01818506189655862,
+   "source": "csd_surrogate_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "csd.var_tau",
+   "value": 0.29464285714285715,
+   "tol": 1e-09,
+   "source": "csd_surrogate_results.json",
+   "note": ""
+  },
+  {
+   "key": "csd.var_p",
+   "value": 0.10697860427914417,
+   "tol": 0.013113410254778687,
+   "source": "csd_surrogate_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "bifurcation.delta_lambda",
+   "value": 0.09802645336823468,
+   "tol": 1e-09,
+   "source": "kuramoto_bifurcation_results.json",
+   "note": ""
+  },
+  {
+   "key": "bifurcation.p_slowing",
+   "value": 0.5416916616676665,
+   "tol": 0.021139329450701596,
+   "source": "kuramoto_bifurcation_results.json",
+   "note": "surrogate p: exact only with the original random stream"
+  },
+  {
+   "key": "robustness.baseline.lead2.corr",
+   "value": 0.23003849417134248,
+   "tol": 1e-09,
+   "source": "robustness_results.json",
+   "note": ""
+  },
+  {
+   "key": "robustness.baseline.lead1.corr",
+   "value": 0.21554584338930002,
+   "tol": 1e-09,
+   "source": "robustness_results.json",
+   "note": ""
+  },
+  {
+   "key": "robustness.baseline.crisis.corr",
+   "value": 0.14940974383470843,
+   "tol": 1e-09,
+   "source": "robustness_results.json",
+   "note": ""
+  },
+  {
+   "key": "robustness.baseline.after2.corr",
+   "value": -0.2769841676304071,
+   "tol": 1e-09,
+   "source": "robustness_results.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.lead2.corr",
+   "value": 0.215,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.lead2.p",
+   "value": 0.075,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.lead1.corr",
+   "value": 0.237,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.lead1.p",
+   "value": 0.019,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.same.corr",
+   "value": 0.192,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.same.p",
+   "value": 0.094,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.after2.corr",
+   "value": -0.332,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.GDP.after2.p",
+   "value": 0.019,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.lead2.corr",
+   "value": 0.293,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.lead2.p",
+   "value": 0.038,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.lead1.corr",
+   "value": 0.264,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.lead1.p",
+   "value": 0.057,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.same.corr",
+   "value": 0.208,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.same.p",
+   "value": 0.113,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.after2.corr",
+   "value": -0.233,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.inv.after2.p",
+   "value": 0.075,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.lead2.corr",
+   "value": 0.266,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.lead2.p",
+   "value": 0.019,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.lead1.corr",
+   "value": 0.107,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.lead1.p",
+   "value": 0.17,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.same.corr",
+   "value": -0.001,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.same.p",
+   "value": 0.547,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.after2.corr",
+   "value": -0.083,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  },
+  {
+   "key": "atlas_sync.strate.after2.p",
+   "value": 0.245,
+   "tol": 1e-09,
+   "source": "atlas/sync.json",
+   "note": ""
+  }
+ ]
+}

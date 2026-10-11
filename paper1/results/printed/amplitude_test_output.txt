@@ -1,0 +1,15 @@
+amplitude secular: A(1970s avg)=0.0209  A(1990-2006 avg)=0.0157  A(2007-2022 avg)=0.0208
+
+Q1 corr(r, amplitude):  raw = +0.471 (p=0.019)   detrended = +0.509 (p=0.019)
+   vs 5000 surrogate economy sets: null mean -0.000, 95th pct +0.293  ->  p = 0.0006
+
+Q2 amplitude arc (does the swing size rise before global recessions?)
+   2 yr before : raw +0.103 (p=0.189)   detrended +0.083 (p=0.264)
+   1 yr before : raw +0.379 (p=0.038)   detrended +0.380 (p=0.038)
+   crisis year : raw +0.424 (p=0.019)   detrended +0.425 (p=0.019)
+   1 yr after  : raw +0.107 (p=0.189)   detrended +0.092 (p=0.264)
+   2 yr after  : raw -0.177 (p=0.943)   detrended -0.208 (p=0.962)
+
+superposed epoch, mean amplitude: t-4=0.0154  t-3=0.0177  t-2=0.0208  t-1=0.0278  t+0=0.0288  t+1=0.0211  t+2=0.0143  t+3=0.0155  t+4=0.0152
+
+saved amplitude_results.json

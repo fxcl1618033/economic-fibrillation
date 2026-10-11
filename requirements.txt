@@ -1,0 +1,12 @@
+# Versions used for the 11 October 2026 reproduction check (Python 3.13.16)
+numpy==2.5.3
+scipy==1.18.1
+pandas==3.0.5
+matplotlib==3.11.2
+pyreadr==0.5.7
+networkx==3.6.1
+openpyxl==3.1.5
+pyyaml==6.0.3
+pytest
+# figure books and the atlas also need xelatex (TeX Live) with TeX Gyre Pagella, Inter and Latin Modern Math,
+# and pdftoppm (poppler-utils)

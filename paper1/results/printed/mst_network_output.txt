@@ -1,0 +1,24 @@
+=== REAL ===
+MST mean edge length around crises:
+  1975: t-4=0.781 t-3=0.748 t-2=0.698 t-1=0.727 t+0=0.680 t+1=0.673 t+2=0.663 t+3=0.643
+  1982: t-4=0.643 t-3=0.652 t-2=0.623 t-1=0.652 t+0=0.653 t+1=0.665 t+2=0.672 t+3=0.718
+  1991: t-4=0.697 t-3=0.715 t-2=0.694 t-1=0.705 t+0=0.717 t+1=0.710 t+2=0.697 t+3=0.659
+  2009: t-4=0.590 t-3=0.575 t-2=0.481 t-1=0.454 t+0=0.402 t+1=0.423 t+2=0.413 t+3=0.404
+  2020: t-4=0.404 t-3=0.449 t-2=0.430 t-1=0.484 t+0=0.286 t+1=0.273 t+2=0.250 t+3=  na 
+  MEAN: t-4=0.623 t-3=0.628 t-2=0.585 t-1=0.604 t+0=0.548 t+1=0.549 t+2=0.539 t+3=0.606
+
+pre-crisis trend tau:  MST length = -0.171 (negative = contraction)   lambda_max = +0.100 (positive = fragility up)
+
+=== NULL (5000 surrogate economy sets) ===
+  MST length : null mean -0.001  5th pct -0.286   p(contraction) = 0.1668
+  lambda_max : null mean -0.002  95th pct +0.300  p(fragility)   = 0.3055
+
+most central economies in the business-cycle MST (mean degree):
+   FRA: 2.85
+   NLD: 2.65
+   FIN: 2.62
+   ESP: 2.38
+   DEU: 2.31
+   BEL: 2.29
+
+saved mst_results.json

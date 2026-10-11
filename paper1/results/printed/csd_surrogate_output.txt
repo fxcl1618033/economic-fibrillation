@@ -1,0 +1,13 @@
+NULL = 5000 surrogate economy sets (spectrum-preserving, coupling destroyed)
+  AR1(r)  pre-crisis mean tau = -0.152   null mean -0.003   p = 0.7574
+  VAR(r)  pre-crisis mean tau = +0.295   null mean +0.001   p = 0.1070
+  null 95th pct: AR1 +0.348 | VAR +0.384
+
+per-crisis VAR(r) trend tau:
+   1975: tau = +0.00
+   1982: tau = +0.04
+   1991: tau = -0.07
+   2009: tau = +0.43
+   2020: tau = +0.79
+
+saved csd_surrogate_results.json

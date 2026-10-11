@@ -1,0 +1,24 @@
+
+USA: GDP growth s.d. 2.04 pp
+  share of GDP-growth variance carried by:  C +0.47  I +0.68  G +0.02  X +0.09  M -0.26   (residual +0.00)
+  s.d. of each contribution (pp):            C 1.12  I 1.60  G 0.33  X 0.67  M 1.03
+
+JPN: GDP growth s.d. 3.82 pp
+  share of GDP-growth variance carried by:  C +0.41  I +0.57  G +0.05  X +0.10  M -0.12   (residual -0.01)
+  s.d. of each contribution (pp):            C 1.87  I 2.45  G 0.41  X 1.43  M 1.62
+
+US-Japan cycle correlation by channel (2-9y band-pass):  C +0.20  I +0.23  G +0.19  X +0.50  M +0.56  GDP +0.35
+   1961-1989: C +0.31  I +0.08  G +0.12  X +0.36  M +0.47  GDP +0.32
+   1990-2019: C +0.09  I +0.43  G +0.29  X +0.73  M +0.64  GDP +0.44
+
+USA budget & liquidity (1961-2022):
+  corr(GDP cycle, fiscal balance)  = +0.45   (positive = automatic stabilizers: deficits widen in slumps)
+  corr(GDP cycle, fiscal impulse)  = -0.50   (negative = discretionary policy leans against the cycle)
+  corr(GDP cycle, real M2 growth)  = -0.05
+  mean balance -4.5% GDP | debt 33% (1970) -> 119% (2022)
+
+JPN budget & liquidity (1961-2022):
+  corr(GDP cycle, fiscal balance)  = +0.35   (positive = automatic stabilizers: deficits widen in slumps)
+  corr(GDP cycle, fiscal impulse)  = -0.43   (negative = discretionary policy leans against the cycle)
+  corr(GDP cycle, real M2 growth)  = +0.12
+  mean balance -3.3% GDP | debt 8% (1970) -> 256% (2022)

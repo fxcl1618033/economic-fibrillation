@@ -1,0 +1,12 @@
+GDP-weighted diversification analysis (real GDP, band-passed, WIN=10)
+corr( rbar(t), r(t) ) = +0.258
+
+cross-term SHARE of world variance:  global-recession yrs 0.724   normal yrs 0.668
+own-term (indiv volatility) level:   crisis 3.58e-05   normal 2.23e-05
+cross-term (co-movement) level:      crisis 1.24e-04   normal 6.02e-05
+
+Excess world variance in crises: from OWN (volatility) = 1.35e-05   from CROSS (correlation) = 6.41e-05
+  -> fraction of the crisis variance-excess due to CORRELATION = 82.6%
+
+surrogate null (5000 sets): crisis cross-share obs=0.724, null mean=-0.209, p=0.0002
+saved diversification_results.json

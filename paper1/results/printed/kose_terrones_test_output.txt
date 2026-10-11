@@ -1,0 +1,8 @@
+FIBRILLATION ARC
+  2 yr before  lag+2: corr=+0.230 p=0.038(pos) * [2s 0.113]
+  1 yr before  lag+1: corr=+0.216 p=0.019(pos) * [2s 0.094]
+  crisis year  lag+0: corr=+0.149 p=0.189(pos) [2s 0.340]
+  1 yr after   lag-1: corr=+0.078 p=0.679(neg) [2s 0.623]
+  2 yr after   lag-2: corr=-0.277 p=0.019(neg) * [2s 0.019]
+epoch: peak 0.70(t-1) -> 0.35(t+2), shatter 0.35
+saved kfig1,2,4,5 and updated json

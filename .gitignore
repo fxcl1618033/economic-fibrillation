@@ -1,0 +1,8 @@
+data/raw/
+build/
+__pycache__/
+*.pyc
+*.aux
+*.log
+*.out
+.DS_Store

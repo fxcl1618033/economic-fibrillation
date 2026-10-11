@@ -1,0 +1,24 @@
+identity check max|err| = 4.34e-19  (should be ~0)
+corr(R_A, r) = +0.942  (amplitude-weighted vs plain alignment)
+
+crisis-vs-normal log world-swing^2: total +1.664 = swings +1.010 + alignment +0.654
+  share of crisis excess from ALIGNMENT = 39.3%, from SWING SIZE = 60.7%
+  1975: swing +0.91   alignment +0.52
+  1982: swing +0.36   alignment +0.60
+  1991: swing +0.18   alignment -0.53
+  2009: swing +1.24   alignment +1.28
+  2020: swing +2.36   alignment +1.40
+  surrogate p(alignment excess)=0.1030   p(swing excess)=0.0002
+
+Fiedler split (lambda2=0.868):
+  bloc A (8): ['GBR', 'FRA', 'JPN', 'KOR', 'IND', 'ZAF', 'IDN', 'THA']
+  bloc B (18): ['USA', 'DEU', 'ITA', 'CAN', 'ESP', 'AUS', 'MEX', 'NLD', 'SWE', 'CHE', 'BEL', 'TUR', 'NOR', 'AUT', 'DNK', 'FIN', 'GRC', 'PRT']
+
+lead-lag vs global recessions (circular-shift, floor 0.019):
+  r (all)          lead2 +0.23(p=0.038)*  lead1 +0.22(p=0.019)*  crisis +0.15(p=0.189)   after2 -0.28(p=0.019)*
+  r_within blocs   lead2 +0.20(p=0.038)*  lead1 +0.18(p=0.057)   crisis +0.11(p=0.226)   after2 -0.26(p=0.075) 
+  r_between blocs  lead2 +0.16(p=0.151)   lead1 +0.18(p=0.038)*  crisis +0.17(p=0.075)   after2 -0.31(p=0.019)*
+
+corr(r_within, r_between) = +0.382
+mean r_within=0.591  mean r_between=0.851
+saved

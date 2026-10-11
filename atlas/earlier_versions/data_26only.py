@@ -1,0 +1,191 @@
+"""Assemble the 26-economy country-year panel (1950-2022, analysis 1970-2022) and global factors.
+
+Sources
+  Global Macro Database (GMD; Mueller, Xu, Lehbib, Chen 2025) final panel + its cleaned source files:
+     IMF World Economic Outlook, IMF Public Finances in Modern History (FPP), IMF Historical Public Debt (HDD)
+  Penn World Table 10.01 (four GDP-growth patches; validation of contributions)
+  BP Statistical Review via Our World in Data; EIA Brent via datasets/oil-prices (oil)
+
+Data repairs (all logged to meta.json -> 'fixes'):
+  1. GDP growth: 4 country-years where GMD disagrees with both PWT and Maddison by >2pp are replaced
+     with PWT growth (deflator rescaled so nominal GDP is unchanged).
+  2. Expenditure contributions: exports and imports are deflated with the GDP deflator (no component
+     deflators exist for all 26), so they are reported only as net exports; years where C+I+NX misses
+     GDP growth by >3pp (national-accounts breaks) are blanked.
+  3. Budget: GMD revenue has coverage jumps (central vs general government). Spending and balance are
+     taken from IMF WEO from its first year; earlier years from IMF FPP, level-matched to WEO at the
+     junction and cut at FPP coverage breaks. Revenue = spending + balance.
+  4. Debt: WEO from its first year; earlier years IMF HDD, ratio-matched at the junction.
+  5. Money: growth in log points; real = nominal log growth - log(1+inflation); definitional breaks dropped.
+"""
+import numpy as np, pandas as pd, json, pyreadr
+from scipy.signal import butter, filtfilt, hilbert
+ROOT='/home/claude'; SRC=f'{ROOT}/ext/gmd/data/clean/aggregators'
+ORDER=[('USA','United States','North America'),('CAN','Canada','North America'),('MEX','Mexico','North America'),
+ ('DEU','Germany','Western Europe'),('FRA','France','Western Europe'),('GBR','United Kingdom','Western Europe'),('ITA','Italy','Western Europe'),
+ ('NLD','Netherlands','Western Europe'),('BEL','Belgium','Western Europe'),('AUT','Austria','Western Europe'),('CHE','Switzerland','Western Europe'),
+ ('SWE','Sweden','Nordics'),('NOR','Norway','Nordics'),('DNK','Denmark','Nordics'),('FIN','Finland','Nordics'),
+ ('ESP','Spain','Southern Europe & Turkey'),('PRT','Portugal','Southern Europe & Turkey'),('GRC','Greece','Southern Europe & Turkey'),('TUR','Turkey','Southern Europe & Turkey'),
+ ('JPN','Japan','Asia-Pacific'),('KOR','South Korea','Asia-Pacific'),('AUS','Australia','Asia-Pacific'),('IND','India','Asia-Pacific'),
+ ('IDN','Indonesia','Asia-Pacific'),('THA','Thailand','Asia-Pacific'),('ZAF','South Africa','Africa')]
+ISOS=[o[0] for o in ORDER]
+G=pd.read_stata(f'{ROOT}/ext/gmd/data/final/data_final.dta')
+G=G[G.ISO3.isin(ISOS)&(G.year>=1950)&(G.year<=2022)].copy(); G['year']=G.year.astype(int)
+WEO=pd.read_stata(f'{SRC}/IMF/IMF_WEO.dta'); FPP=pd.read_stata(f'{SRC}/IMF/IMF_FPP.dta'); HDD=pd.read_stata(f'{SRC}/IMF/IMF_HDD.dta')
+for d_ in (WEO,FPP,HDD): d_['year']=d_.year.astype(int)
+PWT=pyreadr.read_r(f'{ROOT}/ext/pwt10/data/pwt10.01.rda')['pwt10.01']; PWT['year']=PWT.year.astype(int)
+b,a=butter(2,[(1/9)/0.5,0.49/0.5],btype='band')
+
+GROWTH_PATCH=[('AUT',1988),('SWE',1981),('PRT',1988),('PRT',1990)]   # GMD splice errors (vs PWT and Maddison)
+MONEY_MANUAL=[('ITA',1999),('ESP',1999),('GRC',1999),('CAN',2007)]    # euro changeover / series redefinitions
+UNEMP_BREAK=[('ZAF',1995)]                                           # survey change
+FIX={iso:{} for iso in ISOS}
+
+def first_year(df,iso,col):
+    s=df[(df.ISO3==iso)&df[col].notna()&(df.year<=2022)].year
+    return int(s.min()) if len(s) else None
+
+frames=[]
+for iso in ISOS:
+    d=G[G.ISO3==iso].sort_values('year').set_index('year').reindex(range(1950,2023))
+    o=pd.DataFrame(index=d.index); o['iso']=iso
+    rg=d.rGDP.copy(); defl=d.deflator.copy()
+    # 1. growth patches
+    for (i,y) in GROWTH_PATCH:
+        if i!=iso: continue
+        pw=PWT[PWT.isocode==iso].set_index('year').rgdpna
+        g_new=pw[y]/pw[y-1]; old=rg[y]; new=rg[y-1]*g_new; f=new/old
+        rg.loc[y:]=rg.loc[y:]*f; defl.loc[y:]=defl.loc[y:]/f
+    o['rGDP']=rg; o['growth']=100*rg.pct_change(); o['rGDP_USD']=d.rGDP_USD; o['deflator']=defl
+    for (i,y) in GROWTH_PATCH:
+        if i==iso:   # [year, GMD growth, replacement (PWT) growth]
+            FIX[iso].setdefault('growth_patch',[]).append([y,round(100*(d.rGDP[y]/d.rGDP[y-1]-1),1),round(float(o.growth[y]),1)])
+    # 2. contributions (GDP-deflator real); exports/imports only as net exports
+    for k in ['cons','inv','exports','imports']:
+        o['r_'+k]=d[k]/defl*100
+    y0=o.rGDP.shift(1)
+    o['c_C']=100*o.r_cons.diff()/y0; o['c_I']=100*o.r_inv.diff()/y0
+    o['c_X']=100*o.r_exports.diff()/y0; o['c_M']=-100*o.r_imports.diff()/y0
+    o['c_NX']=o.c_X+o.c_M
+    o['c_resid']=o.growth-(o.c_C+o.c_I+o.c_NX)
+    blank=(o.c_resid.abs()>3)|o.index.isin([y for (i,y) in GROWTH_PATCH if i==iso])
+    bl=[int(y) for y in o.index[blank & (o.index>=1971)]]
+    for c in ['c_C','c_I','c_X','c_M','c_NX']: o.loc[blank,c]=np.nan
+    if bl: FIX[iso]['contrib_blank']=bl
+    for k in ['cons_GDP','inv_GDP','exports_GDP','imports_GDP','strate','ltrate','infl','unemp','CA_GDP','REER','USDfx',
+              'BankingCrisis','CurrencyCrisis','SovDebtCrisis']:
+        o[k]=d[k]
+    for (i,y) in UNEMP_BREAK:
+        if i==iso: o['unemp_break']=(o.index==y); FIX[iso]['unemp_break']=y
+    if 'unemp_break' not in o: o['unemp_break']=False
+    o['real_strate']=o.strate-o.infl
+    # 3. budget: WEO from its first year, IMF FPP before (level-matched, cut at coverage breaks)
+    o['govexp_GDP_gmd']=d.govexp_GDP; o['govrev_GDP_gmd']=d.govrev_GDP; o['govdef_GDP_gmd']=d.govdef_GDP; o['govdebt_GDP_gmd']=d.govdebt_GDP
+    w=WEO[WEO.ISO3==iso].set_index('year').reindex(o.index); f=FPP[FPP.ISO3==iso].set_index('year').reindex(o.index)
+    s=first_year(WEO,iso,'IMF_WEO_govexp_GDP')
+    exp=pd.Series(np.nan,index=o.index); bal=pd.Series(np.nan,index=o.index); hist=pd.Series(False,index=o.index)
+    exp.loc[s:]=w.IMF_WEO_govexp_GDP.loc[s:]; bal.loc[s:]=w.IMF_WEO_govdef_GDP.loc[s:]
+    fe,fr,fb=f.IMF_FPP_govexp_GDP,f.IMF_FPP_govrev_GDP,f.IMF_FPP_govdef_GDP
+    start=s
+    if s>1950 and not np.isnan(fe.get(s,np.nan)):
+        ae=exp[s]-fe[s]; ab=bal[s]-fb[s]
+        t=s-1
+        while t>=1950 and not np.isnan(fe.get(t,np.nan)):
+            de=fe[t+1]-fe[t]; dr=fr[t+1]-fr[t]; db=fb[t+1]-fb[t]
+            if max(abs(de),abs(dr))>6 and abs(db)<0.5*max(abs(de),abs(dr)): break   # coverage break between t and t+1
+            exp[t]=fe[t]+ae; bal[t]=fb[t]+ab; hist[t]=True; start=t; t-=1
+        FIX[iso]['fiscal']={'weo_from':s,'hist_from':start if start<s else None,'level_adj_exp':round(float(ae),1),'level_adj_bal':round(float(ab),1)}
+    else:
+        FIX[iso]['fiscal']={'weo_from':s,'hist_from':None}
+    # breaks inside the assembled series (spending jumps not matched by the balance)
+    brk=[]
+    for t in range(max(start,1951),2023):
+        de=exp.get(t,np.nan)-exp.get(t-1,np.nan); db=bal.get(t,np.nan)-bal.get(t-1,np.nan)
+        if not np.isnan(de) and abs(de)>6 and abs(db)<0.5*abs(de): brk.append(t)
+    if brk: FIX[iso]['fiscal']['breaks']=brk
+    o['govexp_GDP']=exp; o['govdef_GDP']=bal; o['govrev_GDP']=exp+bal; o['fiscal_hist']=hist
+    o['fiscal_break']=o.index.isin(brk)
+    # 4. debt: WEO from its first year, HDD before (ratio-matched)
+    sd=first_year(WEO,iso,'IMF_WEO_govdebt_GDP'); h=HDD[HDD.ISO3==iso].set_index('year').IMF_HDD_govdebt_GDP.reindex(o.index)
+    debt=pd.Series(np.nan,index=o.index); dh=pd.Series(False,index=o.index)
+    debt.loc[sd:]=w.IMF_WEO_govdebt_GDP.loc[sd:]
+    j=[y for y in range(sd,2016) if not np.isnan(h.get(y,np.nan))]
+    if j:
+        ja=j[0]; ratio=debt[ja]/h[ja]
+        pre=h.loc[:sd-1].dropna(); debt.loc[pre.index]=pre*ratio; dh.loc[pre.index]=True
+        FIX[iso]['debt']={'weo_from':sd,'hdd_ratio':round(float(ratio),3)}
+    else:
+        FIX[iso]['debt']={'weo_from':sd,'hdd_ratio':None}
+    o['govdebt_GDP']=debt; o['debt_hist']=dh
+    # 5. money: log growth, M2 chain-linked with M3 (then M1) where M2 stops; real = log nominal - log(1+inflation)
+    gm={m:100*np.log(d[m]).diff() for m in ['M2','M3','M1']}
+    mg=gm['M2'].copy(); src=pd.Series(np.where(mg.notna(),'M2',None),index=d.index,dtype=object)
+    last_m2=d.M2.last_valid_index()
+    for alt in ['M3','M1']:
+        fill=(mg.isna())&(gm[alt].notna())&(d.index>(last_m2 if last_m2 is not None else 0))
+        mg[fill]=gm[alt][fill]; src[fill]=alt
+    rm=mg-100*np.log1p(o.infl/100)
+    drop=((rm.abs()>40)|o.index.isin([y for (i,y) in MONEY_MANUAL if i==iso]))&mg.notna()
+    dl=[int(y) for y in o.index[drop & (o.index>=1970)]]
+    mg[drop]=np.nan; rm[drop]=np.nan
+    if dl: FIX[iso]['money_dropped']=dl
+    o['money_growth']=mg; o['money_src']=src.where(mg.notna()); o['real_money_growth']=rm
+    # business cycle: 2-9y band-pass of log real GDP (zero-phase), full 1950-2022 run-in
+    sl=np.log(o.rGDP).interpolate(limit=2); ok=sl.notna()
+    cyc=pd.Series(np.nan,index=o.index); ph=pd.Series(np.nan,index=o.index)
+    x=sl[ok].values; c=filtfilt(b,a,x-x.mean()); cyc[ok]=c; ph[ok]=np.angle(hilbert(c))
+    o['cycle']=cyc; o['phase']=ph
+    frames.append(o.reset_index().rename(columns={'index':'year'}))
+P=pd.concat(frames,ignore_index=True)
+
+# rest-of-world cycle for each economy: mean of the other 25 standardized cycles; and RoW phase
+W=P.pivot(index='year',columns='iso',values='cycle').loc[1955:2022]
+Z=(W-W.loc[1970:2022].mean())/W.loc[1970:2022].std()
+PH=P.pivot(index='year',columns='iso',values='phase').loc[1955:2022]
+row={}; rowph={}
+for iso in ISOS:
+    others=[i for i in ISOS if i!=iso]
+    row[iso]=Z[others].mean(axis=1)
+    rowph[iso]=np.angle(np.exp(1j*PH[others]).mean(axis=1))
+P=P.merge(pd.DataFrame(row).stack().rename('row_cycle').reset_index().rename(columns={'level_1':'iso'}),on=['year','iso'],how='left')
+P=P.merge(pd.DataFrame(rowph,index=PH.index).stack().rename('row_phase').reset_index().rename(columns={'level_1':'iso'}),on=['year','iso'],how='left')
+P['cycle_z']=P.groupby('iso').cycle.transform(lambda s:(s-s[(P.loc[s.index,'year']>=1970)].mean())/s[(P.loc[s.index,'year']>=1970)].std())
+P.to_csv('panel.csv',index=False)
+
+# ---------------- global factors ----------------
+A=P[(P.year>=1965)].copy()
+wts=A.pivot(index='year',columns='iso',values='rGDP_USD'); w=wts.div(wts.sum(1),axis=0)
+gr=A.pivot(index='year',columns='iso',values='growth')
+glob=pd.DataFrame(index=range(1965,2023))
+glob['world_growth']=(gr*w).sum(1,min_count=20)
+glob['n_contracting']=(gr<0).sum(1)
+imr=A.pivot(index='year',columns='iso',values='imports_GDP')
+glob['world_imports_GDP']=(imr*w).sum(1,min_count=20)/w.where(imr.notna()).sum(1)
+inf=A.pivot(index='year',columns='iso',values='infl')
+glob['infl_med']=inf.median(1); glob['infl_q25']=inf.quantile(.25,axis=1); glob['infl_q75']=inf.quantile(.75,axis=1)
+sr=A.pivot(index='year',columns='iso',values='strate')
+glob['us_strate']=sr['USA']; glob['strate_med_ex_us']=sr.drop(columns='USA').median(1)
+dsr=sr.diff(); glob['share_raising']=(dsr>0).sum(1)/dsr.notna().sum(1)
+glob['n_raising']=(dsr>0).sum(1); glob['n_rate_obs']=dsr.notna().sum(1)
+bc=A.pivot(index='year',columns='iso',values='BankingCrisis'); glob['banking_onsets']=bc.sum(1)
+cc=A.pivot(index='year',columns='iso',values='CurrencyCrisis'); glob['currency_onsets']=cc.sum(1)
+glob['us_reer']=A[A.iso=='USA'].set_index('year').REER
+bp=pd.read_csv(f'{ROOT}/ext/owid/datasets/Crude Oil Consumption vs. Price - BP Statistics (2016)/Crude Oil Consumption vs. Price - BP Statistics (2016).csv')
+bp=bp[bp.Entity=='World'].set_index('Year')['Crude oil price (BP Statistics (2016))']
+br=pd.read_csv(f'{ROOT}/ext/oilprices/data/brent-year.csv'); br['year']=br.Date.str[:4].astype(int); br=br.set_index('year').Price
+Gu=pd.read_stata(f'{ROOT}/ext/gmd/data/final/data_final.dta'); cpi=Gu[Gu.ISO3=='USA'].assign(year=lambda d:d.year.astype(int)).set_index('year').CPI
+br_real=br*cpi.loc[2015]/cpi.reindex(br.index)
+ov=pd.concat([bp,br_real],axis=1,keys=['bp','eia']).loc[1988:2015].dropna()
+oil=bp.reindex(range(1965,2023)).copy(); oil.loc[2016:2022]=br_real.loc[2016:2022]
+glob['oil_real_2015usd']=oil
+r26=json.load(open(f'{ROOT}/internal/panel26_results.json'))
+for ch in ['GDP','inv','imports','strate','govexp']:
+    glob['sync_'+ch]=pd.Series(r26['r_t'][ch],index=r26['years'])
+glob.index.name='year'; glob.to_csv('global.csv')
+json.dump({'order':ORDER,'fixes':FIX},open('meta.json','w'),indent=1,default=int)
+print("panel",P.shape,"global",glob.shape)
+print("oil splice check 1988-2015: mean |EIA/BP-1| =",f"{(ov.eia/ov.bp-1).abs().mean():.3f}")
+chk=P[(P.year>=1971)&P.c_C.notna()]
+print("identity after blanking: median |resid|",f"{chk.c_resid.abs().median():.2f}","max",f"{chk.c_resid.abs().max():.2f}","; blanked country-years:",sum(len(v.get('contrib_blank',[])) for v in FIX.values()))
+for iso in ISOS:
+    fx=FIX[iso]; print(iso, {k:v for k,v in fx.items()})
