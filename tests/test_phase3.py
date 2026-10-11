@@ -67,3 +67,14 @@ def test_report_readings():
     assert comparison.verdict((0.2, 0.019), (-0.1, 0.5), 'sig') == '**reverses**'
     assert comparison.verdict((0.1, 0.3), (0.1, 0.03), 'null') == '**becomes significant**'
     assert comparison.flag((0.2, 0.019), (-0.2, 0.019)) == 'sign change' and comparison.flag((0.2, 0.019), (0.2, 0.06)) == 'crosses 0.05'
+
+
+def test_csd_by_event_reproduces_csd_and_averages_events():
+    """The leave-one-crisis-out follow-up uses the Phase 3 test's own trends and surrogates: the full set is run_csd."""
+    from ef.paper1 import run_csd, run_csd_by_event
+    cfg = load_run_config(os.path.join(ROOT, 'configs/runs/phase3.yaml')); t = dict(cfg['tests']['csd'], surrogates=300)
+    D = load_data('S26'); a = run_csd(D, cfg, t); b = run_csd_by_event(D, cfg, t)['sets']
+    for n in ('ar1', 'var'): assert b['all'][f'tau_{n}'] == a[f'tau_{n}'] and b['all'][f'p_{n}'] == a[f'p_{n}']
+    assert b['all']['events'] == [1982, 1991, 2009, 2020] and 'only_1975' not in b
+    one = [b[f'only_{e}']['tau_var'] for e in b['all']['events']]
+    assert np.isclose(np.mean(one), a['tau_var']) and np.isclose(b['without_2009_2020']['tau_var'], np.mean(one[:2]))

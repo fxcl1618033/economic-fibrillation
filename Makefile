@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 followup golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -50,6 +50,9 @@ paper1: build-data             ## every Paper 1 test, as run, on S26; compare wi
 
 phase3: build-data             ## the pre-registered rerun on S26 and S30 with every variant -> results/, results/COMPARISON.md
 	$(PY) -m ef.phase3
+
+followup: build-data           ## follow-up checks Sid asked for after Phase 3 (not pre-registered) -> results/FOLLOWUP.md
+	$(PY) -m ef.followup
 
 golden: $(STAMP)               ## rewrite tests/golden_paper1.json from paper1/results
 	$(PY) tools/make_golden.py

@@ -274,6 +274,35 @@ def run_csd(D, cfg, t):
             | {'pre_crisis_events': _events_used(ar, yrs, rec, t['pre'], kt['strict'])})
 
 
+def run_csd_by_event(D, cfg, t, pairs=((2009, 2020),)):
+    """run_csd taken apart by recession: the same trends and the same surrogates (same seed and draw order), for each
+    event alone, with each event left out, and with each pair in `pairs` left out or kept alone. Not pre-registered
+    (Sid asked for it after Phase 3, 11 October 2026); the full set reproduces run_csd exactly."""
+    w = t['window']; yrs = _years(w); rec = cfg['recessions']; k = dict(win=t['win'], sigma=t['sigma'])
+    kt = dict(pre=t['pre'], strict=t.get('strict', False))
+    r = order.r(analytic(D.logs, D.years, w, t['convention'], cfg['band']))
+    obs = dict(zip(('ar1', 'var'), (crisis.tau_pre_by_event(x, yrs, rec, **kt) for x in tipping.rolling_ar1_var(r, **k))))
+    used = list(obs['var']); null = {n: {e: [] for e in used} for n in obs}
+    X, to_z = surrogate_source(D, w, t['convention'], cfg['band'])
+    for Xs in nulls.surrogates(X, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
+        for n, x in zip(('ar1', 'var'), tipping.rolling_ar1_var(order.r(to_z(Xs)), **k)):
+            for e, v in crisis.tau_pre_by_event(x, yrs, rec, **kt).items(): null[n][e].append(v)
+    null = {n: {e: np.concatenate(v) for e, v in d.items()} for n, d in null.items()}
+    sets = {'all': used} | {f'only_{e}': [e] for e in used} | {f'without_{e}': [x for x in used if x != e] for e in used}
+    for pr in pairs:
+        if all(e in used for e in pr):
+            nm = '_'.join(map(str, pr)); sets[f'without_{nm}'] = [x for x in used if x not in pr]; sets[f'only_{nm}'] = list(pr)
+    out = {}
+    for s, ev in sets.items():
+        if not ev: continue
+        row = {'events': ev}
+        for n in obs:
+            o = float(np.mean([obs[n][e] for e in ev])); nu = np.mean([null[n][e] for e in ev], axis=0)
+            row |= {f'tau_{n}': o, f'p_{n}': float(nulls.p_upper(o, nu))}
+        out[s] = row
+    return {'sets': out, 'pre_crisis_events': _events_used(tipping.rolling_ar1_var(r, **k)[0], yrs, rec, t['pre'], kt['strict'])}
+
+
 def run_bifurcation(D, cfg, t):
     """kuramoto_bifurcation.py: implied coupling K/Kc and the post-crisis change in the recovery rate."""
     w = t['window']; yrs = _years(w); rec = cfg['recessions']; k = dict(win=t['win'], sigma=t['sigma'])
