@@ -5,7 +5,8 @@ built on them yet; this note records what G0 must handle. Counts are for the 30 
 
 ## Bank lending: BIS Locational Banking Statistics
 
-The June 2026 release (data 1977-Q4 to 2025-Q4), downloaded by Sid on 15 July. Cross-border claims of banks located
+The end-December 2025 release (30 April 2026; bulk file dated 10 June 2026, data 1977-Q4 to 2025-Q4), downloaded by
+Sid on 15 July. Cross-border claims of banks located
 in a reporting country on residents of a counterparty country, quarterly stocks in millions of US dollars.
 
 | Year-end | Directed pairs with a value | Economies reporting as lenders |

@@ -99,8 +99,8 @@ downloads:
   # latest release, so a new download would differ: never re-fetch silently. tools/fetch_data.py verifies them and,
   # when one is missing, restores it from `archive` (a copy on Sid's Mac) or from the gzip copy in data/archive/.
   - id: bis_lbs
-    what: BIS Locational Banking Statistics, bulk file, all series (cross-border bank claims and liabilities by reporting and counterparty country), the June 2026 release with data from 1977-Q4 to 2025-Q4. Values in millions of US dollars
-    release: "Statistical release: BIS international banking statistics and global liquidity indicators at end-December 2025", 30 April 2026 (https://www.bis.org/statistics/rppb2604.htm). The bulk file inside the zip is dated 2026-06-10; the next release (end-March 2026) came on 31 July 2026
+    what: BIS Locational Banking Statistics, bulk file, all series (cross-border bank claims and liabilities by reporting and counterparty country), bulk file of 10 June 2026 from the end-December 2025 release, with data from 1977-Q4 to 2025-Q4. Values in millions of US dollars
+    release: "Statistical release: BIS international banking statistics and global liquidity indicators at end-December 2025, 30 April 2026 (https://www.bis.org/statistics/rppb2604.htm). The bulk file inside the zip is dated 2026-06-10; the next release (end-March 2026) came on 31 July 2026"
     url: https://data.bis.org/static/bulk/WS_LBS_D_PUB_csv_col.zip   # listed on https://data.bis.org/bulkdownload
     downloaded: 2026-07-15           # by Sid
     refetch: The URL always serves the newest vintage (on 11 October 2026 the bulk page listed a file dated 14 Sept 2026, with data to end-March 2026), and the BIS does not list older vintages of the bulk file. If the pinned copy is lost, download the current file from this URL, pin it here with its release name, date and new checksums, and rerun everything built on it - the bank edges will change through added quarters and revisions. Sid keeps a backup of data/raw/bis (11 October 2026)
