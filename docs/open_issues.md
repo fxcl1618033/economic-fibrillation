@@ -140,7 +140,12 @@ date (a one-sided filter, or re-estimating phases on an expanding window). Repor
 `crisis_dating_test.py` needs `jst.xlsx`, which was never pinned. GMD carries `data/clean/aggregators/JST/JST.dta`
 (pinned) as a likely replacement. History only; no paper claim depends on it.
 
-## 17. Sample definition — WAITING FOR SID
+## 17. Sample definition — DECIDED 11 October 2026
+
+**Decision (Sid):** S30 is the main sample for Paper 1 and the GNN; no S31 run, because the UAE's 1991–92 gap breaks the
+filter. The inclusion rule below is now enforced in code (`src/ef/data/maddison.py`) and reported per economy in
+`docs/data_validation.md` (`make data`). Still to do in the S30 rerun: leave each added economy out in turn.
+
 
 Working assumption: main sample S30 = the 26 + China, Brazil, Saudi Arabia and Iran; S26 is the frozen reference;
 S31 (adding the UAE) is a sensitivity run only. Inclusion rule to state before any rerun: an economy enters if its

@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify asrun test golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -30,7 +30,13 @@ fetch: $(STAMP)                ## fetch the pinned sources and verify their chec
 verify: $(STAMP)               ## verify checksums of the pinned sources only
 	$(PY) tools/fetch_data.py --verify
 
-data: fetch                    ## fetch -> verify -> build -> validate (build and validate arrive in Phase 1)
+data: fetch build-data validate  ## fetch -> verify -> build -> validate, from nothing
+
+build-data: fetch              ## build panel26, the atlas files and the Maddison panels into build/data; check them
+	$(PY) -m ef.data.build --quiet
+
+validate: build-data           ## validation report per economy: build/data/VALIDATION.md and docs/data_validation.md
+	$(PY) -m ef.data.validate
 
 asrun: fetch                   ## rerun every frozen script; EXACT or MATCH everywhere, then the reported-precision check
 	$(PY) tools/rerun_asrun.py
