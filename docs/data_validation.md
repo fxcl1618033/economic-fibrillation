@@ -9,6 +9,28 @@ An economy enters if its Maddison GDP per capita and population are complete for
 - **United Arab Emirates fails**: Maddison GDP per capita is missing in 1991, 1992. Excluded; no S31 run.
 - All 30 of the 30 S30 economies pass.
 
+## Share of world GDP
+
+Real GDP (GDP per capita × population, Maddison's 2011 PPP dollars) as a share of the world total. The world is every Maddison entity, with the former USSR, Czechoslovakia and Yugoslavia counted as the aggregates Maddison gives for them, so nothing is counted twice; North Korea has no data before 1990.
+
+| Sample | 1970 | 1990 | 2022 | Mean 1970–2022 |
+|---|---|---|---|---|
+| S26 | 67.1% | 66.7% | 51.4% | 62.2% |
+| S30 | 75.6% | 78.6% | 77.2% | 77.5% |
+
+Largest economies outside S30, by mean real GDP 1970–2022:
+
+| Economy | Mean real GDP 1970–2022 (trillion 2011 PPP dollars) | Maddison 1950–2022 |
+|---|---|---|
+| Russia | 2.18 | complete |
+| Poland | 0.54 | complete |
+| Argentina | 0.53 | complete |
+| Taiwan | 0.52 | complete |
+| Pakistan | 0.51 | complete |
+| Egypt | 0.50 | complete |
+| Nigeria | 0.43 | complete |
+| Ukraine | 0.40 | incomplete |
+
 ## The four added economies
 
 Cycle size is the standard deviation of the 2–9 year cycle in log GDP per capita, 1970–2022, in percent; the median of the 26 is 1.46%.

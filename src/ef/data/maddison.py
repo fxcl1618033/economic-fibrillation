@@ -39,6 +39,39 @@ def panel(sample, md=None, years=None):
     return out
 
 
+# Former states Maddison also gives as aggregates through 2022, with their successor states.
+AGGREGATES = {'SUN': ('RUS', 'UKR', 'BLR', 'KAZ', 'UZB', 'TKM', 'KGZ', 'TJK', 'ARM', 'AZE', 'GEO', 'MDA', 'LTU', 'LVA', 'EST'),
+              'CSK': ('CZE', 'SVK'), 'YUG': ('SRB', 'HRV', 'SVN', 'BIH', 'MKD', 'MNE')}
+
+
+def gdp_by_year(md, years=None):
+    """Real GDP (GDP per capita x population) of every entity, year x ISO, over the span."""
+    y0, y1 = years or config.load()['years']
+    d = md[md.year.between(y0, y1)].dropna(subset=['gdppc', 'pop'])
+    return (d.assign(gdp=d.gdppc * d['pop'])).pivot(index='year', columns='ISO', values='gdp')
+
+
+def world_gdp(md, years=None):
+    """World real GDP per year: every Maddison entity, with the former USSR, Czechoslovakia and Yugoslavia counted as
+    their aggregates and their successor states dropped, so nothing is counted twice. Entities with no data in a year
+    (North Korea before 1990) are left out of that year."""
+    G = gdp_by_year(md, years); succ = [i for v in AGGREGATES.values() for i in v]
+    return G.drop(columns=[c for c in succ if c in G.columns]).sum(axis=1, min_count=1)
+
+
+def world_share(md, isos, years=None):
+    """Share of world real GDP produced by the economies in isos, per year."""
+    return gdp_by_year(md, years)[list(isos)].sum(axis=1) / world_gdp(md, years)
+
+
+def largest_outside(md, isos, span=(1970, 2022), n=8):
+    """The n largest economies outside isos by mean real GDP over span (successor states, not the aggregates), with
+    whether their Maddison series is complete for the configured years."""
+    G = gdp_by_year(md, span); G = G.drop(columns=[c for c in list(isos) + list(AGGREGATES) if c in G.columns])
+    top = G.mean().sort_values(ascending=False).head(n)
+    return [(iso, float(v), not any(gaps(md, iso).values())) for iso, v in top.items()]
+
+
 def wide(long, var='gdppc'):
     """Year x economy table of one variable, columns in sample order."""
     return long.pivot(index='year', columns='iso', values=var)[list(dict.fromkeys(long.iso))]

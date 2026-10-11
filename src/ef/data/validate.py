@@ -68,6 +68,28 @@ def repairs(fx):
     return out
 
 
+OTHER = {'RUS': 'Russia', 'POL': 'Poland', 'ARG': 'Argentina', 'TWN': 'Taiwan', 'PAK': 'Pakistan', 'EGY': 'Egypt',
+         'NGA': 'Nigeria', 'UKR': 'Ukraine', 'VEN': 'Venezuela', 'PHL': 'Philippines', 'IRQ': 'Iraq', 'COL': 'Colombia'}
+
+
+def world_section(md, s26, s30, years=(1970, 1990, 2022)):
+    """Each sample's share of world real GDP, and the largest economies outside S30 (the inclusion rule decides only
+    among candidates; this shows which large economies are not candidates)."""
+    sh = {s: maddison.world_share(md, isos) for s, isos in (('S26', s26), ('S30', s30))}
+    L = ["## Share of world GDP", "",
+         "Real GDP (GDP per capita × population, Maddison's 2011 PPP dollars) as a share of the world total. The world is "
+         "every Maddison entity, with the former USSR, Czechoslovakia and Yugoslavia counted as the aggregates Maddison "
+         "gives for them, so nothing is counted twice; North Korea has no data before 1990.", "",
+         "| Sample | " + " | ".join(map(str, years)) + " | Mean 1970–2022 |", "|---|" + "---|" * (len(years) + 1)]
+    for s, w in sh.items():
+        L.append(f"| {s} | " + " | ".join(f"{100 * w[y]:.1f}%" for y in years) + f" | {100 * w.loc[1970:2022].mean():.1f}% |")
+    L += ["", "Largest economies outside S30, by mean real GDP 1970–2022:", "",
+          "| Economy | Mean real GDP 1970–2022 (trillion 2011 PPP dollars) | Maddison 1950–2022 |", "|---|---|---|"]
+    for iso, v, ok in maddison.largest_outside(md, s30):
+        L.append(f"| {OTHER.get(iso, iso)} | {v / 1e9:.2f} | {'complete' if ok else 'incomplete'} |")
+    return L + [""]
+
+
 def report(data_dir):
     cfg = config.load(); y0, y1 = cfg['years']
     md = maddison.load()
@@ -102,8 +124,9 @@ def report(data_dir):
             L.append(f"- **{NAMES[iso]} fails**: Maddison GDP per capita is missing in {', '.join(map(str, info[iso]['gaps']['gdppc']))}"
                      f"{' and population in ' + ', '.join(map(str, info[iso]['gaps']['pop'])) if info[iso]['gaps']['pop'] else ''}. Excluded; no S31 run.")
     n_ok = sum(info[i]['ok'] for i in s30)
-    L += [f"- All {n_ok} of the {len(s30)} S30 economies pass.", "",
-          "## The four added economies", "",
+    L += [f"- All {n_ok} of the {len(s30)} S30 economies pass.", ""]
+    L += world_section(md, s26, s30)
+    L += ["## The four added economies", "",
           f"Cycle size is the standard deviation of the 2–9 year cycle in log GDP per capita, 1970–2022, in percent; the median of the 26 is {med26:.2f}%.", ""]
     for iso in added:
         x = info[iso]

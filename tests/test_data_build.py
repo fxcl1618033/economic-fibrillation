@@ -80,3 +80,16 @@ def test_S30_panel_is_complete_and_exact(built):
 def test_uae_fails_the_inclusion_rule():
     with pytest.raises(ValueError, match='ARE'):
         maddison.panel(['ARE'])
+
+
+@needs_data
+def test_world_share_counts_nothing_twice():
+    md = maddison.load(); G = maddison.gdp_by_year(md); W = maddison.world_gdp(md)
+    succ = [i for v in maddison.AGGREGATES.values() for i in v]
+    every = [c for c in G.columns if c not in succ]
+    assert np.allclose(maddison.world_share(md, every), 1.0)
+    s26, s30 = config.sample('S26'), config.sample('S30'); added = [i for i in s30 if i not in s26]
+    assert np.allclose(maddison.world_share(md, s30), maddison.world_share(md, s26) + maddison.world_share(md, added))
+    for agg, parts in maddison.AGGREGATES.items():       # each aggregate is close to its successors' sum in 2022
+        assert abs(G.loc[2022, agg] / G.loc[2022, list(parts)].sum() - 1) < 0.1
+    assert W.loc[1970] < G.loc[1970].sum()                 # the successor states were dropped
