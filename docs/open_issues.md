@@ -177,7 +177,7 @@ Found in Phase 2. Bonferroni over the five lags for lead-1 and after-2 is 5 × 1
 registry A8 print 0.095 (5 × the rounded 0.019). Benjamini–Hochberg (0.047, 0.063) is right. **What to do:** propose the
 corrected text in the Phase 3 text-changes file; Sid decides.
 
-## 21. MST decade means in Methods 6.5 and 7.7 — DECIDED 11 October 2026: windows inside 1970–2022, 0.677 vs 0.379 (1.8×); 0.706, 0.652 and 0.771 dropped (edits A2, A3). 0.652 turned out to be L(1979) alone
+## 21. MST decade means in Methods 6.5 and 7.7 — DECIDED 11 October 2026: decade means 1979–89 vs 2013–22, 0.677 vs 0.379 (1.8×), the same under either window rule; rolling windows may start in 1962, never earlier, with inside 1970–2022 as sensitivity; 0.706, 0.652 and 0.771 dropped (edits A2, A3). 0.652 turned out to be L(1979) alone
 
 Found in Phase 2 (`src/ef/network.py`; the stored `mst_results.json` reproduces exactly). The Methods' 0.706 (1970s)
 reproduces only if the 10-year windows may reach back into the 1950–69 run-in, so that 1970 counts (mean of 1970–79,

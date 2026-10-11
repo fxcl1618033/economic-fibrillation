@@ -25,15 +25,17 @@ against $0.379$ in 2013–2022, a factor of $1.9\times$; the single-year endpoin
 individual windows and are not the interpreted quantity) — and whether contraction coincides with the pre-crisis
 windows."
 
-**Proposed:** "The 10-year windows are kept inside the 1970–2022 analysis window, so that no value of $L$ draws on the
-1950–69 run-in; $L(t)$ is therefore defined from 1979. Two questions are asked of $L$: whether it trends secularly —
-reported as a description via decade means, $0.677$ in 1979–89 against $0.379$ in 2013–2022, a factor of
-$1.8\times$ — and whether contraction coincides with the pre-crisis windows."
+**Proposed:** "Rolling windows may start in 1962 and never earlier, so that each has at least twelve years of filter
+run-in; $L(t)$ is therefore defined from 1971. Two questions are asked of $L$: whether it trends secularly —
+reported as a description via decade means, $0.677$ in 1979–89 (the first decade whose windows all lie inside the
+1970–2022 analysis window) against $0.379$ in 2013–2022, a factor of $1.8\times$ — and whether contraction coincides
+with the pre-crisis windows."
 
-**Why:** Sid's decision (open issue 21). The 1970s mean of 0.706 needed windows reaching into the run-in, which the
-same paragraph excluded; the endpoint 0.771 matched no stored result (the stored value is 0.781). The new values come
-from `ef.network` on S26 (`run_mst` with window 1970–2022). **The headline factor changes from 1.9× to 1.8×.** The
-sentence that follows (the pre-crisis test results) is updated from Phase 3 (Part C).
+**Why:** Sid's decisions (open issue 21; rolling-window rule of 11 October 2026). The 1970s mean of 0.706 mixed
+windows inside and outside the analysis window; the endpoint 0.771 matched no stored result (the stored value is
+0.781). The decade means come from `ef.network` on S26 and are the same with windows from 1962 or from 1970.
+**The headline factor changes from 1.9× to 1.8×.** The sentence that follows (the pre-crisis test results) is updated
+from Phase 3 (Part C).
 
 ### A3. §7.7 Window-convention sensitivity of the network measure
 
@@ -41,14 +43,14 @@ sentence that follows (the pre-crisis test results) is updated from Phase 3 (Par
 reach back into the 1950–69 run-in. Restricting windows to 1970 onward, $L$ is defined from 1979 and the decade-mean
 comparison becomes $0.652$ (1979–89) against $0.379$ (2013–2022). The convention is stated wherever $L$ is quoted."
 
-**Proposed:** "$L(t)$ is reported on 10-year windows kept inside 1970–2022 (§6.5). Allowing the windows to reach back
-into the 1950–69 run-in defines $L$ from 1971 but leaves every value from 1979 onward unchanged, so the decade means of
-§6.5 do not depend on this choice; it affects only the 1970s, which the stated convention excludes. The convention is
-stated wherever $L$ is quoted."
+**Proposed (retitled "Window convention of the rolling statistics"):** "Every rolling statistic — the network measure
+(§6.5), the decomposition (§6.1) and the early-warning and coupling tests (§6.7) — uses windows that may start in 1962
+and never earlier, leaving at least twelve years of filter run-in. As a sensitivity check each is recomputed with
+windows kept inside 1970–2022, dropping any pre-crisis window that is then only partly defined. For $L$ this changes no
+value from 1979 onward, so the decade means of §6.5 are unaffected; [Phase 3: the effect on the other rolling tests]."
 
-**Why:** with windows inside 1970–2022 the 1979–89 mean is 0.677, not 0.652; 0.652 is $L$ in the single year 1979,
-labelled as a decade mean (open issue 21). Windows reaching back to 1962 give exactly the same $L$ from 1979 onward
-(checked in code), so the convention affects only years the paper no longer quotes.
+**Why:** Sid's rolling-window rule (11 October 2026). The current §7.7 value 0.652 is $L$ in the single year 1979,
+labelled as a decade mean (open issue 21); the 1979–89 mean is 0.677 under either window rule (checked in code).
 
 ### A4. §6.7 Critical slowing down: two indicators plus the coupling test
 
@@ -119,10 +121,14 @@ pre-registration fixes σ = 8; the sentence is rewritten with the Phase 3 values
 Under the pre-registered conventions (P throughout; rolling windows inside 1970–2022) these Methods numbers will be
 recomputed and the text updated, with old and new values logged in `docs/decisions.md`:
 
-- §6.5: the pre-crisis MST trend (raw and detrended), now over 1991, 2009 and 2020.
+- §6.5: the pre-crisis MST trend (raw and detrended), with the inside-1970–2022 sensitivity (1991, 2009 and 2020).
 - §6.6: the phase-lead spread (0.403 years) and its surrogate statistics, computed so far under convention W.
-- §6.7: the early-warning results, now over 2009 and 2020 (autocorrelation, variance) and 1982–2020 (coupling test).
+- §6.7: the early-warning and coupling results under convention P (windows from 1962, the recessions they had), with
+  the inside-1970–2022 sensitivity.
+- §6.1: the decomposition (82.4%, 96.9%, the cross shares and the cross-term split), now with windows from 1962 and so
+  five recession windows including 1975; the current values become the inside-1970–2022 sensitivity. §7.6 says "on
+  four events", which becomes five.
 - §6.1: the GDP-weighted cross-term split with within-window mean weights.
 - §8: the reproduction statements, extended to the 30 economies.
-- The diagnostics figure caption: panel a shows windows inside 1970–2022, the decade means 0.677 and 0.379 (1.8×),
-  and no single-year endpoints.
+- The diagnostics figure caption: panel a shows L from 1971, the decade means 0.677 (1979–89) and 0.379 (2013–22),
+  1.8×, and no single-year endpoints.

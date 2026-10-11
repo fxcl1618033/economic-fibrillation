@@ -115,8 +115,9 @@ def run_amplitude(D, cfg, t):
 
 
 def run_diversification(D, cfg, t):
-    """diversification.py and diversification_equal.py, with the Methods' within-window mean GDP weights added."""
-    w = cfg['window']; yrs = _years(w); m = (D.years >= w[0]) & (D.years <= w[1]); rec = cfg['recessions']
+    """diversification.py and diversification_equal.py, with the Methods' within-window mean GDP weights added.
+    t['window'] sets the span the rolling windows may use (default: the statistics window, as run)."""
+    w = t.get('window', cfg['window']); yrs = _years(w); m = (D.years >= w[0]) & (D.years <= w[1]); rec = cfg['recessions']
     X = window_cycles(D.logs, D.years, w, cfg['band']); lev = D.levels[:, m]; out = {}
     for kind in t['weights']:
         W = decomposition.weights(lev, kind, t['win'])
@@ -132,11 +133,12 @@ def run_diversification(D, cfg, t):
 
 
 def run_cross_split(D, cfg, t):
-    """crossterm_split.py: the cross term's recession rise split into correlation and swing size."""
-    w = cfg['window']; yrs = _years(w); m = (D.years >= w[0]) & (D.years <= w[1])
+    """crossterm_split.py: the cross term's recession rise split into correlation and swing size.
+    t['window'] as in run_diversification; t['weights'] defaults to the as-run pair."""
+    w = t.get('window', cfg['window']); yrs = _years(w); m = (D.years >= w[0]) & (D.years <= w[1])
     X = window_cycles(D.logs, D.years, w, cfg['band']); lev = D.levels[:, m]
     return {k: decomposition.cross_split(X, decomposition.weights(lev, k, t['win']), yrs, cfg['recessions'], t['win'])
-            for k in ('gdp_end', 'equal')}
+            for k in t.get('weights', ('gdp_end', 'equal'))}
 
 
 def run_structure(D, cfg, t):

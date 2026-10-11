@@ -84,9 +84,9 @@ to the band or to growth rates, and no single large economy drives the result.
 
 | ID | Quantity | Value | p | Source | Status |
 |---|---|---|---|---|---|
-| E1 | MST mean edge length, decade means, windows inside 1970–2022: 1979–89 vs 2013–22 | 0.677 vs 0.379 (1.8×) | — | `ef.paper1.run_mst` (S26, window 1970–2022) | headline (descriptive); replaces 0.706 vs 0.379 (1.9×), which needed windows reaching into the run-in |
+| E1 | MST mean edge length, decade means 1979–89 vs 2013–22 (same with windows from 1962 or from 1970) | 0.677 vs 0.379 (1.8×) | — | `ef.network` on S26 (`tests/test_library.py`) | headline (descriptive); replaces 0.706 vs 0.379 (1.9×) |
 | E2 | Single-year endpoints 1971 vs 2022 (the old "~3×") | 0.781 vs 0.249 | — | mst_results.json | dropped (Sid, 11 Oct 2026); Methods' 0.771 matched no result |
-| E3 | Windows reaching back into the run-in (from 1962): L from 1971; 1979–89 and 2013–22 means unchanged | 0.677 vs 0.379 | — | `ef.network` | robustness; replaces 0.652, which was L(1979) alone |
+| E3 | Windows kept inside 1970–2022 (sensitivity): L from 1979; 1979–89 and 2013–22 means unchanged | 0.677 vs 0.379 | — | `ef.network` | robustness; replaces 0.652, which was L(1979) alone |
 | E4 | Pre-crisis MST contraction, Kendall τ (raw / detrended) | −0.171 / −0.086 | 0.167 / 0.316 | mst_results.json; Methods §6.5 | null; detrended values not reproduced (open issue 23); both rerun in Phase 3 under the new windows |
 | E5 | The old "p = 0.47" for E4 | — | not reproducible | — | do not cite |
 | E6 | Largest-eigenvalue fragility trend | τ +0.10 | 0.306 | mst_results.json | null |

@@ -31,6 +31,7 @@ Stated as Paper 1 states them, with the direction fixed in advance.
 | Data | Maddison Project Database 2023, `sbgraves237/maddisondata` at commit `3ed424b6`, `MaddisonData.rda` sha256 `63a3cff9…` (`data/sources.yaml`). Channel tests: the repaired atlas panel built by `make data` (Global Macro Database read as float64) |
 | Cycle | log real GDP per capita minus its 1950–2022 mean; Butterworth band-pass, order 2, 2.04–9 years, forward–backward (scipy defaults); run-in span 1950–2022 |
 | Statistics window | 1970–2022 (T = 53) |
+| Rolling windows | may start in 1962 or later, never earlier: at least 12 years of filter run-in (section 3) |
 | Recessions | 1975, 1982, 1991, 2009, 2020 (Kose, Sugawara and Terrones 2020). Downturns 1998, 2001, 2012 for description only |
 | Nulls | Circular shift of the recession indicator (k = 1…52; floor 1/53 = 0.019). 5,000 spectrum-preserving surrogate economy sets (floor 1/5001 = 0.0002), drawn in the as-run order |
 | Seeds | As run, per test: arc bootstrap 11, amplitude 404, decomposition 707, structure 909, MST 303, phase lags 505, early warning 101, coupling 202, channel anatomy 2610. The same seeds for S26, S30 and every variant |
@@ -51,20 +52,35 @@ Stated as Paper 1 states them, with the direction fixed in advance.
 Surrogates under P and E are drawn from the 1950–2022 cycles and passed through the same steps as the real data
 (as `structure_tests.py` did); under W and N from the window cycles.
 
-**Rolling windows.** Every rolling-window statistic uses windows kept inside 1970–2022. This extends Sid's decision
-for the network measure (11 October 2026) to all rolling statistics, so that no reported number reaches into the
-1950–69 run-in. **Sid to confirm this extension**, because it shrinks the early-warning tests:
+**Rolling windows.** One rule for every rolling statistic (Sid, 11 October 2026): a window may start in 1962 or
+later, never earlier, so every window has at least 12 years of filter run-in (the band-pass starts in 1950). This is
+the primary setting for the network measure, the decomposition, and the early-warning and coupling tests.
 
-| Test | Window | First defined year | Recessions usable |
+| Test | Window | First defined year | Recessions used |
 |---|---|---|---|
-| MST length and largest eigenvalue (E1–E6) | 10 years | 1979 | pre-crisis trends: 1991, 2009, 2020 |
-| Decomposition (D1–D9) | 10 years | 1979 | recession windows 1982, 1991, 2009, 2020 (as before) |
-| Lag-1 autocorrelation and variance of r (F1, F2) | 15 years | 1984 | pre-crisis trends: 2009, 2020 |
-| Recovery rate, coupling test (F4) | 12 years | 1981 | post-crisis windows: 1982, 1991, 2009, 2020 |
+| MST length and largest eigenvalue (E1–E6) | 10 years | 1971 | pre-crisis trends: 1975 (partly defined: 1971–74 of 1967–74), 1982, 1991, 2009, 2020 |
+| Decomposition (D1–D9) | 10 years | 1971 | recession windows: 1975, 1982, 1991, 2009, 2020 |
+| Lag-1 autocorrelation and variance of r (F1, F2) | 15 years | 1976 | pre-crisis trends: 1982 (partly defined: 1976–81 of 1974–81), 1991, 2009, 2020; 1975 has no defined year |
+| Recovery rate, coupling test (F4) | 12 years | 1973 | post-crisis windows: 1975, 1982, 1991, 2009, 2020 |
 
-Pre-crisis trend windows (8 years) must be fully defined (`tau_pre(strict=True)`); the as-run code kept partly
-undefined windows and pulled their trends towards zero. The as-run windows (reaching back to 1962) are reported as
-sensitivity.
+The tipping tests keep every recession they had when first run. A partly defined pre-crisis window is kept as it was
+run: pairs of years with a missing value count as zero, which pulls that recession's trend towards zero.
+
+**Two consequences.** The MST decade comparison stays 1979–89 against 2013–22: 1979–89 is the first decade whose
+windows all lie inside 1970–2022, and both means (0.677 and 0.379) are the same under either rule. The decomposition,
+as first run, used windows inside 1970–2022 and so four recession windows (1982–2020); under the one rule the 1975
+recession window (1966–75) enters, so D1, D3, D4, D7, D8 and D9 will change. Their stored values become sensitivity
+numbers. They have not been recomputed under the new rule before this pre-registration was signed.
+
+**Sensitivity: strict inside 1970–2022.** Every rolling test is also run with windows kept inside 1970–2022 and with
+any partly defined pre-crisis window dropped (`tau_pre(strict=True)`):
+
+| Test | First defined year | Recessions used |
+|---|---|---|
+| MST and largest eigenvalue | 1979 | 1991, 2009, 2020 |
+| Decomposition | 1979 | 1982, 1991, 2009, 2020 (the setting as first run) |
+| Autocorrelation and variance | 1984 | 2009, 2020 |
+| Coupling test | 1981 | 1982, 1991, 2009, 2020 |
 
 ## 4. Tests, directions and what counts as replication
 
@@ -86,15 +102,15 @@ quantities have no test; the criterion says what would count as the same qualita
 | B-LOO | Leave each of the 30 economies out in turn (S26 did USA, DEU, JPN only) | A1, A2, A3, A5 | shift | — | reported as a table |
 | C1 | r against mean swing size, detrended (σ = 8 years) | Pearson, upper | shift; surrogates | +0.608, p 0.019 (W surrogate p 0.0006) | positive, p < 0.05 (shift) |
 | C2 | Same, raw | Pearson, upper | shift | +0.530, p 0.019 | positive, p < 0.05 |
-| D1, D3 | Cross term's share of the recession excess in world variance; weights: **within-window mean GDP** (the Methods) and equal | descriptive | — | 82.4% / 96.9% | above 50% under both weights |
-| D4 | Cross share of world variance, recession vs normal windows | descriptive | — | 0.723 vs 0.669; 0.880 vs 0.818 | recession share above normal |
+| D1, D3 | Cross term's share of the recession excess in world variance; weights: **within-window mean GDP** (the Methods) and equal | descriptive | — | 82.4% / 96.9% (windows inside 1970–2022, four recessions) | above 50% under both weights |
+| D4 | Cross share of world variance, recession vs normal windows | descriptive | — | 0.723 vs 0.669; 0.880 vs 0.818 (same windows) | recession share above normal |
 | D6 | Nominal surrogate p of the share ratio, and tests of the unnormalized Δcross and Δown | upper | surrogates | 0.48 / 0.35; 0.0002 | disclosure only (Methods 7.6) |
-| D7, D8 | Cross term's rise split into correlation, swing size and interaction | descriptive | — | 35/50/14%; 41/46/13% | both correlation and swing size positive |
-| D9 | Mean pairwise correlation and cycle s.d., normal → recession windows | descriptive | — | 0.376 → 0.490; × 1.14 | both rise |
+| D7, D8 | Cross term's rise split into correlation, swing size and interaction | descriptive | — | 35/50/14%; 41/46/13% (same windows; end-of-window weights) | both correlation and swing size positive |
+| D9 | Mean pairwise correlation and cycle s.d., normal → recession windows | descriptive | — | 0.376 → 0.490; × 1.14 (same windows) | both rise |
 | D10 | Fibrillation identity |Z| = Ā × R_A | holds exactly | — | below 10⁻¹⁸ | below 10⁻¹² |
 | D11 | Share of the recession excess in log world swing² from alignment vs swing size | upper (each part) | surrogates | 39.3% / 60.7%; p 0.103 / 0.0002 | swing part positive with p < 0.05 |
 | D12 | corr(R_A, r) | descriptive | — | +0.942 | positive |
-| E1 | MST mean edge length, decade means 1979–89 vs 2013–22 (windows inside 1970–2022) | descriptive | — | 0.677 vs 0.379 (1.8×) | 1979–89 above 2013–22 |
+| E1 | MST mean edge length, decade means 1979–89 vs 2013–22 (the same under either window rule) | descriptive | — | 0.677 vs 0.379 (1.8×) | 1979–89 above 2013–22 |
 | E4 | Pre-crisis MST contraction, Kendall τ over 8 years, raw and detrended (σ = 8) | lower | surrogates | null (τ −0.171, p 0.167 as run; detrended not reproduced, open issue 23) | stays null |
 | E6 | Pre-crisis trend in the largest eigenvalue | upper | surrogates | τ +0.10, p 0.306 | stays null |
 | E7 | Spread (s.d.) of phase leads | **lower** | surrogates | 0.403 yr, p 0.0002 (W) | p < 0.05 lower tail |
@@ -137,7 +153,7 @@ reported. Missing values are never filled in beyond the as-run two-year interpol
 | 12 | Channel anatomy on the repaired panel |
 | 13 | Norway, Switzerland and South Africa with Maddison growth replaced by GMD real GDP per capita growth for 1991–2011: A1–A5, C1, D1 and D3 on S26 and S30 |
 | 14 | A1, A2 and G1 under C (past-only phases) |
-| 21, 23 | MST under windows inside 1970–2022; detrended trend with σ = 8 |
+| 21, 23 | MST decade means 1979–89 vs 2013–22; windows from 1962 (primary) and inside 1970–2022 (sensitivity); detrended trend with σ = 8 |
 | 22 | The early-warning battery is two indicators (F1, F2) plus the coupling test (F4); the restoring time is dropped |
 
 ## 7. Not rerun
@@ -160,7 +176,7 @@ economies, not the sample).
 
 ## Sign-off
 
-- [ ] Sid has read this pre-registration, including the rolling-window extension in section 3.
+- [ ] Sid has read this pre-registration, including the rolling-window rule and its two consequences in section 3.
 - Signed off on: ____________
 
 ## Amendments
