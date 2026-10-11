@@ -1,0 +1,21 @@
+# Paths and samples for the src/ef library. Relative paths are from the repository root.
+# Analysis settings (band, window, crisis dates, convention, surrogates, seeds) get one config per run in Phase 2.
+
+paths:
+  raw: data/raw              # pinned sources, fetched by tools/fetch_data.py (git-ignored)
+  sources: data/sources.yaml
+  build: build               # everything generated (git-ignored)
+  results: results           # analysis results kept in git (Phase 3)
+
+years: [1950, 2022]          # Maddison panel span: band-pass run-in from 1950, statistics on 1970-2022
+
+samples:
+  # S26: the frozen reference sample of Paper 1
+  S26: [USA, GBR, DEU, FRA, ITA, JPN, CAN, ESP, AUS, KOR, IND, MEX, NLD, SWE,
+        CHE, BEL, ZAF, TUR, NOR, AUT, DNK, FIN, GRC, PRT, IDN, THA]
+  # S30: main sample for Paper 1 and the GNN (Sid, 11 October 2026)
+  S30: [USA, GBR, DEU, FRA, ITA, JPN, CAN, ESP, AUS, KOR, IND, MEX, NLD, SWE,
+        CHE, BEL, ZAF, TUR, NOR, AUT, DNK, FIN, GRC, PRT, IDN, THA, CHN, BRA, SAU, IRN]
+
+excluded:
+  ARE: "United Arab Emirates: Maddison series misses 1991-1992, which breaks the band-pass filter; no S31 run (Sid, 11 October 2026)"

@@ -1,0 +1,11 @@
+# The library lives in src/ef and is used from the repository (PYTHONPATH=src, set by the Makefile and pytest).
+[project]
+name = "ef"
+version = "0.1.0"
+description = "Economic Fibrillation: reproducible analysis library"
+requires-python = ">=3.13"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["slow: rebuilds the data from the pinned sources (about a minute)"]

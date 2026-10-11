@@ -7,6 +7,6 @@ pyreadr==0.5.7
 networkx==3.6.1
 openpyxl==3.1.5
 pyyaml==6.0.3
-pytest
+pytest==9.1.1
 # figure books and the atlas also need xelatex (TeX Live) with TeX Gyre Pagella, Inter and Latin Modern Math,
 # and pdftoppm (poppler-utils)

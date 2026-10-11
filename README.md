@@ -10,10 +10,13 @@ Author: Siddhant Shinde.
 ## Start
 
 ```bash
-pip install -r requirements.txt
-python3 tools/fetch_data.py      # pinned data, checksums verified
-python3 tools/rerun_asrun.py     # every stored result should reproduce EXACT
+make all     # Python 3.13 environment from requirements.lock, pinned data, as-run reproduction check, tests
+make help    # every target
 ```
+
+`make asrun` reruns every frozen script: Paper 1's results must come out EXACT; outputs built from the Global Macro
+Database may instead MATCH to floating-point rounding (its data are single precision, and logs round differently on
+different chips). The rules are in `src/ef/repro.py`, the Mac check in `docs/reproduction_check_mac.md`.
 
 Working with Claude Code: it reads `CLAUDE.md` automatically; point it at `HANDOFF.md` (the start prompt is in §0).
 
@@ -33,7 +36,8 @@ Working with Claude Code: it reads `CLAUDE.md` automatically; point it at `HANDO
 | The 31 economies in detail | `atlas/The 26 Economies 1970-2022 - Atlas.pdf` |
 | What has been tried with GNNs elsewhere | `docs/literature_review_gnn.md` |
 | The plan for Claude Code | `HANDOFF.md` |
-| Proof that it all reproduces | `docs/reproduction_check.md` |
+| Proof that it all reproduces | `docs/reproduction_check.md` (Linux) and `docs/reproduction_check_mac.md` (Sid's Mac) |
+| Decisions and why | `docs/decisions.md` |
 
 ## Figure books
 
