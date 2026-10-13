@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null gnn-g0 gnn-g1 golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null dtt gnn-g0 gnn-g1 golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -58,6 +58,9 @@ edge-null: build-data           ## amendment 4: edge-matched nulls, validated on
 	$(PY) -m ef.edge_null validate
 	$(PY) -m ef.edge_null run
 	$(PY) -m ef.edge_null report
+
+dtt: $(STAMP)                  ## DTT: reproduce Sid's report from its equations (D1) -> dtt/D0_reproduction.md, dtt/results/
+	$(PY) -m ef.dtt_runs reproduce
 
 gnn-g0: build-data             ## GNN stage G0: yearly graphs on S31 -> build/gnn/g0, gnn/G0_data_card.md, gnn/G0_missing_data.md
 	$(PY) -m ef.gnn.report

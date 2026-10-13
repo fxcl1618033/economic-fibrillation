@@ -1,0 +1,1157 @@
+{
+ "seed": 1310,
+ "run_at": "2026-10-13T20:18:40+00:00",
+ "B": [
+  {
+   "K": 0.0,
+   "report_mean_R2": 0.0318,
+   "mine_mean_R2": 0.03130519456460458,
+   "se_mine": 0.0005091988055895521,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.01565259728230229,
+   "mine_mc_var": 0.015655520773012823,
+   "report_mc_over_theory": 0.9993714644877436,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 0.267,
+   "report_mean_R2": 0.0398,
+   "mine_mean_R2": 0.04031112881475346,
+   "se_mine": 0.000558678855969508,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.02015556440737673,
+   "mine_mc_var": 0.02014090397357332,
+   "report_mc_over_theory": 1.0040241448692153,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 0.533,
+   "report_mean_R2": 0.0536,
+   "mine_mean_R2": 0.05182758506744225,
+   "se_mine": 0.0013229293426420424,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.025913792533721124,
+   "mine_mc_var": 0.025871262152231497,
+   "report_mc_over_theory": 0.9985069055617767,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 0.8,
+   "report_mean_R2": 0.0733,
+   "mine_mean_R2": 0.0794737697880979,
+   "se_mine": 0.004652269617602324,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.03973688489404895,
+   "mine_mc_var": 0.03969609235625498,
+   "report_mc_over_theory": 0.99617903930131,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 1.067,
+   "report_mean_R2": 0.0976,
+   "mine_mean_R2": 0.11057912547921966,
+   "se_mine": 0.008821575995680609,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.05528956273960983,
+   "mine_mc_var": 0.05529150813191809,
+   "report_mc_over_theory": 1.0067650676506765,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 1.333,
+   "report_mean_R2": 0.1711,
+   "mine_mean_R2": 0.16234097096153496,
+   "se_mine": 0.014766476319166957,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.08117048548076748,
+   "mine_mc_var": 0.08119763783768773,
+   "report_mc_over_theory": 1.002104032729398,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 1.6,
+   "report_mean_R2": 0.3029,
+   "mine_mean_R2": 0.27960661579683255,
+   "se_mine": 0.022362785994383034,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.13980330789841627,
+   "mine_mc_var": 0.13951783940271245,
+   "report_mc_over_theory": 1.0038298996302166,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 1.867,
+   "report_mean_R2": 0.4403,
+   "mine_mean_R2": 0.47062723235396653,
+   "se_mine": 0.03118096503357938,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.23531361617698326,
+   "mine_mc_var": 0.23551092518491823,
+   "report_mc_over_theory": 1.0038610038610039,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 2.133,
+   "report_mean_R2": 0.6182,
+   "mine_mean_R2": 0.6608972483641055,
+   "se_mine": 0.019045476492691085,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.33044862418205273,
+   "mine_mc_var": 0.3302826964968903,
+   "report_mc_over_theory": 0.9976384575569358,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 2.4,
+   "report_mean_R2": 0.7532,
+   "mine_mean_R2": 0.6618872001832014,
+   "se_mine": 0.027993896496454163,
+   "mark": "DIFFERENT",
+   "mine_theory_var": 0.3309436000916007,
+   "mine_mc_var": 0.33097289421515197,
+   "report_mc_over_theory": 1.0039565575294087,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 2.667,
+   "report_mean_R2": 0.8168,
+   "mine_mean_R2": 0.7923986552692162,
+   "se_mine": 0.012363383216691306,
+   "mark": "CLOSE",
+   "mine_theory_var": 0.3961993276346081,
+   "mine_mc_var": 0.39637614133393156,
+   "report_mc_over_theory": 0.9943924775943973,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 2.933,
+   "report_mean_R2": 0.8625,
+   "mine_mean_R2": 0.8328514638416691,
+   "se_mine": 0.008582341575314801,
+   "mark": "DIFFERENT",
+   "mine_theory_var": 0.41642573192083454,
+   "mine_mc_var": 0.41644786724823835,
+   "report_mc_over_theory": 0.9975652738487224,
+   "report_arithmetic": "EXACT"
+  },
+  {
+   "K": 3.2,
+   "report_mean_R2": 0.8911,
+   "mine_mean_R2": 0.8719245234148663,
+   "se_mine": 0.005903825360045643,
+   "mark": "DIFFERENT",
+   "mine_theory_var": 0.43596226170743313,
+   "mine_mc_var": 0.4361585812281863,
+   "report_mc_over_theory": 1.00060600619473,
+   "report_arithmetic": "EXACT"
+  }
+ ],
+ "B_diagnostic": [
+  {
+   "K": 2.4,
+   "variant": "second seed",
+   "mean_R2": 0.6819176393571013,
+   "se": 0.022853559292028054,
+   "within_tolerance": false
+  },
+  {
+   "K": 2.4,
+   "variant": "second seed, noise sqrt(D) instead of sqrt(2D)",
+   "mean_R2": 0.6884156974032962,
+   "se": 0.022695209344821044,
+   "within_tolerance": false
+  },
+  {
+   "K": 2.933,
+   "variant": "second seed",
+   "mean_R2": 0.8452109118762674,
+   "se": 0.008866539373274909,
+   "within_tolerance": true
+  },
+  {
+   "K": 2.933,
+   "variant": "second seed, noise sqrt(D) instead of sqrt(2D)",
+   "mean_R2": 0.8489380480188811,
+   "se": 0.008822377245364638,
+   "within_tolerance": true
+  },
+  {
+   "K": 3.2,
+   "variant": "second seed",
+   "mean_R2": 0.8562289326123294,
+   "se": 0.009882713475624166,
+   "within_tolerance": false
+  },
+  {
+   "K": 3.2,
+   "variant": "second seed, noise sqrt(D) instead of sqrt(2D)",
+   "mean_R2": 0.8598295097272167,
+   "se": 0.009647111593086077,
+   "within_tolerance": false
+  }
+ ],
+ "C": [
+  {
+   "K": 0.0,
+   "R2_from": "report_R2",
+   "R2": 0.0318,
+   "tipping": {
+    "report": [
+     2,
+     500,
+     0.004
+    ],
+    "mine": [
+     19,
+     10000,
+     0.0019
+    ],
+    "wilson_mine": [
+     0.001216734354204272,
+     0.0029658188761467565
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 9.14,
+    "mine": 9.41,
+    "tolerance": 15.638726076897187,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.0,
+   "R2_from": "my_R2",
+   "R2": 0.03130519456460458,
+   "tipping": {
+    "report": [
+     2,
+     500,
+     0.004
+    ],
+    "mine": [
+     20,
+     10000,
+     0.002
+    ],
+    "wilson_mine": [
+     0.0012951015278757226,
+     0.003087374899979752
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 9.14,
+    "mine": 17.435000000000002,
+    "tolerance": 16.576596459296027,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.8,
+   "R2_from": "report_R2",
+   "R2": 0.0733,
+   "tipping": {
+    "report": [
+     118,
+     500,
+     0.236
+    ],
+    "mine": [
+     2055,
+     10000,
+     0.2055
+    ],
+    "wilson_mine": [
+     0.19769410114757627,
+     0.2135320822018282
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 26.54,
+    "mine": 20.09,
+    "tolerance": 3.2171225755040855,
+    "mark": "DIFFERENT"
+   }
+  },
+  {
+   "K": 0.8,
+   "R2_from": "my_R2",
+   "R2": 0.0794737697880979,
+   "tipping": {
+    "report": [
+     118,
+     500,
+     0.236
+    ],
+    "mine": [
+     2614,
+     10000,
+     0.2614
+    ],
+    "wilson_mine": [
+     0.2528806033906576,
+     0.2701026473637325
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 26.54,
+    "mine": 20.71,
+    "tolerance": 3.4067944231058003,
+    "mark": "DIFFERENT"
+   }
+  },
+  {
+   "K": 1.3333333333333333,
+   "R2_from": "report_R2",
+   "R2": 0.1711,
+   "tipping": {
+    "report": [
+     422,
+     500,
+     0.844
+    ],
+    "mine": [
+     8447,
+     10000,
+     0.8447
+    ],
+    "wilson_mine": [
+     0.8374688273464714,
+     0.8516664344513563
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 12.51,
+    "mine": 12.59,
+    "tolerance": 1.3946250229708597,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.3333333333333333,
+   "R2_from": "my_R2",
+   "R2": 0.16234097096153496,
+   "tipping": {
+    "report": [
+     422,
+     500,
+     0.844
+    ],
+    "mine": [
+     8190,
+     10000,
+     0.819
+    ],
+    "wilson_mine": [
+     0.8113315983546596,
+     0.8264234016845251
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 12.51,
+    "mine": 13.465,
+    "tolerance": 1.5001979315735072,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.8666666666666665,
+   "R2_from": "report_R2",
+   "R2": 0.4403,
+   "tipping": {
+    "report": [
+     500,
+     500,
+     1.0
+    ],
+    "mine": [
+     9992,
+     10000,
+     0.9992
+    ],
+    "wilson_mine": [
+     0.9984220307843171,
+     0.9995945711578805
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 4.67,
+    "mine": 4.5,
+    "tolerance": 0.5502391064435533,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.8666666666666665,
+   "R2_from": "my_R2",
+   "R2": 0.47062723235396653,
+   "tipping": {
+    "report": [
+     500,
+     500,
+     1.0
+    ],
+    "mine": [
+     9994,
+     10000,
+     0.9994
+    ],
+    "wilson_mine": [
+     0.9986914580593471,
+     0.9997249902778595
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 4.67,
+    "mine": 4.2700000000000005,
+    "tolerance": 0.460268051837394,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 3.2,
+   "R2_from": "report_R2",
+   "R2": 0.8911,
+   "tipping": {
+    "report": [
+     500,
+     500,
+     1.0
+    ],
+    "mine": [
+     10000,
+     10000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9996159875222334,
+     0.9999999999999999
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 2.29,
+    "mine": 2.27,
+    "tolerance": 0.2675823606015726,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 3.2,
+   "R2_from": "my_R2",
+   "R2": 0.8719245234148663,
+   "tipping": {
+    "report": [
+     500,
+     500,
+     1.0
+    ],
+    "mine": [
+     10000,
+     10000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9996159875222334,
+     0.9999999999999999
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 2.29,
+    "mine": 2.31,
+    "tolerance": 0.26767976098851776,
+    "mark": "CLOSE"
+   }
+  }
+ ],
+ "D": [
+  {
+   "K": 0.0,
+   "tipping": {
+    "report": [
+     19,
+     400,
+     0.0475
+    ],
+    "mine": [
+     203,
+     4000,
+     0.05075
+    ],
+    "wilson_mine": [
+     0.04436869383482762,
+     0.05799339761254633
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 27.71,
+    "mine": 18.42,
+    "tolerance": 9.294911528225613,
+    "mark": "CLOSE"
+   },
+   "mean_R": 0.15943500399589539,
+   "mean_R2": 0.03220460731314841
+  },
+  {
+   "K": 0.8,
+   "tipping": {
+    "report": [
+     136,
+     400,
+     0.34
+    ],
+    "mine": [
+     1279,
+     4000,
+     0.31975
+    ],
+    "wilson_mine": [
+     0.30547559252360784,
+     0.3343702994817101
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 21.54,
+    "mine": 18.62,
+    "tolerance": 3.2385977977866904,
+    "mark": "CLOSE"
+   },
+   "mean_R": 0.239873468875885,
+   "mean_R2": 0.0721074448296791
+  },
+  {
+   "K": 1.3333333333333333,
+   "tipping": {
+    "report": [
+     296,
+     400,
+     0.74
+    ],
+    "mine": [
+     2955,
+     4000,
+     0.73875
+    ],
+    "wilson_mine": [
+     0.7249109895246033,
+     0.7521308594836091
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 14.64,
+    "mine": 13.42,
+    "tolerance": 1.76612792311941,
+    "mark": "CLOSE"
+   },
+   "mean_R": 0.3703668713569641,
+   "mean_R2": 0.16633598077782655
+  },
+  {
+   "K": 1.8666666666666665,
+   "tipping": {
+    "report": [
+     388,
+     400,
+     0.97
+    ],
+    "mine": [
+     3864,
+     4000,
+     0.966
+    ],
+    "wilson_mine": [
+     0.959921451043303,
+     0.9711843149790091
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 7.67,
+    "mine": 7.44,
+    "tolerance": 0.6995032742649743,
+    "mark": "CLOSE"
+   },
+   "mean_R": 0.6158292293548584,
+   "mean_R2": 0.4163859270271873
+  },
+  {
+   "K": 3.2,
+   "tipping": {
+    "report": [
+     400,
+     400,
+     1.0
+    ],
+    "mine": [
+     4000,
+     4000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9990405214831674,
+     0.9999999999999999
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 3.82,
+    "mine": 3.8200000000000003,
+    "tolerance": 0.3253710296466328,
+    "mark": "CLOSE"
+   },
+   "mean_R": 0.9102386236190796,
+   "mean_R2": 0.8421274819661312
+  }
+ ],
+ "D_control": {
+  "tipping": {
+   "report": [
+    13,
+    4000,
+    0.00325
+   ],
+   "mine": [
+    118,
+    40000,
+    0.00295
+   ],
+   "wilson_mine": [
+    0.002464127901728632,
+    0.0035313362938900203
+   ],
+   "mark": "CLOSE"
+  },
+  "median": {
+   "report": 24.72,
+   "mine": 22.935000000000002,
+   "tolerance": 11.23802728652453,
+   "mark": "CLOSE"
+  }
+ },
+ "E": [
+  {
+   "K": 0.0,
+   "kind": "instantaneous",
+   "tipping": {
+    "report": [
+     22,
+     800,
+     0.0275
+    ],
+    "mine": [
+     203,
+     4000,
+     0.05075
+    ],
+    "wilson_mine": [
+     0.04436869383482762,
+     0.05799339761254633
+    ],
+    "mark": "DIFFERENT"
+   },
+   "median": {
+    "report": 23.29,
+    "mine": 18.42,
+    "tolerance": 8.678227773352912,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.0,
+   "kind": "rms_trial",
+   "tipping": {
+    "report": [
+     5,
+     800,
+     0.00625
+    ],
+    "mine": [
+     28,
+     4000,
+     0.007
+    ],
+    "wilson_mine": [
+     0.004847554218687929,
+     0.01009849159890885
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 18.26,
+    "mine": 22.270000000000003,
+    "tolerance": 14.455311642274745,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.0,
+   "kind": "rms_ensemble",
+   "tipping": {
+    "report": [
+     4,
+     800,
+     0.005
+    ],
+    "mine": [
+     19,
+     4000,
+     0.00475
+    ],
+    "wilson_mine": [
+     0.0030430560739481576,
+     0.0074073073969743684
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 15.12,
+    "mine": 24.580000000000002,
+    "tolerance": 15.756813875956714,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.8,
+   "kind": "instantaneous",
+   "tipping": {
+    "report": [
+     263,
+     800,
+     0.32875
+    ],
+    "mine": [
+     1279,
+     4000,
+     0.31975
+    ],
+    "wilson_mine": [
+     0.30547559252360784,
+     0.3343702994817101
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 16.19,
+    "mine": 18.62,
+    "tolerance": 2.5585894784673995,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.8,
+   "kind": "rms_trial",
+   "tipping": {
+    "report": [
+     161,
+     800,
+     0.20125
+    ],
+    "mine": [
+     785,
+     4000,
+     0.19625
+    ],
+    "wilson_mine": [
+     0.1842357851127503,
+     0.20884709808622537
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 16.86,
+    "mine": 17.96,
+    "tolerance": 2.3453075612365724,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 0.8,
+   "kind": "rms_ensemble",
+   "tipping": {
+    "report": [
+     160,
+     800,
+     0.2
+    ],
+    "mine": [
+     735,
+     4000,
+     0.18375
+    ],
+    "wilson_mine": [
+     0.17205342017651698,
+     0.1960534499853795
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 19.28,
+    "mine": 19.41,
+    "tolerance": 3.012462993200944,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.3333333333333333,
+   "kind": "instantaneous",
+   "tipping": {
+    "report": [
+     590,
+     800,
+     0.7375
+    ],
+    "mine": [
+     2955,
+     4000,
+     0.73875
+    ],
+    "wilson_mine": [
+     0.7249109895246033,
+     0.7521308594836091
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 14.13,
+    "mine": 13.42,
+    "tolerance": 1.3498344224962704,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.3333333333333333,
+   "kind": "rms_trial",
+   "tipping": {
+    "report": [
+     531,
+     800,
+     0.66375
+    ],
+    "mine": [
+     2701,
+     4000,
+     0.67525
+    ],
+    "wilson_mine": [
+     0.6605756506727299,
+     0.6895880521071204
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 12.79,
+    "mine": 12.27,
+    "tolerance": 1.2879105466411709,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.3333333333333333,
+   "kind": "rms_ensemble",
+   "tipping": {
+    "report": [
+     663,
+     800,
+     0.82875
+    ],
+    "mine": [
+     3332,
+     4000,
+     0.833
+    ],
+    "wilson_mine": [
+     0.8211229809344435,
+     0.844238006373346
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 13.76,
+    "mine": 13.594999999999999,
+    "tolerance": 1.2817407501416032,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.8666666666666665,
+   "kind": "instantaneous",
+   "tipping": {
+    "report": [
+     773,
+     800,
+     0.96625
+    ],
+    "mine": [
+     3864,
+     4000,
+     0.966
+    ],
+    "wilson_mine": [
+     0.959921451043303,
+     0.9711843149790091
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 7.85,
+    "mine": 7.44,
+    "tolerance": 0.49981614271724956,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.8666666666666665,
+   "kind": "rms_trial",
+   "tipping": {
+    "report": [
+     767,
+     800,
+     0.95875
+    ],
+    "mine": [
+     3868,
+     4000,
+     0.967
+    ],
+    "wilson_mine": [
+     0.9610004650331778,
+     0.9721033820321006
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 5.28,
+    "mine": 5.18,
+    "tolerance": 0.5570089152975201,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 1.8666666666666665,
+   "kind": "rms_ensemble",
+   "tipping": {
+    "report": [
+     797,
+     800,
+     0.99625
+    ],
+    "mine": [
+     3992,
+     4000,
+     0.998
+    ],
+    "wilson_mine": [
+     0.9960581334698354,
+     0.9989862259273995
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 5.29,
+    "mine": 5.015000000000001,
+    "tolerance": 0.4720988325202679,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 3.2,
+   "kind": "instantaneous",
+   "tipping": {
+    "report": [
+     800,
+     800,
+     1.0
+    ],
+    "mine": [
+     4000,
+     4000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9990405214831674,
+     0.9999999999999999
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 3.82,
+    "mine": 3.8200000000000003,
+    "tolerance": 0.24777069416115374,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 3.2,
+   "kind": "rms_trial",
+   "tipping": {
+    "report": [
+     800,
+     800,
+     1.0
+    ],
+    "mine": [
+     4000,
+     4000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9990405214831674,
+     0.9999999999999999
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 2.24,
+    "mine": 2.39,
+    "tolerance": 0.24908895537994055,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "K": 3.2,
+   "kind": "rms_ensemble",
+   "tipping": {
+    "report": [
+     800,
+     800,
+     1.0
+    ],
+    "mine": [
+     4000,
+     4000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9990405214831674,
+     0.9999999999999999
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 2.21,
+    "mine": 2.37,
+    "tolerance": 0.24732960293806325,
+    "mark": "CLOSE"
+   }
+  }
+ ],
+ "F": [
+  {
+   "scenario": "asynchronous (K = 0)",
+   "V": 1.0,
+   "innov_sd": 0.04490132550669373,
+   "innov_sd_report": 0.0449,
+   "stationary_sd": 0.10301070542879116,
+   "stationary_sd_report": 0.103,
+   "events": {
+    "report": [
+     0,
+     600,
+     0.0
+    ],
+    "mine": [
+     0,
+     6000,
+     0.0
+    ],
+    "wilson_mine": [
+     5.421010862427522e-20,
+     0.0006398569875660943
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": null,
+    "mine": null,
+    "mark": "\u2014"
+   }
+  },
+  {
+   "scenario": "intermediate (K = 1.5)",
+   "V": 10.7,
+   "innov_sd": 0.14687607240514464,
+   "innov_sd_report": 0.1469,
+   "stationary_sd": 0.3369568193885203,
+   "stationary_sd_report": 0.337,
+   "events": {
+    "report": [
+     561,
+     600,
+     0.935
+    ],
+    "mine": [
+     5552,
+     6000,
+     0.9253333333333333
+    ],
+    "wilson_mine": [
+     0.9184066499211055,
+     0.9317157117348048
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 202,
+    "mine": 205.0,
+    "tolerance": 20.48910366849414,
+    "mark": "CLOSE"
+   }
+  },
+  {
+   "scenario": "strong (K = 2.5)",
+   "V": 27.2,
+   "innov_sd": 0.2341766633920198,
+   "innov_sd_report": 0.2342,
+   "stationary_sd": 0.5372381108743975,
+   "stationary_sd_report": 0.5372,
+   "events": {
+    "report": [
+     600,
+     600,
+     1.0
+    ],
+    "mine": [
+     6000,
+     6000,
+     1.0
+    ],
+    "wilson_mine": [
+     0.9993601430124339,
+     1.0
+    ],
+    "mark": "CLOSE"
+   },
+   "median": {
+    "report": 34,
+    "mine": 32.0,
+    "tolerance": 3.3612998199357342,
+    "mark": "CLOSE"
+   }
+  }
+ ],
+ "I3": {
+  "h": 0.08,
+  "grid": 2501,
+  "up_2.5": 0.9878727289705567,
+  "down_2.5": -0.9829233742134936,
+  "down_0": 0.07982976911113136,
+  "max_gap": 1.9707961031840502,
+  "area": 2.270750313794275,
+  "steepest_up_g": 0.917,
+  "largest_up_step": 0.0012755669105755651,
+  "largest_down_step_g": 1.254,
+  "fold_g": 1.2548887695366806,
+  "fold_m": -0.45068461626827094
+ }
+}
