@@ -53,9 +53,9 @@ def report(res):
     return "\n".join(L)
 
 
-def run(cfg_path, out, log=print):
+def run(cfg_path, out, log=print, samples=None):
     cfg = load_run_config(cfg_path); t = primary_tests(cfg)['csd']; write = Writer(os.path.join(out, 'followup')); res = {}
-    for sample in cfg['samples']:
+    for sample in samples or cfg['samples']:
         D = load_data(sample); res[sample] = run_csd_by_event(D, cfg, t)
         write(sample, 'P', 'csd_by_event', D, t | {'not_preregistered': 'leave-one-crisis-out, asked for by Sid on 11 October 2026'}, res[sample])
         log(f"  followup/{sample}/P/csd_by_event")
@@ -65,8 +65,10 @@ def run(cfg_path, out, log=print):
 def main(argv=None):
     root = config.repo_root()
     ap = argparse.ArgumentParser(); ap.add_argument('--config', default=os.path.join(root, 'configs/runs/phase3.yaml'))
-    ap.add_argument('--out', default=os.path.join(root, 'results')); args = ap.parse_args(argv)
-    print(f"wrote {run(args.config, args.out)}")
+    ap.add_argument('--out', default=os.path.join(root, 'results'))
+    ap.add_argument('--samples', nargs='+', default=['S26', 'S30', 'S31'], help='S31 added 13 October 2026 (amendment 3)')
+    args = ap.parse_args(argv)
+    print(f"wrote {run(args.config, args.out, samples=args.samples)}")
 
 
 if __name__ == '__main__':

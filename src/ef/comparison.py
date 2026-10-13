@@ -357,6 +357,58 @@ def late_table(T):
     return L
 
 
+def crossings(T):
+    """Every result present for both S30 and S31 under the same convention or variant whose sign changes or whose p
+    crosses 0.05 between them: (where, quantity, S30, S31, flag)."""
+    out = []; labels = dict((r, l) for r, l, _ in ROWS)
+
+    def add(where, what, a, b, da, db):
+        f = flag(a, b)
+        if f: out.append((where, what, da, db, f))
+    variants = [('', 'P'), ('', 'W'), ('', 'N'), ('', 'E'), ('_strict', 'P'), ('_gmd_growth', 'P')] + \
+               [(f'_minus_{x}', 'P') for x in ('CHN', 'BRA', 'SAU', 'IRN', 'IRN_SAU')]
+    for suf, conv in variants:
+        a, b = extract(T, 'S30' + suf, conv), extract(T, 'S31' + suf, conv)
+        where = ('primary' if not suf else suf.strip('_').replace('minus_', 'without ').replace('_', ' ')) + (f', convention {conv}' if conv != 'P' else '')
+        for rid in a:
+            if rid in b and a[rid][1] and b[rid][1] and len(a[rid][1]) == 2 and None not in a[rid][1] and None not in b[rid][1]:
+                if rid == 'G3b': add(where, 'G3 real GDP after-2', a[rid][1], b[rid][1], cp(*a[rid][1]), cp(*b[rid][1])); continue
+                add(where, f"{rid} {labels.get(rid, '')}", a[rid][1], b[rid][1], a[rid][0] or cp(*a[rid][1]), b[rid][0] or cp(*b[rid][1]))
+    a, b = T('S30', 'P', 'conventions'), T('S31', 'P', 'conventions')
+    if a and b:
+        for conv in ('W', 'N', 'E', 'C'):
+            for k in ('lead2', 'lead1', 'crisis', 'after1', 'after2'):
+                x, y = a[conv]['arc'][k], b[conv]['arc'][k]
+                add(f'arc, convention {conv}', k, (x['corr'], x['p']), (y['corr'], y['p']), cp(x['corr'], x['p']), cp(y['corr'], y['p']))
+            add(f'conventions test, {conv}', 'C1 r–swing, detrended', tuple(a[conv]['amp_detrended']), tuple(b[conv]['amp_detrended']),
+                cp(*a[conv]['amp_detrended']), cp(*b[conv]['amp_detrended']))
+    a, b = T('S30', 'C', 'channels'), T('S31', 'C', 'channels')
+    if a and b:
+        for ch in a['sync']:
+            for k, x in a['sync'][ch]['tests'].items():
+                y = b['sync'][ch]['tests'][k]; add('channels, past data only', f'{ch} {k}', tuple(x), tuple(y), cp(*x), cp(*y))
+    a, b = T('S30', 'P', 'channels'), T('S31', 'P', 'channels')
+    if a and b:
+        for ch in a['anatomy']:
+            for k in ('lead2', 'lead1', 'crisis', 'after2'):
+                x, y = a['anatomy'][ch][k], b['anatomy'][ch][k]; add('channel anatomy', f'{ch} {k}', tuple(x), tuple(y), cp(*x), cp(*y))
+    for conv in ('P', 'E'):
+        a, b = T('S30', conv, 'robustness'), T('S31', conv, 'robustness')
+        if not (a and b): continue
+        for row in a:
+            if a[row] is None or b.get(row) is None: continue
+            for k in ('lead2', 'lead1', 'crisis', 'after2'):
+                add(f'robustness ({conv}): {row}', k, tuple(a[row][k]), tuple(b[row][k]), cp(*a[row][k]), cp(*b[row][k]))
+    return out
+
+
+def crossings_table(T):
+    c = crossings(T)
+    L = [f"{len(c)} results cross p = 0.05 or change sign between S30 and S31 (same convention and variant).", "",
+         "| Where | Quantity | S30 | S31 | Flag |", "|---|---|---|---|---|"]
+    return L + [f"| {w} | {q} | {a} | {b} | {f} |" for w, q, a, b, f in c]
+
+
 def s31_sections(T, root):
     """Amendment 3: S31 (S30 + Russia) beside S30."""
     meta = json.load(open(os.path.join(root, 'S31', 'P', 'arc.json')))
@@ -389,6 +441,9 @@ def s31_sections(T, root):
         T, None, [('S30', 'S30'), ('S30, GMD growth', 'S30_gmd_growth'), ('S31', 'S31'), ('S31, GMD growth', 'S31_gmd_growth')], ids)
     L += ["", "## 23. Robustness rows, S30 and S31", ""] + robustness_table(T, 'S30', 'S31')
     L += ["", "## 24. Leave each of the 31 economies out (S31, arc)", ""] + loo_table(T, 'S31')
+    L += ["", "## 25. Every crossing between S30 and S31", "",
+          "Every pair of results computed the same way on S30 and S31 (all conventions, variants, leave-outs, robustness "
+          "rows and channels) whose sign changes or whose p crosses 0.05.", ""] + crossings_table(T)
     return L
 
 
