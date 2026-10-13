@@ -36,14 +36,16 @@ class Data:
     years: np.ndarray       # the span, e.g. 1950-2022
     logs: np.ndarray        # log real GDP per capita, economies x years
     levels: np.ndarray      # real GDP (per capita x population), economies x years
+    late: dict = None       # {ISO: first year}: economies that enter only from that year (amendment 3.5)
 
 
-def load_data(sample, span=(1950, 2022), drop=(), gmd_growth=None):
+def load_data(sample, span=(1950, 2022), drop=(), gmd_growth=None, late=None):
     """Maddison panel for a sample (a name in configs/default.yaml or a list of ISO codes), leaving out `drop`.
 
     gmd_growth = {'economies': [...], 'years': [a, b]} replaces Maddison's year-on-year growth of GDP per capita in
     years a..b with the Global Macro Database's real GDP per capita growth and re-chains the levels (open issue 13,
-    pre-registration amendment 1.7); population is unchanged."""
+    pre-registration amendment 1.7); population is unchanged. late = {ISO: year}: that economy enters only from that
+    year (see signal())."""
     isos = [i for i in (config.sample(sample) if isinstance(sample, str) else list(sample)) if i not in drop]
     L = maddison.panel(isos, years=tuple(span))
     g, p = maddison.wide(L, 'gdppc'), maddison.wide(L, 'pop')
@@ -58,10 +60,26 @@ def load_data(sample, span=(1950, 2022), drop=(), gmd_growth=None):
                 y = int(years[k]); f = s[y] / s[y - 1] if a <= y <= b else old[k] / old[k - 1]
                 G[k, j] = G[k - 1, j] * f
     name = sample if isinstance(sample, str) else '+'.join(isos)
-    return Data(name, isos, years, np.log(G.T), (G * p.values.astype(float)).T)
+    return Data(name, isos, years, np.log(G.T), (G * p.values.astype(float)).T, dict(late) if late else None)
 
 
 def _years(window): return np.arange(window[0], window[1] + 1)
+
+
+def signal(D, window, convention, band):
+    """analytic() for the sample. A late entrant (D.late = {ISO: year}) is band-passed and Hilbert-transformed on its
+    own series from that year alone and has no phase (NaN) before it, so r and the mean swing size average over the
+    economies present in each year (pre-registration amendment 3.5). Convention P only."""
+    z = analytic(D.logs, D.years, window, convention, band)
+    if not D.late: return z
+    if convention != 'P': raise ValueError("late entrants are defined under convention P only")
+    yrs = _years(window); z = z.astype(complex)
+    for iso, y0 in D.late.items():
+        j = D.isos.index(iso); m = D.years >= y0
+        row = np.full(len(yrs), np.nan, dtype=complex)
+        row[yrs >= y0] = analytic(D.logs[j:j + 1, m], D.years[m], (max(y0, window[0]), window[1]), 'P', band)[0]
+        z[j] = row
+    return z
 
 
 def _g(x, s): return x - gaussian_filter1d(x, s, axis=-1)
@@ -104,7 +122,7 @@ def surrogate_source(D, window, convention, band):
 def run_arc(D, cfg, t):
     """kose_terrones_test.py: the crisis arc of r(t), the superposed epoch, bootstrap means and multiplicity."""
     w = cfg['window']; yrs = _years(w); rec = cfg['recessions']
-    r = order.r(analytic(D.logs, D.years, w, t['convention'], cfg['band']))
+    r = order.r(signal(D, w, t['convention'], cfg['band']))
     arc = crisis.arc(r, yrs, rec)
     _, em = crisis.epoch(r, yrs, rec, range(-4, 5))
     g = crisis.indicator(yrs, rec); dn = crisis.indicator(yrs, cfg['downturns']); rng = np.random.default_rng(t['seed'])
@@ -131,8 +149,11 @@ def run_conventions(D, cfg, t):
 def run_amplitude(D, cfg, t):
     """amplitude_test.py: corr(r, mean amplitude) after detrending, against circular shifts and surrogate economies."""
     w = cfg['window']; s = t['detrend_sigma']
-    z = analytic(D.logs, D.years, w, t['convention'], cfg['band']); r = order.r(z); A = order.mean_amplitude(z)
+    z = signal(D, w, t['convention'], cfg['band']); r = order.r(z); A = order.mean_amplitude(z)
     c_det, p_shift = nulls.shift_corr_test(_g(r, s), _g(A, s))
+    if not t.get('surrogates'):          # circular shift only (the late-entry variant, amendment 3.5)
+        return {'corr_detrended': c_det, 'p_shift': p_shift, 'p_surrogate': None, 'null_mean': None,
+                'corr_raw': nulls.shift_corr_test(r, A)}
     X, to_z = surrogate_source(D, w, t['convention'], cfg['band']); null = []
     for Xs in nulls.surrogates(X, t['surrogates'], np.random.default_rng(t['seed']), t['batch']):
         zs = to_z(Xs); rc = _g(order.r(zs), s); ac = _g(order.mean_amplitude(zs), s)

@@ -50,6 +50,7 @@ def run(cfg_path, out, atlas_dir, log=print):
     base = primary_tests(cfg)
 
     def chan(D, variant, conv='P'):
+        if not cfg.get('channels'): return            # not run on S31 (amendment 3.4)
         t0 = time.time()
         write(variant, conv, 'channels', D, {'panel': cfg['channels']['panel'], 'coverage_from': 1965, 'seed': cfg['channels']['seed']},
               channels.run(atlas_dir, D.isos, rec, conv))
@@ -75,13 +76,20 @@ def run(cfg_path, out, atlas_dir, log=print):
         sw = V['gmd_growth_swap']; log(f"{sample}: GMD growth for {sw['economies']} {sw['years']}")
         Dg = load_data(sample, gmd_growth=sw); run_tests(Dg, cfg, base, sw['tests'], write, f'{sample}_gmd_growth', 'P', log)
 
+    b0 = V.get('base', 'S30')
     for iso in V['drop_one_added']:
-        log(f"S30 without {iso}: every test (P)")
-        D = load_data('S30', drop=[iso]); run_tests(D, cfg, base, list(base), write, f'S30_minus_{iso}', 'P', log); chan(D, f'S30_minus_{iso}')
+        log(f"{b0} without {iso}: every test (P)")
+        D = load_data(b0, drop=[iso]); run_tests(D, cfg, base, list(base), write, f'{b0}_minus_{iso}', 'P', log); chan(D, f'{b0}_minus_{iso}')
     for drops in V['swing_size']:
         if len(drops) == 1 and drops[0] in V['drop_one_added']: continue                   # already run with every test
-        name = 'S30_minus_' + '_'.join(drops); log(f"{name}: swing-size tests (P)")
-        run_tests(load_data('S30', drop=drops), cfg, base, SWING, write, name, 'P', log)
+        name = f'{b0}_minus_' + '_'.join(drops); log(f"{name}: swing-size tests (P)")
+        run_tests(load_data(b0, drop=drops), cfg, base, SWING, write, name, 'P', log)
+    le = V.get('late_entry')
+    if le:                                                                                  # amendment 3.5
+        log(f"{le['name']}: {le['economy']} from {le['from']} (P, circular shift only)")
+        t = {n: dict(base[n]) for n in le['tests']}
+        if 'amplitude' in t: t['amplitude']['surrogates'] = 0
+        run_tests(load_data(b0, late={le['economy']: le['from']}), cfg, t, le['tests'], write, le['name'], 'P', log)
     return write.n
 
 

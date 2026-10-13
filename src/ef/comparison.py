@@ -78,7 +78,8 @@ def extract(T, v, conv='P'):
         b, h = arc['bonferroni'], arc['benjamini_hochberg']
         q['A8'] = (f"{b['lead1']:.3f} / {b['after2']:.3f} / {b['lead2']:.3f}", None); q['A9'] = (f"{h['lead1']:.3f} / {h['after2']:.3f} / {h['lead2']:.3f}", None)
     if amp:
-        q['C1'] = (f"{cp(amp['corr_detrended'], amp['p_shift'])}; surr. {amp['p_surrogate']:.4f}", (amp['corr_detrended'], amp['p_shift']))
+        sur = f"; surr. {amp['p_surrogate']:.4f}" if amp.get('p_surrogate') is not None else ''
+        q['C1'] = (f"{cp(amp['corr_detrended'], amp['p_shift'])}{sur}", (amp['corr_detrended'], amp['p_shift']))
         q['C2'] = (cp(*amp['corr_raw']), tuple(amp['corr_raw']))
     if div:
         g, e = div.get('gdp_mean'), div.get('equal')
@@ -154,7 +155,7 @@ ROWS = [  # id, label, how S30 is judged: 'sig', 'null', 'pos' (descriptive: pos
     ('G8', 'Coupling to the rest, 1970–89 vs 1990–2022', 'info')]
 
 
-def judge(rid, kind, ref, new):
+def judge(rid, kind, ref, new, names=('S26', 'S30')):
     a = ref[1] if ref and len(ref) > 1 else None
     b = new[1] if new and len(new) > 1 else None
     if kind == 'info' or b is None: return '', ''
@@ -162,12 +163,12 @@ def judge(rid, kind, ref, new):
         return '', ('holds' if b[0] is not None and b[0] > 0 else '**does not hold**')
     if kind == 'null':
         if a is not None and a[1] < 0.05 and b[1] < 0.05:
-            return flag(a, b), '**significant on S26 and S30 under P** (the registry null came from another convention)'
+            return flag(a, b), f'**significant on {names[0]} and {names[1]} under P**' + (' (the registry null came from another convention)' if names[0] == 'S26' else '')
         return flag(a, b), verdict(a, b, 'null')
     if rid == 'E7': return flag(a, b), ('replicates' if b[1] < 0.05 else '**weakens**')
     if rid == 'D11': return flag(a, b), ('replicates' if b[0] > 0 and b[1] < 0.05 else '**weakens**')
     if rid == 'G4': return '', ('replicates' if b[1] < 0.05 else '**weakens**')
-    if a is not None and a[1] >= 0.05: return flag(a, b), verdict(a, b, 'null') + ' (S26 under P not significant)'
+    if a is not None and a[1] >= 0.05: return flag(a, b), verdict(a, b, 'null') + f' ({names[0]} under P not significant)'
     return flag(a, b), verdict(a, b, 'sig')
 
 
@@ -195,9 +196,9 @@ def main_table(T):
 
 # ------------------------------------------------------------------ sensitivity tables
 
-def conventions_table(T):
+def conventions_table(T, samples=('S26', 'S30')):
     L = ["| Sample | Convention | A1 lead-2 | A2 lead-1 | A3 crisis | A5 after-2 | C1 r–swing (det.) |", "|---|---|---|---|---|---|---|"]
-    for s in ('S26', 'S30'):
+    for s in samples:
         c = T(s, 'P', 'conventions')
         if not c: continue
         for conv in ('P', 'W', 'N', 'E', 'C'):
@@ -208,17 +209,17 @@ def conventions_table(T):
     return L
 
 
-def surrogate_conventions_table(T):
+def surrogate_conventions_table(T, samples=('S26', 'S30')):
     ids = ['C1', 'D11', 'E7', 'F1', 'F2', 'F4']
     L = ["| Sample | Convention | " + " | ".join(ids) + " |", "|---" * (len(ids) + 2) + "|"]
-    for s in ('S26', 'S30'):
+    for s in samples:
         for conv in ('P', 'W', 'N', 'E'):
             q = extract(T, s, conv)
             if not q: continue
             L.append(f"| {s} | {conv} | " + " | ".join(q[i][0] if i in q else '—' for i in ids) + " |")
     L += ["", "Band-pass-only tests under N (band-pass on 1970–2022 only; amendment 1.1):", "",
           "| Sample | D1 | D3 | E1 | E4 |", "|---|---|---|---|---|"]
-    for s in ('S26', 'S30'):
+    for s in samples:
         q = extract(T, s, 'N')
         if q: L.append(f"| {s} | " + " | ".join(q[i][0] if i in q else '—' for i in ('D1', 'D3', 'E1', 'E4')) + " |")
     return L
@@ -232,12 +233,13 @@ def variant_table(T, rows, variants, ids, note=None):
     return L
 
 
-def dependence_table(T):
-    """Leave-one-added-economy-out on S30: which results depend on one economy (sign reverses or p crosses 0.05)."""
-    ids = ['A1', 'A2', 'A3', 'A5', 'C1', 'D11', 'E4', 'E7', 'F1', 'F2', 'F4', 'G1', 'G2', 'G3']
-    base = extract(T, 'S30'); L = ["| Without | " + " | ".join(ids) + " |", "|---" * (len(ids) + 1) + "|"]
-    for iso in ('CHN', 'BRA', 'SAU', 'IRN'):
-        q = extract(T, f'S30_minus_{iso}')
+def dependence_table(T, b0='S30', isos=('CHN', 'BRA', 'SAU', 'IRN'),
+                     ids=('A1', 'A2', 'A3', 'A5', 'C1', 'D11', 'E4', 'E7', 'F1', 'F2', 'F4', 'G1', 'G2', 'G3')):
+    """Leave-one-added-economy-out: which results depend on one economy (sign reverses or p crosses 0.05)."""
+    ids = list(ids)
+    base = extract(T, b0); L = ["| Without | " + " | ".join(ids) + " |", "|---" * (len(ids) + 1) + "|"]
+    for iso in isos:
+        q = extract(T, f'{b0}_minus_{iso}')
         if not q: continue
         cells = []
         for i in ids:
@@ -246,45 +248,45 @@ def dependence_table(T):
             cells.append(q[i][0] + (f" **{f}**" if f else ''))
         L.append(f"| {iso} | " + " | ".join(cells) + " |")
     L += ["", "Descriptive quantities without each added economy:", "", "| Without | D1 | D3 | D7 | E1 |", "|---|---|---|---|---|"]
-    for iso in ('CHN', 'BRA', 'SAU', 'IRN'):
-        q = extract(T, f'S30_minus_{iso}')
+    for iso in isos:
+        q = extract(T, f'{b0}_minus_{iso}')
         if q: L.append(f"| {iso} | " + " | ".join(q[i][0] if i in q else '—' for i in ('D1', 'D3', 'D7', 'E1')) + " |")
     return L
 
 
-def robustness_table(T):
-    a, b = T('S26', 'P', 'robustness'), T('S30', 'P', 'robustness')
+def robustness_table(T, s1='S26', s2='S30'):
+    a, b = T(s1, 'P', 'robustness'), T(s2, 'P', 'robustness')
     if not (a and b): return []
-    L = ["| Check | S26 lead-1 | S30 lead-1 | S26 after-2 | S30 after-2 |", "|---|---|---|---|---|"]
+    L = [f"| Check | {s1} lead-1 | {s2} lead-1 | {s1} after-2 | {s2} after-2 |", "|---|---|---|---|---|"]
     for k in a:
-        if k.startswith('without ') and k[8:] in config.sample('S30') and k[8:] not in ('USA', 'DEU', 'JPN'): continue
+        if k.startswith('without ') and k[8:] in config.sample(s2) and k[8:] not in ('USA', 'DEU', 'JPN'): continue
         if a[k] is None or k not in b or b[k] is None: continue
         L.append(f"| {k} | {cp(*a[k]['lead1'], 2)} | {cp(*b[k]['lead1'], 2)} | {cp(*a[k]['after2'], 2)} | {cp(*b[k]['after2'], 2)} |")
     return L
 
 
-def loo_table(T):
-    b = T('S30', 'P', 'robustness')
+def loo_table(T, s='S30'):
+    b = T(s, 'P', 'robustness')
     if not b: return []
     L = ["| Without | lead-2 | lead-1 | crisis | after-2 |", "|---|---|---|---|---|"]
-    for iso in config.sample('S30'):
+    for iso in config.sample(s):
         k = f'without {iso}'
         if k in b and b[k]: L.append(f"| {iso} | " + " | ".join(cp(*b[k][x], 2) for x in ('lead2', 'lead1', 'crisis', 'after2')) + " |")
     return L
 
 
-def edge_table(T):
+def edge_table(T, samples=('S26', 'S30')):
     L = ["| Sample | Convention | Full arc lead-1 | Full arc after-2 | Without 2020 lead-1 | Without 2020 after-2 |", "|---|---|---|---|---|---|"]
-    for s in ('S26', 'S30'):
+    for s in samples:
         for conv in ('P', 'E'):
             r = T(s, conv, 'robustness')
             if r: L.append(f"| {s} | {conv} | {cp(*r['baseline']['lead1'])} | {cp(*r['baseline']['after2'])} | {cp(*r['without 2020']['lead1'])} | {cp(*r['without 2020']['after2'])} |")
     return L
 
 
-def past_only_table(T):
+def past_only_table(T, samples=('S26', 'S30')):
     L = ["| Sample | Test | P | C (past data only) |", "|---|---|---|---|"]
-    for s in ('S26', 'S30'):
+    for s in samples:
         c = T(s, 'P', 'conventions'); chP, chC = T(s, 'P', 'channels'), T(s, 'C', 'channels')
         if c:
             for k, lab in (('lead2', 'A1 arc lead-2'), ('lead1', 'A2 arc lead-1')):
@@ -314,9 +316,9 @@ def _ev(x):
     return ', '.join(str(i) for i in x)
 
 
-def events_note(T):
+def events_note(T, samples=('S26', 'S30')):
     out = []
-    for s in ('S26', 'S30'):
+    for s in samples:
         for v, lab in ((s, 'primary (windows from 1962)'), (f'{s}_strict', 'strict inside 1970–2022')):
             q = extract(T, v)
             if not q: continue
@@ -324,6 +326,70 @@ def events_note(T):
             out.append(f"- **{s}, {lab}**: decomposition recession windows {_ev(g(q, 'D1'))}; MST pre-crisis {_ev(g(q, 'E4'))}; "
                        f"autocorrelation and variance pre-crisis {_ev(g(q, 'F1'))}; coupling post-crisis {_ev(g(q, 'F4'))}")
     return out
+
+
+def s31_table(T):
+    """Every registry quantity on S30 and S31 (amendment 3), read S31 against S30."""
+    s30, s31 = extract(T, 'S30'), extract(T, 'S31'); c31 = past_only(T, 'S31')
+    L = ["| ID | Quantity | S30 (P) | S31 (P) | Flag S30 → S31 | Reading for S31 |", "|---|---|---|---|---|---|"]
+    for rid, label, kind in ROWS:
+        a, b = s30.get(rid), s31.get(rid)
+        if b is None: continue
+        f, v = judge(rid, kind, a, b, ('S30', 'S31'))
+        if rid in c31 and rid != 'G1':
+            x = c31[rid]; v += f"; past data only (C): {cp(*x)} — " + ('holds' if x[0] > 0 and x[1] < 0.05 else '**fails**')
+        L.append(f"| {rid} | {label} | {a[0] if a else '—'} | {b[0]} | {f} | {v} |")
+    return L
+
+
+def late_table(T):
+    ids = ['A1', 'A2', 'A3', 'A4', 'A5', 'C1', 'C2']; base = extract(T, 'S31')
+    L = ["| Variant | " + " | ".join(ids) + " |", "|---" * (len(ids) + 1) + "|"]
+    for lab, v in (('S30', 'S30'), ('S31', 'S31'), ('S31, Russia from 1992', 'S31_rus_from_1992')):
+        q = extract(T, v)
+        if not q: continue
+        cells = []
+        for i in ids:
+            if i not in q: cells.append('—'); continue
+            f = flag(base[i][1], q[i][1]) if v != 'S31' and i in base and base[i][1] and q[i][1] else ''
+            cells.append(q[i][0] + (f" **{f} vs S31**" if f else ''))
+        L.append(f"| {lab} | " + " | ".join(cells) + " |")
+    return L
+
+
+def s31_sections(T, root):
+    """Amendment 3: S31 (S30 + Russia) beside S30."""
+    meta = json.load(open(os.path.join(root, 'S31', 'P', 'arc.json')))
+    L = ["", "---", "", "# S31 (S30 + Russia) beside S30 — pre-registration amendment 3", "",
+         f"Generated from `results/` (S31 code {meta['code_version']}). S31 is a sensitivity sample; S30 stays the main sample. "
+         "Flags compare S31 with S30 under the same conventions; the reading applies the pre-registered criteria with S30 as the "
+         "reference. Channel tests (G) are not run on S31: Russia is not in the atlas panel. " + FLOORS + ".", ""]
+    sp = os.path.join(root, 'SUMMARY_S31.md')
+    if os.path.exists(sp): L += [open(sp).read().strip(), ""]
+    L += ["## 13. Every registry quantity, S30 and S31", ""] + s31_table(T)
+    L += ["", "Recessions each rolling test uses:", ""] + events_note(T, ('S31',))
+    L += ["", "## 14. Russia from 1992 only (amendment 3.5; circular shift)", "",
+          "Russia's cycle and phase from its 1992–2022 series alone; no phase before 1992. Flags compare with S31.", ""] + late_table(T)
+    L += ["", "## 15. Phase conventions, S30 and S31 (circular shift)", ""] + conventions_table(T, ('S30', 'S31'))
+    L += ["", "## 16. Phase conventions, S30 and S31: the surrogate tests", ""] + surrogate_conventions_table(T, ('S30', 'S31'))
+    L += ["", "## 17. The arc without 2020, S30 and S31", ""] + edge_table(T, ('S30', 'S31'))
+    L += ["", "## 18. Past data only, S30 and S31", ""] + past_only_table(T, ('S30', 'S31'))
+    L += ["", "## 19. Leaving each added economy out of S31", "",
+          "A flag marks a result that reverses sign or crosses p = 0.05 when the economy is dropped (compared with S31). "
+          "S31 without Russia is S30.", ""] + dependence_table(T, 'S31', ('CHN', 'BRA', 'SAU', 'IRN', 'RUS'),
+                                                               ('A1', 'A2', 'A3', 'A5', 'C1', 'D11', 'E4', 'E7', 'F1', 'F2', 'F4'))
+    ids = ['C1', 'C2', 'D1', 'D3', 'D4', 'D7', 'D8', 'D11']
+    L += ["", "## 20. Iran and Saudi Arabia in the swing-size tests, S30 and S31", ""] + variant_table(
+        T, None, [('S30', 'S30'), ('S30 without both', 'S30_minus_IRN_SAU'), ('S31', 'S31'), ('S31 without both', 'S31_minus_IRN_SAU')], ids)
+    ids = ['D1', 'D3', 'D4', 'D7', 'D8', 'D9', 'E1', 'E4', 'E6', 'F1', 'F2', 'F4']
+    L += ["", "## 21. Rolling windows, S30 and S31: primary and strict inside 1970–2022", ""] + variant_table(
+        T, None, [('S30 primary', 'S30'), ('S30 strict', 'S30_strict'), ('S31 primary', 'S31'), ('S31 strict', 'S31_strict')], ids)
+    ids = ['A1', 'A2', 'A3', 'A5', 'C1', 'D1', 'D3']
+    L += ["", "## 22. GMD growth for Norway, Switzerland and South Africa, S30 and S31", ""] + variant_table(
+        T, None, [('S30', 'S30'), ('S30, GMD growth', 'S30_gmd_growth'), ('S31', 'S31'), ('S31, GMD growth', 'S31_gmd_growth')], ids)
+    L += ["", "## 23. Robustness rows, S30 and S31", ""] + robustness_table(T, 'S30', 'S31')
+    L += ["", "## 24. Leave each of the 31 economies out (S31, arc)", ""] + loo_table(T, 'S31')
+    return L
 
 
 def write(root):
@@ -361,6 +427,7 @@ def write(root):
     L += ["", "## 10. Robustness rows (registry B1–B15), S26 and S30 under P", ""] + robustness_table(T)
     L += ["", "## 11. Leave each of the 30 economies out (S30, arc)", ""] + loo_table(T)
     L += ["", "## 12. Channel anatomy on the repaired panel (open issue 12)", ""] + anatomy_table(T)
+    if os.path.exists(os.path.join(root, 'S31', 'P', 'arc.json')): L += s31_sections(T, root)
     out = os.path.join(root, 'COMPARISON.md'); open(out, 'w').write("\n".join(L) + "\n"); return out
 
 

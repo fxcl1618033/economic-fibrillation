@@ -14,7 +14,10 @@ def r_psi(z, weights=None):
     """Order parameter and mean phase. weights (economies x years, summing to 1 over economies) gives the
     weighted version used by the diversification scripts."""
     u = np.exp(1j * np.angle(z))
-    m = u.mean(axis=-2) if weights is None else (weights * u).sum(axis=-2)
+    if weights is None:      # NaN marks an economy with no phase that year (a late entrant): mean over the others
+        m = np.nanmean(u, axis=-2) if np.isnan(z).any() else u.mean(axis=-2)
+    else:
+        m = (weights * u).sum(axis=-2)
     return np.abs(m), np.angle(m)
 
 
@@ -23,7 +26,7 @@ def r(z, weights=None):
 
 
 def mean_amplitude(z):
-    return np.abs(z).mean(axis=-2)
+    return np.nanmean(np.abs(z), axis=-2) if np.isnan(z).any() else np.abs(z).mean(axis=-2)
 
 
 def world_phasor(z):

@@ -78,3 +78,17 @@ def test_csd_by_event_reproduces_csd_and_averages_events():
     assert b['all']['events'] == [1982, 1991, 2009, 2020] and 'only_1975' not in b
     one = [b[f'only_{e}']['tau_var'] for e in b['all']['events']]
     assert np.isclose(np.mean(one), a['tau_var']) and np.isclose(b['without_2009_2020']['tau_var'], np.mean(one[:2]))
+
+
+def test_late_entrant_is_absent_before_its_first_year():
+    """Amendment 3.5: Russia from 1992. Before 1992 r and the mean swing size are S30's; entering in 1950 changes nothing."""
+    from ef import order
+    from ef.paper1 import signal
+    w, band = (1970, 2022), (9.0, 0.49); yrs = np.arange(1970, 2023)
+    s30, s31 = load_data('S30'), load_data('S31')
+    assert s31.isos == s30.isos + ['RUS'] and np.array_equal(load_data('S31', drop=['RUS']).logs, s30.logs)
+    z30, zl = signal(s30, w, 'P', band), signal(load_data('S31', late={'RUS': 1992}), w, 'P', band)
+    pre = yrs < 1992
+    assert np.isnan(zl[-1, pre]).all() and not np.isnan(zl[-1, ~pre]).any()
+    assert np.allclose(order.r(zl)[pre], order.r(z30)[pre]) and np.allclose(order.mean_amplitude(zl)[pre], order.mean_amplitude(z30)[pre])
+    assert np.allclose(signal(load_data('S31', late={'RUS': 1950}), w, 'P', band), signal(s31, w, 'P', band))
