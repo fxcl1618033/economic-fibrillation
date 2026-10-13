@@ -314,7 +314,7 @@ few hundredths and leaves every pre-registered reading as it was on S30.
   (−0.044). It still rests on 2009 and 2020 (without either, p 0.23 and 0.28).
 - **No lag survives a multiplicity correction** (Benjamini–Hochberg q 0.094 for lead-1, lead-2 and after-2, as on S30).
 - **The fall after recessions stays fragile, and now sits right on the line.** After-2 is −0.258 (p 0.057) on S31, as on
-  S30 (−0.236, p 0.057). But on S31, leaving out almost any single economy, or computing Russia's phases from 1992, takes
+  S30 (−0.236, p 0.057). But on S31, leaving out any of 20 of the 31 economies, or computing Russia's phases from 1992, takes
   it to p 0.019–0.038 (20 of the 42 crossings in section 25, all in that direction), while it stays non-significant under W, N, E and C, at
   3–10 years and with growth rates. Read it as on the edge, not as stronger: it is still a Limitations item.
 - **Swing size, diversification and the network** barely move: r–swing link +0.646 (S30 +0.641); co-movement share of
