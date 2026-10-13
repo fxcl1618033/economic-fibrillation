@@ -116,3 +116,11 @@ around 5% is about 3.8–6.5%. Also the family rates: any of the five arc lags, 
 
 `gnn/G1/calibration.json`, `r_curve.csv`, `pvalues.csv.gz` (every p-value of every world), `rule_b_recessions.csv.gz`,
 `rejections.csv`, and the report `gnn/G1_report.md`; `make gnn-g1` reruns everything.
+
+## Amendment 1 (13 October 2026, before any test run)
+
+The bisection bracket for κ\* and φ\* is 0.001 to **50**, not 0.001 to 1000. Reason: the Euler–Maruyama step is
+dt = 0.01 years, and the explicit step stops being stable once κ × (largest row sum of W, 0.865 in 2022) × dt or
+φ × dt approaches 1 (the Stuart–Landau coupling terms are linear in z). At 50 these are 0.43 and 0.5. Found while
+calibration was running, before κ\* or φ\* had been computed and before any test was run; the calibration was
+restarted from the beginning. If the target mean r is not reached below 50, that is reported as such.

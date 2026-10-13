@@ -25,7 +25,7 @@ DESIGN = {
     'seed_calib': 1001, 'seed_cells': 2001, 'seed_tests': 3001, 'seed_curve': 4001,
     'sigma_grid': np.geomspace(0.05, 5.0, 25).round(5).tolist(),
     'mu_grid': [-1.0, -0.5, -0.25, 0.0, 0.25, 0.5, 1.0],
-    'coupling_bracket': [1e-3, 1e3], 'bisection_steps': 16,
+    'coupling_bracket': [1e-3, 50.0], 'bisection_steps': 16,     # amendment 1: Euler-Maruyama stays stable below 50
     'chunk': 250,
 }
 CELLS = (('null', 0.0, 0.0), ('forcing', 0.0, 1.0), ('network_half', 0.5, 0.0), ('network', 1.0, 0.0))  # x kappa*, x phi*
@@ -149,12 +149,16 @@ def _tests(args):
             res[test] = paper1.TESTS[test](D, cfg, t)
         for test, label, path in PVALUES:
             if test in res: rows.append((model, cell, w, 'any' if test in DATE_FREE else rule, label, float(_get(res[test], path))))
-    return rows, (model, cell, w, recB)
+        if rule == 'B':     # description: r in the world's own recession years and the year before, against all years
+            r = res['arc']['r_by_year']; yrs = np.array(sorted(r)); rv = np.array([r[y] for y in yrs])
+            st = (model, cell, w, float(rv.mean()), float(np.mean([r[y] for y in recB])), float(np.mean([r[y - 1] for y in recB if y - 1 in r])),
+                  float(rv[(yrs >= 1970) & (yrs <= 1995)].mean()), float(rv[yrs >= 2010].mean()))
+    return rows, (model, cell, w, recB), st
 
 
 def run(processes=None):
     cal = json.load(open(os.path.join(OUT, 'calibration.json'))); T = S.targets(); Wy, _ = S.trade_network()
-    rows, recs = [], []
+    rows, recs, stats = [], [], []
     with Pool(processes or max(1, (os.cpu_count() or 2) - 1), initializer=_init) as pool:
         for mi, model in enumerate(S.MODELS):
             c = cal[model]
@@ -164,13 +168,17 @@ def run(processes=None):
                     nb = min(DESIGN['chunk'], DESIGN['n_worlds'] - s0)
                     sig.append(S.simulate(model, Wy, T['omega'], km * c['kappa_star'], pm * c['phi_star'], c['sigma'], rng, nb, mu=c['mu']))
                 sig = np.concatenate(sig)
-                for r_, rec in pool.imap_unordered(_tests, [(model, cell, w, sig[w], c['m']) for w in range(len(sig))], chunksize=8):
-                    rows += r_; recs.append(rec)
+                for r_, rec, st in pool.imap_unordered(_tests, [(model, cell, w, sig[w], c['m']) for w in range(len(sig))], chunksize=8):
+                    rows += r_; recs.append(rec); stats.append(st)
                 print(model, cell, 'done', flush=True)
     P = pd.DataFrame(rows, columns=['model', 'cell', 'world', 'rule', 'test', 'p']).sort_values(['model', 'cell', 'world', 'rule', 'test'])
     P.to_csv(os.path.join(OUT, 'pvalues.csv.gz'), index=False, float_format='%.6g', compression={'method': 'gzip', 'mtime': 0})
     R = pd.DataFrame([(m_, c_, w_, ' '.join(map(str, r_))) for m_, c_, w_, r_ in recs], columns=['model', 'cell', 'world', 'rule_B_recessions'])
     R.sort_values(['model', 'cell', 'world']).to_csv(os.path.join(OUT, 'rule_b_recessions.csv.gz'), index=False,
+                                                     compression={'method': 'gzip', 'mtime': 0})
+    W = pd.DataFrame(stats, columns=['model', 'cell', 'world', 'r_mean', 'r_at_rule_b_recessions', 'r_year_before_rule_b_recessions',
+                                     'r_1970_1995', 'r_2010_2022'])
+    W.sort_values(['model', 'cell', 'world']).to_csv(os.path.join(OUT, 'world_stats.csv.gz'), index=False, float_format='%.6g',
                                                      compression={'method': 'gzip', 'mtime': 0})
 
 
