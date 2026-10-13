@@ -118,9 +118,14 @@ def test_oil_production_sources_follow_the_stated_rules(built):
         assert ok == x.agree
 
 
-def test_world_bank_denominator_is_the_pinned_file(built):
-    """The fresh World Bank download failed the exact-match check, so the denominators are still the pinned file's."""
-    gdp = pd.read_csv(os.path.join(OUT, 'gdp_current_usd.csv'), index_col=0); gdp.columns = gdp.columns.astype(str)
-    assert gdp.loc[1970:1988, 'BRA'].isna().all()
-    V = g.wb_vintage_comparison(list(gdp.columns)).dropna(subset=['old', 'new'])
-    assert (V.rel.abs() > 1e-3).any()                                   # why the condition fails
+def test_world_bank_denominator_is_the_fresh_vintage(built):
+    """Every denominator comes from the WDI vintage of 8 October 2026 (Sid, 14 October 2026): Brazil and Iran are
+    complete, only Russia before 1988 is missing, and the values are that file's."""
+    gdp = pd.read_csv(os.path.join(OUT, 'gdp_current_usd.csv'), index_col=0, float_precision='round_trip')
+    gdp.columns = gdp.columns.astype(str)
+    assert gdp['BRA'].notna().all() and gdp['IRN'].notna().all()
+    assert set(gdp.columns[gdp.isna().any()]) == {'RUS'} and gdp.loc[1970:1987, 'RUS'].isna().all()
+    V = g.wb_vintage_comparison(list(gdp.columns)).set_index(['year', 'iso'])
+    new = gdp.stack().dropna().rename_axis(['year', 'iso'])
+    assert np.allclose(new.to_numpy(), V.loc[new.index, 'new'].to_numpy(), rtol=1e-12)
+    assert (V.rel.abs() > 1e-3).any()                                   # it is a different vintage from the old file

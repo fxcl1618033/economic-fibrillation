@@ -13,7 +13,7 @@ edges (Sid, 11 October 2026):
                   in Data energy, owid_energy; production 2017-22 from the EIA (eia_intl) where the two agree within
                   the tolerance fixed beforehand; five documented non-producers; valued at the pinned crude price)
 Edge weights (fixed by Sid on 13 October 2026, before any training): primary = the flow as a share of the receiving
-economy's nominal GDP (World Bank current US dollars); sensitivity = the flow as a share of the exporter's or lender's
+economy's nominal GDP (World Bank current US dollars, the WDI vintage of 8 October 2026 since 14 October); sensitivity = the flow as a share of the exporter's or lender's
 total. Raw US dollars are stored (raw_* columns) for checking only and are never model inputs (model_inputs()).
 Missing values are masked, never filled. Every gap gets a class (GAP_CLASSES) saying whether it is a true zero or
 missing data, and why.
@@ -183,12 +183,18 @@ def nodes(atlas_dir, isos):
 
 # ------------------------------------------------------------------ denominators and prices
 
+GDP_SOURCE = ('wb_wdi_gdp_2026_10', 'API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.csv')   # Sid, 14 October 2026 (option b)
+
+
 def gdp_usd(isos):
-    """Nominal GDP in current US dollars (World Bank NY.GDP.MKTP.CD, pinned file wb_gdp_current_usd), years x
-    economies; NaN = missing. The denominator of the primary edge weights and of the oil share."""
-    W = pd.read_csv(config.raw_file('wb_gdp_current_usd', 'data/gdp.csv'))
-    W = W[W['Country Code'].isin(isos)].pivot(index='Year', columns='Country Code', values='Value')
-    return W.reindex(index=YEARS, columns=isos).astype(float)
+    """Nominal GDP in current US dollars (World Bank NY.GDP.MKTP.CD), years x economies; NaN = missing. The
+    denominator of the primary edge weights and of the oil share. Since 14 October 2026 (Sid, option b) every
+    denominator comes from the fresh WDI vintage (wb_wdi_gdp_2026_10, WDI of 8 October 2026); the earlier pinned file
+    (wb_gdp_current_usd) is kept for the vintage comparison only."""
+    N = pd.read_csv(config.raw_file(*GDP_SOURCE), skiprows=4, float_precision='round_trip')
+    N = N[N['Country Code'].isin(isos)].set_index('Country Code')[[str(y) for y in YEARS]].T
+    N.index = YEARS
+    return N.reindex(columns=isos).astype(float)
 
 
 def oil_price_nominal():

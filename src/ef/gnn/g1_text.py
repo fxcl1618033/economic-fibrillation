@@ -80,7 +80,9 @@ def report(R, cal, curve, W, B, P=None, real=None, edge=None):
          "30b095e, a numerical bound set before any test ran), then calibrated and run: 8,000 simulated worlds (two "
          "models × four settings × 1,000), each through the 20 Paper 1 p-values under two ways of dating recessions. "
          "Code `src/ef/gnn/simulator.py` and `src/ef/gnn/g1.py`; `make gnn-g1` reruns it (about 80 minutes on this Mac). "
-         "Every number below is read from `gnn/G1/`.", "",
+         "Every number below is read from `gnn/G1/`. The trade network these runs used is the G0 build of 13 October "
+         "(the earlier World Bank denominators), frozen in `gnn/G1/trade_network.npz`; G0 moved to the fresh World Bank "
+         "vintage on 14 October, which G1 does not use until it is rerun on purpose.", "",
          "## In short", "",
          f"- **The κ = 0 check, recessions on the real calendar** (dates that have nothing to do with a simulated "
          f"world): most tests reject at about the rate they should (3.8% for circular shifts, 5% for surrogates). "

@@ -56,7 +56,7 @@ Predictive use: phases and amplitude use data up to year t only (rule 7). The at
 
 Trade: the exporter's and the importer's reports of the same flow are two attributes of one trade edge, each with its own mask (decided by Sid, 13 October 2026, for G3); neither is filled from the other. The mirror's sensitivity weight divides an importer's figure by an exporter's total (the only world total available for the exporter). Bank: the BIS publishes bilateral claims for all sectors and for non-banks only, so no banks-only attribute is built. Filters: stocks, claims, all instruments, all currencies, all parent countries, all reporting banks, cross-border (`data/sources.yaml`, `read_with`). Lenders: the fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.
 
-**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD, the pinned `wb_gdp_current_usd` file). It is missing for Brazil 1970–1988, Iran 1991–1992 and Russia before 1988; weights that need those years are masked, not filled from another source. A fresh World Bank download (approved by Sid on condition that it matched the pinned file exactly where both have data) does not match: it carries revisions of more than 0.1% in 853 of 1,604 shared economy-years, so it is pinned but not used, and Brazil stays masked (missing-data report, section 5). The Global Macro Database's nominal GDP over its exchange rate was the alternative and was not used: against the World Bank it is 6 times larger for Iran by 2022 (the official rial rate) and about a third larger for Turkey and a fifth for Indonesia in most years.
+**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD), every year from one vintage: the World Development Indicators of 8 October 2026 (`wb_wdi_gdp_2026_10`, downloaded and pinned on 13 October; Sid chose it on 14 October). It is missing only for Russia before 1988; those weights are masked. The earlier pinned file (`wb_gdp_current_usd`) differs from it by more than 0.1% in 853 of 1,604 shared economy-years (revisions) and lacked Brazil 1970–1988 and Iran 1991–1992; it is kept for the comparison only (missing-data report, section 5). The Global Macro Database's nominal GDP over its exchange rate was the alternative and was not used: against the World Bank it is 6 times larger for Iran by 2022 (the official rial rate) and about a third larger for Turkey and a fifth for Indonesia in most years.
 
 ## Oil exposure: the conversion
 
@@ -104,19 +104,22 @@ Net oil exports as a share of nominal GDP (Sid, 13 October 2026), positive for n
 ## Coverage in one line each
 
 - Node features: 94.2% of economy-feature-years observed; phases complete; the largest gaps are long rates, demand contributions and budget series before the 1990s (details in the missing-data report).
-- Trade: 96.4% of directed pair-years observed; primary weights 92.1% (exporter's report) and 92.7% (importer's report); Russia from 1992.
-- Bank: 83.4% of lender-borrower-years observed (96.1% from 1977); primary weight 82.5%.
-- Oil: weight observed in 96.3% of economy-years (88.5% before the EIA extension and the true-zero class); still masked: Russia 1970–1987, Brazil 1970–1988 and Iran 1991–1992 (GDP), Japan and South Africa 2017–2022, South Africa 1970–1979.
+- Trade: 96.4% of directed pair-years observed; primary weights 93.3% (exporter's report) and 93.8% (importer's report); Russia from 1992.
+- Bank: 83.4% of lender-borrower-years observed (96.1% from 1977); primary weight 83.4%.
+- Oil: weight observed in 97.6% of economy-years (88.5% before the EIA extension and the true-zero class); still masked: Russia 1970–1987, Japan and South Africa 2017–2022, South Africa 1970–1979.
 
 ## Decided on 13 October 2026 (Sid)
 
 - EIA production pinned and used within the tolerance fixed beforehand; the five true-zero producers.
 - The BP-based price before 1987 kept, with source flags.
 - Trade: both reports as two attributes of one edge in G3.
-- A fresh World Bank download, used only if it matched the pinned file exactly: it does not (below).
+- A fresh World Bank download, used only if it matched the pinned file exactly: it did not.
+
+## Decided on 14 October 2026 (Sid)
+
+- Every denominator from the fresh World Bank vintage (option b), which revises 853 of 1,604 shared economy-years by more than 0.1% (Turkey up to 39%, Iran up to 25%, Saudi Arabia up to 12%) and unmasks Brazil 1970–1988 and Iran 1991–1992.
 
 ## Open for Sid
 
-1. **World Bank denominators.** The fresh download fails the exact-match check (revisions above 0.1% in 853 of 1,604 shared economy-years, in 29 economies; Turkey up to 39%, Iran up to 25%, Saudi Arabia up to 12%; Brazil matches except 1989, -3.0%). Brazil 1970–1988 therefore stays masked. Options: (a) keep the pinned file and the masks (current); (b) switch every denominator to the fresh vintage, which is complete for S31 from 1970 except Russia before 1988 and moves weights by the revisions; (c) take only the missing years from the fresh vintage (two vintages mixed; a 3% step for Brazil at 1989).
-2. **Japan and South Africa, oil 2017–2022**, stay masked under the stated tolerance (Japan's 2012–16 differences reach 0.115; South Africa's median is 0.131). Changing the tolerance now would be choosing it after seeing the data.
-3. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union units (decided 11 October 2026); the rows are flagged.
+1. **Japan and South Africa, oil 2017–2022**, stay masked under the stated tolerance (Japan's 2012–16 differences reach 0.115; South Africa's median is 0.131). Changing the tolerance now would be choosing it after seeing the data.
+2. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union units (decided 11 October 2026); the rows are flagged.

@@ -219,12 +219,12 @@ Each model weight (primary `w_`, sensitivity `s_`) is masked where its flow or i
 
 | Weight | observed | not_yet | ended | internal | absent | repair | entity | not_reporting | unrecorded | before_bis | series_absent | series_gap | zero | no_denominator | other_report_only |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `w_exports_share_dst_gdp` | 45,402 |  |  |  |  |  | 1,320 | 115 | 336 |  |  |  |  | 575 | 1,542 |
-| `w_mirror_share_dst_gdp` | 45,675 |  |  |  |  |  | 1,320 | 115 | 336 |  |  |  |  | 572 | 1,272 |
+| `w_exports_share_dst_gdp` | 45,977 |  |  |  |  |  | 1,320 | 115 | 336 |  |  |  |  |  | 1,542 |
+| `w_mirror_share_dst_gdp` | 46,247 |  |  |  |  |  | 1,320 | 115 | 336 |  |  |  |  |  | 1,272 |
 | `s_exports_share_src_total` | 45,977 |  |  |  |  |  | 1,320 | 115 | 336 |  |  |  |  |  | 1,542 |
 | `s_mirror_share_src_total` | 45,758 |  |  |  |  |  | 1,320 | 115 | 336 |  |  |  |  | 489 | 1,272 |
 
-Of the observed pair-years, 1,272 have the exporter's figure only and 1,542 the importer's mirror only; neither is filled from the other (`other_report_only`). 1,095 exporter figures and 189 mirror figures are IMF estimates (flagged). 3,246 pair-years use Belgium-Luxembourg (to 1996) or the South African Customs Union (to 1997) for Belgium and South Africa (flagged). Russia's pairs before 1992 are `entity`: the USSR (code SUN) reported instead; its trade is in the pinned file but is not used for Russia (Sid, 13 October 2026). `no_denominator`: the importer's GDP is missing (Brazil 1970–1988, Iran 1991–1992, Russia before 1988 in the World Bank file).
+Of the observed pair-years, 1,272 have the exporter's figure only and 1,542 the importer's mirror only; neither is filled from the other (`other_report_only`). 1,095 exporter figures and 189 mirror figures are IMF estimates (flagged). 3,246 pair-years use Belgium-Luxembourg (to 1996) or the South African Customs Union (to 1997) for Belgium and South Africa (flagged). Russia's pairs before 1992 are `entity`: the USSR (code SUN) reported instead; its trade is in the pinned file but is not used for Russia (Sid, 13 October 2026). `no_denominator`: the importer's GDP is missing (Russia before 1988 in the World Bank file).
 
 Pairs with `unrecorded` or `not_reporting` years:
 
@@ -413,7 +413,7 @@ Each model weight (primary `w_`, sensitivity `s_`) is masked where its flow or i
 
 | Weight | observed | not_yet | ended | internal | absent | repair | entity | not_reporting | unrecorded | before_bis | series_absent | series_gap | zero | no_denominator | other_report_only |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `w_claims_share_dst_gdp` | 13,123 | 298 |  |  |  |  |  |  |  | 2,100 | 46 | 200 |  | 133 |  |
+| `w_claims_share_dst_gdp` | 13,256 | 298 |  |  |  |  |  |  |  | 2,100 | 46 | 200 |  |  |  |
 | `s_claims_share_src_total` | 13,256 | 298 |  |  |  |  |  |  |  | 2,100 | 46 | 200 |  |  |  |
 
 Lenders: France, Belgium, Sweden, Switzerland, Germany, Denmark, the Netherlands, the United States, the United Kingdom and Japan (reporting since 1977-Q4; Sid's main set). No values before 1977 (`before_bis`). Russia is a borrower only, from 1993-Q4 (claims on the USSR, BIS code SU, exist before and are not used: Sid, 13 October 2026). The United States reports no claims on Iran in any year (`series_absent`). The United Kingdom has no 1982-Q4 value for any borrower. Saudi Arabia's series start late for most lenders (to 2011). The sensitivity denominator (each lender's claims on all countries) is complete from 1977.
@@ -620,13 +620,13 @@ By economy:
 
 ## 4. Oil edges (economy → world node, net oil exports as a share of GDP)
 
-1,643 directed pair-years; the flow itself: observed 1,582, no_denominator 24, entity 15, ended 12, not_yet 10.
+1,643 directed pair-years; the flow itself: observed 1,603, entity 15, ended 12, not_yet 10, no_denominator 3.
 
 Each model weight (primary `w_`, sensitivity `s_`) is masked where its flow or its denominator is missing:
 
 | Weight | observed | not_yet | ended | internal | absent | repair | entity | not_reporting | unrecorded | before_bis | series_absent | series_gap | zero | no_denominator | other_report_only |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `w_net_oil_exports_share_gdp` | 1,582 | 10 | 12 |  |  |  | 15 |  |  |  |  |  |  | 24 |  |
+| `w_net_oil_exports_share_gdp` | 1,603 | 10 | 12 |  |  |  | 15 |  |  |  |  |  |  | 3 |  |
 
 Every economy has a link to the world node in every year; its weight is masked where production, consumption or GDP is missing. By economy:
 
@@ -659,9 +659,9 @@ Every economy has a link to the world node in every year; its weight is masked w
 | Indonesia | 53 | — |
 | Thailand | 53 | — |
 | China | 53 | — |
-| Brazil | 34 | no_denominator 1970–1988 |
+| Brazil | 53 | — |
 | Saudi Arabia | 53 | — |
-| Iran | 51 | no_denominator 1991–1992 |
+| Iran | 53 | — |
 | Russia | 35 | entity 1970–1984; no_denominator 1985–1987 |
 
 ### Oil production: sources, the EIA extension and the true-zero producers
@@ -736,13 +736,13 @@ Price: EIA Brent from 1987; before 1987 the BP series converted to dollars of th
 
 ## 5. GDP denominators (World Bank, current US dollars)
 
-Missing years, masked wherever a weight needs them: Brazil 1970–1988; Iran 1991–1992; Russia 1970–1987. Nothing is spliced in from another source.
+Missing years, masked wherever a weight needs them: Russia 1970–1987. Nothing is spliced in from another source.
 
-### The fresh World Bank download (Sid's condition: an exact match where both have data)
+### The World Bank vintages: the switch and what it changed
 
-The World Development Indicators file downloaded on 13 October 2026 (`wb_wdi_gdp_2026_10`, WDI of 8 October 2026) was compared with the pinned file, S31, 1970–2022. Of 1,604 economy-years in both, 598 are identical (to 1e-9), 153 differ by at most 0.1% and **853 differ by more** (317 by more than 1%). **The condition fails**, so the fresh file is not used: the denominators stay the pinned file's and Brazil 1970–1988 stays masked, for Sid to decide. The fresh file would add Brazil 1970–1988; Iran 1991–1992.
+The denominators come from the World Development Indicators file downloaded on 13 October 2026 (`wb_wdi_gdp_2026_10`, WDI of 8 October 2026) since 14 October 2026 (Sid, option b: every denominator from one vintage). Before the switch it was compared with the earlier pinned file (`wb_gdp_current_usd`), S31, 1970–2022: of 1,604 economy-years in both, 598 are identical (to 1e-9), 153 differ by at most 0.1% and 853 differ by more (317 by more than 1%), so Sid's first condition, an exact match, failed and he chose to switch every denominator rather than mix vintages. The switch unmasks Brazil 1970–1988; Iran 1991–1992.
 
-The differences are revisions between World Bank vintages, not reading errors: they run through whole series (national-accounts revisions and rebasings). Brazil itself matches in every shared year except 1989 (−3.0%), the year next to the gap. Economies with revisions above 0.1% (years revised of years shared; the largest revision and its year):
+The differences are revisions between World Bank vintages, not reading errors: they run through whole series (national-accounts revisions and rebasings), and every weight that divides by a revised GDP moves with it. Brazil matches in every shared year except 1989 (−3.0%). Economies with revisions above 0.1% (years revised of years shared; the largest revision and its year):
 
 | Economy | Years revised by more than 0.1% | Largest revision | Year |
 |---|---|---|---|

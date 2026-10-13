@@ -123,7 +123,7 @@ def missing_report(r, n, E, G):
                   "pair-years use Belgium-Luxembourg (to 1996) or the South African Customs Union (to 1997) for Belgium and "
                   "South Africa (flagged). Russia's pairs before 1992 are `entity`: the USSR (code SUN) reported instead; its "
                   "trade is in the pinned file but is not used for Russia (Sid, 13 October 2026). `no_denominator`: the "
-                  "importer's GDP is missing (Brazil 1970–1988, Iran 1991–1992, Russia before 1988 in the World Bank file).", ""]
+                  "importer's GDP is missing (Russia before 1988 in the World Bank file).", ""]
             u = e[e.gap.isin(['unrecorded', 'not_reporting'])].groupby(['src', 'dst', 'gap']).year.apply(_years).reset_index()
             L += ["Pairs with `unrecorded` or `not_reporting` years:", ""] + _md(u.rename(columns={'year': 'years'}))
         if k == 'bank':
@@ -162,17 +162,19 @@ def vintage_section(isos):
     per = b.assign(rev=a > 1e-3, a=a).groupby('iso').agg(revised=('rev', 'sum'), n=('rev', 'size'), max_abs=('a', 'max'),
                                                           worst=('a', lambda x: int(b.loc[x.idxmax(), 'year'])))
     per = per[per.revised > 0].sort_values('max_abs', ascending=False)
-    L = ["### The fresh World Bank download (Sid's condition: an exact match where both have data)", "",
-         f"The World Development Indicators file downloaded on 13 October 2026 (`wb_wdi_gdp_2026_10`, WDI of 8 October 2026) was "
-         f"compared with the pinned file, S31, 1970–2022. Of {len(b):,} economy-years in both, {int((a <= 1e-9).sum()):,} are identical "
-         f"(to 1e-9), {int(((a > 1e-9) & (a <= 1e-3)).sum()):,} differ by at most 0.1% and **{int((a > 1e-3).sum()):,} differ by more** "
-         f"({int((a > 1e-2).sum()):,} by more than 1%). **The condition fails**, so the fresh file is not used: the denominators "
-         "stay the pinned file's and Brazil 1970–1988 stays masked, for Sid to decide. The fresh file would add "
+    L = ["### The World Bank vintages: the switch and what it changed", "",
+         f"The denominators come from the World Development Indicators file downloaded on 13 October 2026 "
+         f"(`wb_wdi_gdp_2026_10`, WDI of 8 October 2026) since 14 October 2026 (Sid, option b: every denominator from one "
+         f"vintage). Before the switch it was compared with the earlier pinned file (`wb_gdp_current_usd`), S31, 1970–2022: "
+         f"of {len(b):,} economy-years in both, {int((a <= 1e-9).sum()):,} are identical (to 1e-9), "
+         f"{int(((a > 1e-9) & (a <= 1e-3)).sum()):,} differ by at most 0.1% and {int((a > 1e-3).sum()):,} differ by more "
+         f"({int((a > 1e-2).sum()):,} by more than 1%), so Sid's first condition, an exact match, failed and he chose to "
+         "switch every denominator rather than mix vintages. The switch unmasks "
          + "; ".join(f"{NAMES[i]} {_years(d.year)}" for i, d in only_new.groupby('iso')) + ".", "",
          "The differences are revisions between World Bank vintages, not reading errors: they run through whole series "
-         "(national-accounts revisions and rebasings). Brazil itself matches in every shared year except 1989 (−3.0%), "
-         "the year next to the gap. Economies with revisions above 0.1% (years revised of years shared; the largest "
-         "revision and its year):", "",
+         "(national-accounts revisions and rebasings), and every weight that divides by a revised GDP moves with it. "
+         "Brazil matches in every shared year except 1989 (−3.0%). Economies with revisions above 0.1% (years revised of "
+         "years shared; the largest revision and its year):", "",
          "| Economy | Years revised by more than 0.1% | Largest revision | Year |", "|---|---|---|---|"]
     L += [f"| {NAMES[i]} | {int(x.revised)} of {int(x.n)} | {100 * x.max_abs:.1f}% | {int(x.worst)} |" for i, x in per.iterrows()]
     L += ["", "Full table: `gnn/G0/wb_vintage_comparison.csv.gz`.", ""]
@@ -281,12 +283,12 @@ def data_card(r, n, E, G):
           "sectors and for non-banks only, so no banks-only attribute is built. Filters: stocks, claims, all instruments, all "
           "currencies, all parent countries, all reporting banks, cross-border (`data/sources.yaml`, `read_with`). Lenders: "
           "the fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.", "",
-          "**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD, the pinned "
-          "`wb_gdp_current_usd` file). It is missing for Brazil 1970–1988, Iran 1991–1992 and Russia before 1988; weights "
-          "that need those years are masked, not filled from another source. A fresh World Bank download (approved by Sid "
-          "on condition that it matched the pinned file exactly where both have data) does not match: it carries revisions "
-          "of more than 0.1% in " + f"{vs['cells']:,} of {vs['shared']:,}" + " shared economy-years, so it is pinned but not used, and Brazil stays masked "
-          "(missing-data report, section 5). The Global Macro Database's nominal GDP over "
+          "**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD), every year from one "
+          "vintage: the World Development Indicators of 8 October 2026 (`wb_wdi_gdp_2026_10`, downloaded and pinned on 13 "
+          "October; Sid chose it on 14 October). It is missing only for Russia before 1988; those weights are masked. The "
+          "earlier pinned file (`wb_gdp_current_usd`) differs from it by more than 0.1% in " + f"{vs['cells']:,} of {vs['shared']:,}" +
+          " shared economy-years (revisions) and lacked Brazil 1970–1988 and Iran 1991–1992; it is kept for the comparison "
+          "only (missing-data report, section 5). The Global Macro Database's nominal GDP over "
           "its exchange rate was the alternative and was not used: against the World Bank it is 6 times larger for Iran by "
           "2022 (the official rial rate) and about a third larger for Turkey and a fifth for Indonesia in most years.", "",
           "## Oil exposure: the conversion", "",
@@ -331,24 +333,21 @@ def data_card(r, n, E, G):
           f"- Bank: {100 * (be.gap == 'observed').mean():.1f}% of lender-borrower-years observed ({100 * (be[be.year >= 1977].gap == 'observed').mean():.1f}% "
           f"from 1977); primary weight {100 * be.w_claims_share_dst_gdp.notna().mean():.1f}%.",
           f"- Oil: weight observed in {100 * oe.w_net_oil_exports_share_gdp.notna().mean():.1f}% of economy-years (88.5% before "
-          "the EIA extension and the true-zero class); still masked: Russia 1970–1987, Brazil 1970–1988 and Iran 1991–1992 "
-          "(GDP), Japan and South Africa 2017–2022, South Africa 1970–1979.", "",
+          "the EIA extension and the true-zero class); still masked: Russia 1970–1987, Japan and South Africa 2017–2022, "
+          "South Africa 1970–1979.", "",
           "## Decided on 13 October 2026 (Sid)", "",
           "- EIA production pinned and used within the tolerance fixed beforehand; the five true-zero producers.",
           "- The BP-based price before 1987 kept, with source flags.",
           "- Trade: both reports as two attributes of one edge in G3.",
-          "- A fresh World Bank download, used only if it matched the pinned file exactly: it does not (below).", "",
+          "- A fresh World Bank download, used only if it matched the pinned file exactly: it did not.", "",
+          "## Decided on 14 October 2026 (Sid)", "",
+          f"- Every denominator from the fresh World Bank vintage (option b), which revises {vs['cells']:,} of {vs['shared']:,} "
+          f"shared economy-years by more than 0.1% ({vs['top']}) and unmasks Brazil 1970–1988 and Iran 1991–1992.", "",
           "## Open for Sid", "",
-          f"1. **World Bank denominators.** The fresh download fails the exact-match check (revisions above 0.1% in "
-          f"{vs['cells']:,} of {vs['shared']:,} shared economy-years, in {vs['econ']} economies; {vs['top']}; Brazil matches "
-          f"except 1989, {vs['bra1989']:+.1%}). Brazil 1970–1988 therefore stays masked. Options: (a) keep the pinned file and the masks "
-          "(current); (b) switch every denominator to the fresh vintage, which is complete for S31 from 1970 except "
-          "Russia before 1988 and moves weights by the revisions; (c) take only the missing years from the fresh vintage "
-          "(two vintages mixed; a 3% step for Brazil at 1989).",
-          "2. **Japan and South Africa, oil 2017–2022**, stay masked under the stated tolerance (Japan's 2012–16 "
+          "1. **Japan and South Africa, oil 2017–2022**, stay masked under the stated tolerance (Japan's 2012–16 "
           "differences reach 0.115; South Africa's median is 0.131). Changing the tolerance now would be choosing it "
           "after seeing the data.",
-          "3. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union "
+          "2. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union "
           "units (decided 11 October 2026); the rows are flagged."]
     return "\n".join(L) + "\n"
 

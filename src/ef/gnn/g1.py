@@ -45,6 +45,17 @@ PVALUES = [('arc', f'arc.{l}', ('arc', l, 'p')) for l in ('lead2', 'lead1', 'cri
 DATE_FREE = {'amplitude', 'phase_lags'}        # tests that do not use the recession years
 
 
+def network():
+    """The trade network the G1 runs use, frozen in gnn/G1/trade_network.npz: the G0 build of 13 October 2026 (pinned
+    World Bank denominators, ef632d4), saved on 14 October 2026 before G0 switched to the fresh World Bank vintage, so
+    the reported G1 numbers stay reproducible. Without the file, it is built from the current G0 and saved."""
+    f = os.path.join(OUT, 'trade_network.npz')
+    if not os.path.exists(f):
+        W, isos = S.trade_network(); os.makedirs(OUT, exist_ok=True)
+        np.savez_compressed(f, W=W, isos=np.array(isos), years=np.arange(S.SPAN[0], S.SPAN[1] + 1))
+    z = np.load(f); return z['W'], list(z['isos'])
+
+
 def run_config():
     """The S31 Phase 3 settings, with 199 surrogates per test and only convention C among the alternative conventions
     (the past-only lead check); the bootstrap interval of run_arc is description only and gets 200 draws."""
@@ -67,7 +78,7 @@ def _calib_stats(model, T, Wy, kappa, phi, sigma, mu, m=1.0, n=None, seed=None):
 
 
 def _init_calib():
-    warnings.filterwarnings('ignore'); _W['T'] = S.targets(); _W['Wy'] = S.trade_network()[0]
+    warnings.filterwarnings('ignore'); _W['T'] = S.targets(); _W['Wy'] = network()[0]
 
 
 def _grid_point(args):
@@ -90,7 +101,7 @@ def calibrate():
     annual phase steps (and median swing-size variation): the grid point nearest the target(s). Step 2: m, the mean
     size of the uncoupled annual signal. Step 3: kappa* (phi = 0) and phi* (kappa = 0) whose mean r over 1970-2022
     matches S31's, by bisection. Nothing here uses the recession years."""
-    warnings.filterwarnings('ignore'); T = S.targets(); Wy, _ = S.trade_network(); out = {'targets': {k: float(T[k]) for k in ('sd_phase_step', 'cv_amplitude', 'mean_r')}}
+    warnings.filterwarnings('ignore'); T = S.targets(); Wy, _ = network(); out = {'targets': {k: float(T[k]) for k in ('sd_phase_step', 'cv_amplitude', 'mean_r')}}
     for model in S.MODELS:
         pts = [(model, mu, s) for mu in (DESIGN['mu_grid'] if model == 'stuart_landau' else [0.0]) for s in DESIGN['sigma_grid']]
         with Pool(max(1, (os.cpu_count() or 2) - 1), initializer=_init_calib) as pool:
@@ -167,7 +178,7 @@ def _tests(args):
 
 
 def run(processes=None):
-    cal = json.load(open(os.path.join(OUT, 'calibration.json'))); T = S.targets(); Wy, _ = S.trade_network()
+    cal = json.load(open(os.path.join(OUT, 'calibration.json'))); T = S.targets(); Wy, _ = network()
     rows, recs, stats = [], [], []
     with Pool(processes or max(1, (os.cpu_count() or 2) - 1), initializer=_init) as pool:
         for mi, model in enumerate(S.MODELS):
@@ -199,7 +210,7 @@ def swing_edge_check(n=300, n_sur=100, seed=4101):
     without 2020, and its spread across worlds against the spread of the surrogate null (first n_sur worlds)."""
     from ef import crisis, nulls, order
     from ef.phases import analytic
-    warnings.filterwarnings('ignore'); cal = json.load(open(os.path.join(OUT, 'calibration.json'))); T = S.targets(); Wy, _ = S.trade_network()
+    warnings.filterwarnings('ignore'); cal = json.load(open(os.path.join(OUT, 'calibration.json'))); T = S.targets(); Wy, _ = network()
     cfg = run_config(); yrs = np.arange(1970, 2023); rows, summ = [], []
     for model in S.MODELS:
         c = cal[model]; sig = S.simulate(model, Wy, T['omega'], 0.0, 0.0, c['sigma'], np.random.default_rng(seed), n, mu=c['mu'])

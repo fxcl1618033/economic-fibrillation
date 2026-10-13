@@ -111,7 +111,7 @@ sources:
       - path: data/gdp.csv
         sha256: 8d84ef6bcaccf740c01c5ed7566aae8f7b149d0e2c20001e441efd3cb5b2fa86
         bytes: 562767
-    used_by: paper1/scripts/eraA_claude_ai/crisis_analysis.py (reads gdp.csv); prepare_data.py built paper1/data/gdp_panel_*.csv from it; GNN G0 edge-weight denominators (nominal GDP in current US dollars, from 13 October 2026); its gaps for S31 in 1970-2022 are Brazil 1970-1988, Iran 1991-1992 and Russia before 1988
+    used_by: paper1/scripts/eraA_claude_ai/crisis_analysis.py (reads gdp.csv); prepare_data.py built paper1/data/gdp_panel_*.csv from it; GNN G0 edge-weight denominators on 13 October 2026 only (replaced by wb_wdi_gdp_2026_10 on 14 October; still read for the vintage comparison); its gaps for S31 in 1970-2022 are Brazil 1970-1988, Iran 1991-1992 and Russia before 1988
 
 downloads:
   # Files downloaded once from official sources on Sid's Mac (approved by Sid, 11 October 2026). Their URLs serve the
@@ -221,7 +221,7 @@ downloads:
         bytes: 788
     read_with: skip the first 4 lines; one row per economy, years as columns
     check: it does NOT match wb_gdp_current_usd exactly where both have data. For S31 in 1970-2022, of 1,604 economy-years in both, 598 are identical (to 1e-9), 153 differ by at most 0.1% and 853 by more (317 by more than 1%); 29 of the 31 economies have at least one revision above 0.1% and 16 have them in at least half their years (national-accounts revisions and rebasings); the largest are Turkey (up to 39%), Iran (25%) and Saudi Arabia (12%). Brazil matches except 1989 (-3.0%). It adds Brazil 1970-1988 and Iran 1991-1992
-    used_by: the vintage comparison in gnn/G0_missing_data.md only. NOT used as a denominator (Sid's condition, an exact match, failed; 13 October 2026); Brazil 1970-1988 stays masked until Sid decides
+    used_by: GNN G0 edge-weight denominators from 14 October 2026 (Sid chose option b, every denominator from this vintage, after the exact-match condition failed); gaps for S31 in 1970-2022 - Russia before 1988 only
     cite: World Bank, World Development Indicators, NY.GDP.MKTP.CD, retrieved 13 October 2026.
 
 not_pinned:
