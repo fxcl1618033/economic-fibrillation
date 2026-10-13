@@ -178,6 +178,52 @@ downloads:
     used_by: GNN G0 trade edges for S31
     cite: International Monetary Fund, International Trade in Goods (by partner country) (IMTS), data.imf.org, retrieved 13 October 2026.
 
+  - id: eia_intl
+    what: U.S. Energy Information Administration (EIA), International Energy Statistics, bulk file of every international series (JSON lines, one series per line). Used - annual crude oil including lease condensate production (INTL.57-1-<ISO3>-TBPD.A) and natural gas plant liquids production (INTL.58-1-<ISO3>-TBPD.A), thousand barrels a day, 1980-2025; '--' = not available
+    url: https://www.eia.gov/opendata/bulk/INTL.zip   # listed on https://www.eia.gov/opendata/bulkfiles.php (https://api.eia.gov/bulk/INTL.zip redirects here); no API key needed
+    release: zip Last-Modified 2026-10-03 09:49 GMT; series last updated up to 2026-09-30 (104,434 series)
+    downloaded: 2026-10-13T17:30:37Z
+    refetch: The URL always serves the newest file and the EIA keeps no older bulk vintages. If the pinned copy is lost it is restored from data/archive/eia_intl; a new download must be pinned anew and everything built on it rerun
+    dir: eia_intl
+    files:
+      - path: INTL.zip
+        sha256: 9251a5920ebe70448fc7af522c4f938dc9e1f4728aca2928ecc814ca9f216ea9
+        bytes: 24153479
+      - path: INTL.txt
+        from_zip: INTL.zip
+        sha256: d664246b3f9080a980da481049b474fe0d9a89e3f0b06552dc7d284a9f0b40e1
+        bytes: 128799698
+    read_with: json.loads per line; series lines have series_id, units and data = [[year, value], ...]. Production comparable with the Energy Institute's (crude, condensates and NGLs) = series 57 + series 58; 59 (other liquids - biofuels, coal-, gas-derived) and refinery gain are left out
+    used_by: GNN G0 oil edges - oil production 2017-2022 for economies whose Our World in Data production ends in 2016, only where EIA and OWID agree over 1980-2016 within the tolerance fixed in docs/decisions.md before the comparison (approved by Sid, 13 October 2026); corroborates the true-zero producers
+    cite: U.S. Energy Information Administration, International Energy Statistics, bulk download INTL.zip, retrieved 13 October 2026.
+
+  - id: wb_wdi_gdp_2026_10
+    what: World Bank World Development Indicators, GDP in current US dollars (NY.GDP.MKTP.CD), all economies, 1960-2025, the API's CSV download (WDI last updated 2026-10-08)
+    url: https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv   # serves API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.zip
+    downloaded: 2026-10-13T17:30:40Z
+    refetch: The URL serves the latest WDI vintage. If lost, restored from data/archive/wb_wdi_gdp
+    dir: wb_wdi_gdp
+    files:
+      - path: API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.zip
+        sha256: ec349303c263d3b36924e83a9780e5002ce7a1809ecaf29e7829db946ec01d81
+        bytes: 142891
+      - path: API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.csv
+        from_zip: API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.zip
+        sha256: 34a2a6cc0e286469a0c3635693499981abe6efaa8bf964711201a3be3f138ad0
+        bytes: 297580
+      - path: Metadata_Country_API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.csv
+        from_zip: API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.zip
+        sha256: eb2b248a5a2dd23d0238b210475ca8a3753d0ae7b1207828c7db377c592880a1
+        bytes: 65232
+      - path: Metadata_Indicator_API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.csv
+        from_zip: API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.zip
+        sha256: efb0ab0c9e3752f4d806a261014cee65304917e89386bbed8911386c33e188be
+        bytes: 788
+    read_with: skip the first 4 lines; one row per economy, years as columns
+    check: it does NOT match wb_gdp_current_usd exactly where both have data. For S31 in 1970-2022, of 1,604 economy-years in both, 598 are identical (to 1e-9), 153 differ by at most 0.1% and 853 by more (317 by more than 1%); 29 of the 31 economies have at least one revision above 0.1% and 16 have them in at least half their years (national-accounts revisions and rebasings); the largest are Turkey (up to 39%), Iran (25%) and Saudi Arabia (12%). Brazil matches except 1989 (-3.0%). It adds Brazil 1970-1988 and Iran 1991-1992
+    used_by: the vintage comparison in gnn/G0_missing_data.md only. NOT used as a denominator (Sid's condition, an exact match, failed; 13 October 2026); Brazil 1970-1988 stays masked until Sid decides
+    cite: World Bank, World Development Indicators, NY.GDP.MKTP.CD, retrieved 13 October 2026.
+
 not_pinned:
   - id: jst_xlsx
     what: Jordà–Schularick–Taylor Macrohistory Database (jst.xlsx), used only by crisis_dating_test.py (banking-crisis dating, superseded)

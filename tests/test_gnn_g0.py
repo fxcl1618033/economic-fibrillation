@@ -96,3 +96,31 @@ def test_raw_dollars_are_never_model_inputs(built):
         for k, d in g.model_inputs(E, variant).items():
             assert not [c for c in d.columns if c.startswith('raw_')]
             assert all(c.startswith(('w_', 's_', 'mask_')) or c in ('year', 'src', 'dst') or c in g.MODEL_INPUTS[k]['flags'] for c in d.columns)
+
+
+def test_oil_production_sources_follow_the_stated_rules(built):
+    """EIA only for 2017-22 and only where the comparison agrees; true zeros only for the five classed economies;
+    the BP-price flag exactly before 1987."""
+    n, E = built
+    o = E['oil']; S, L = g.eia_comparison(list(n['nodes'][:-1]))
+    eia = o[o.production_from_eia]
+    assert eia.year.between(*g.EIA_EXTEND).all() and set(eia.src) == set(S[S.agree & ~S.true_zero].iso)
+    assert not set(eia.src) & {'JPN', 'ZAF'}                            # both fail the tolerance fixed beforehand
+    tz = o[o.production_true_zero]
+    assert set(tz.src) == set(g.TRUE_ZERO_PRODUCERS) and (tz.raw_oil_production_twh == 0).all()
+    assert (o[o.src.isin(g.TRUE_ZERO_PRODUCERS)].raw_oil_production_twh == 0).all()
+    assert (o.price_from_bp_series == (o.year < g.OIL_PRICE_SWITCH)).all()
+    # the rule itself: d_t = |EIA - OWID| / max(OWID, 10 TWh)
+    assert np.allclose(L.d, (L.eia_twh - L.owid_twh).abs() / np.maximum(L.owid_twh, g.EIA_FLOOR_TWH))
+    for x in S.itertuples():
+        d = L[L.iso == x.iso]
+        ok = d.d.median() <= g.EIA_TOL and all(((d.year == y) & (d.d <= g.EIA_TOL)).any() for y in range(2012, 2017))
+        assert ok == x.agree
+
+
+def test_world_bank_denominator_is_the_pinned_file(built):
+    """The fresh World Bank download failed the exact-match check, so the denominators are still the pinned file's."""
+    gdp = pd.read_csv(os.path.join(OUT, 'gdp_current_usd.csv'), index_col=0); gdp.columns = gdp.columns.astype(str)
+    assert gdp.loc[1970:1988, 'BRA'].isna().all()
+    V = g.wb_vintage_comparison(list(gdp.columns)).dropna(subset=['old', 'new'])
+    assert (V.rel.abs() > 1e-3).any()                                   # why the condition fails

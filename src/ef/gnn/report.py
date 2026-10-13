@@ -80,8 +80,8 @@ def missing_report(r, n, E, G):
           "are probable zeros, mostly South Africa's trade with Asian and Middle Eastern economies during the apartheid "
           "sanctions (1970–91) and China–South Korea before 1990, but they are masked like missing data. For bank claims "
           "no reported value is exactly zero; every gap is missing data. For oil, a recorded production of zero is a true "
-          "zero (observed); where production is not listed but the source records zero in every year it covers the "
-          "economy (`unlisted_producer`), it is probably zero but masked.", ""]
+          "zero (observed), and South Korea, Switzerland, Belgium, Finland and Portugal are classed as true-zero "
+          "producers in every year (Sid, 13 October 2026; reason in section 4); every remaining oil gap is missing data.", ""]
     # nodes
     cov = coverage_table(G); allc = G.gap.value_counts()
     L += ["## 1. Node features", "",
@@ -143,11 +143,7 @@ def missing_report(r, n, E, G):
                 d = e[e.src == i]; miss = d[d.gap != 'observed']
                 rows.append((NAMES[i], int((d.gap == 'observed').sum()), '; '.join(f"{c} {_years(m.year)}" for c, m in miss.groupby('gap')) or '—'))
             L += _md(pd.DataFrame(rows, columns=['economy', 'years observed of 53', 'masked years by class']))
-            L += ["", "Production ends in 2016 for the 15 economies the Energy Institute does not list separately (their "
-                  "production comes from the Shift Data Portal, 2019 release), so their weights are masked in 2017–2022. For "
-                  "South Korea, Switzerland, Belgium, Finland and Portugal the source records zero production in every year it "
-                  "covers (1980–2016): their 1970–1979 and 2017–2022 gaps are `unlisted_producer`, probably true zeros, but "
-                  "masked. South Africa's production starts in 1980 with non-zero values later, so its gaps are plain missing.", ""]
+            L += ["", *oil_production_section(r, e)]
         if k != 'oil':
             L += ["", "Flow gaps by year:", ""] + _md(edge_year_table(e))
             L += ["", "By economy:", ""] + _md(edge_node_table(e, isos))
@@ -155,12 +151,94 @@ def missing_report(r, n, E, G):
     L += ["", "## 5. GDP denominators (World Bank, current US dollars)", "",
           "Missing years, masked wherever a weight needs them: " +
           "; ".join(f"{NAMES[c]} {_years(gdp.index[gdp[c].isna()])}" for c in gdp.columns if gdp[c].isna().any()) + ". Nothing is "
-          "spliced in from another source.", ""]
+          "spliced in from another source.", "", *vintage_section(isos)]
     return "\n".join(L) + "\n"
+
+
+def vintage_section(isos):
+    """The fresh World Bank download against the pinned denominator file (Sid's condition: an exact match)."""
+    V = g.wb_vintage_comparison(isos); b = V.dropna(subset=['old', 'new']); a = b.rel.abs()
+    only_new = V[V.old.isna() & V.new.notna()]
+    per = b.assign(rev=a > 1e-3, a=a).groupby('iso').agg(revised=('rev', 'sum'), n=('rev', 'size'), max_abs=('a', 'max'),
+                                                          worst=('a', lambda x: int(b.loc[x.idxmax(), 'year'])))
+    per = per[per.revised > 0].sort_values('max_abs', ascending=False)
+    L = ["### The fresh World Bank download (Sid's condition: an exact match where both have data)", "",
+         f"The World Development Indicators file downloaded on 13 October 2026 (`wb_wdi_gdp_2026_10`, WDI of 8 October 2026) was "
+         f"compared with the pinned file, S31, 1970–2022. Of {len(b):,} economy-years in both, {int((a <= 1e-9).sum()):,} are identical "
+         f"(to 1e-9), {int(((a > 1e-9) & (a <= 1e-3)).sum()):,} differ by at most 0.1% and **{int((a > 1e-3).sum()):,} differ by more** "
+         f"({int((a > 1e-2).sum()):,} by more than 1%). **The condition fails**, so the fresh file is not used: the denominators "
+         "stay the pinned file's and Brazil 1970–1988 stays masked, for Sid to decide. The fresh file would add "
+         + "; ".join(f"{NAMES[i]} {_years(d.year)}" for i, d in only_new.groupby('iso')) + ".", "",
+         "The differences are revisions between World Bank vintages, not reading errors: they run through whole series "
+         "(national-accounts revisions and rebasings). Brazil itself matches in every shared year except 1989 (−3.0%), "
+         "the year next to the gap. Economies with revisions above 0.1% (years revised of years shared; the largest "
+         "revision and its year):", "",
+         "| Economy | Years revised by more than 0.1% | Largest revision | Year |", "|---|---|---|---|"]
+    L += [f"| {NAMES[i]} | {int(x.revised)} of {int(x.n)} | {100 * x.max_abs:.1f}% | {int(x.worst)} |" for i, x in per.iterrows()]
+    L += ["", "Full table: `gnn/G0/wb_vintage_comparison.csv.gz`.", ""]
+    return L
+
+
+def oil_production_section(r, e):
+    """Where each year's oil production comes from: OWID, the EIA extension, or a documented true zero."""
+    S, _ = g.eia_comparison(r['isos']); agree = S[S.agree & ~S.true_zero]; fail = S[~S.agree]
+    src = e.groupby(['src', 'oil_production_source']).year.apply(_years).unstack(fill_value='')
+    L = ["### Oil production: sources, the EIA extension and the true-zero producers", "",
+         "Our World in Data's production series end in 2016 for the 15 economies the Energy Institute does not list "
+         "separately (their production comes from The Shift Data Portal, 2019 release). Sid approved the EIA's "
+         "International Energy Statistics (`eia_intl`) to extend 2017–2022, but only for economies where the EIA and "
+         "OWID agree over 1980–2016 within a tolerance **fixed in `docs/decisions.md` before the comparison was run** "
+         "(commit 0b6f6e3):", "",
+         f"- EIA production = crude oil including lease condensate + natural gas plant liquids (thousand barrels a day × "
+         f"1,000 × days in the year ÷ 630,267 barrels per TWh, the oil weight's own factor).",
+         f"- d_t = |EIA_t − OWID_t| ÷ max(OWID_t, {g.EIA_FLOOR_TWH:.0f} TWh). **Agree** if the median d_t over the years both "
+         f"report in 1980–2016 is at most {g.EIA_TOL:.2f} and d_t ≤ {g.EIA_TOL:.2f} in every year 2012–2016 (no step at the "
+         "splice).", "",
+         "| Economy | Years compared | Median d | Largest d, 2012–16 | EIA ÷ OWID (median) | Agree | 2017–22 production |",
+         "|---|---|---|---|---|---|---|"]
+    for x in S.itertuples():
+        res = ('true zero (classed)' if x.true_zero else 'EIA' if x.agree else 'masked')
+        rat = '—' if np.isnan(x.median_ratio_eia_owid) else f"{x.median_ratio_eia_owid:.3f}"
+        L.append(f"| {NAMES[x.iso]} | {x.years_compared} ({x.first}–2016) | {x.median_d:.3f} | {x.max_d_splice:.3f} | {rat} | "
+                 f"{'yes' if x.agree else '**no**'} | {res} |")
+    near = S[(~S.true_zero) & ((S.median_d - g.EIA_TOL).abs() < 0.02) | ((S.max_d_splice - g.EIA_TOL).abs() < 0.02) & ~S.true_zero]
+    L += ["", f"**Extended from the EIA:** {', '.join(NAMES[i] for i in agree.iso)} (2017–2022, flagged "
+          f"`production_from_eia`). **Still masked in 2017–2022:** " + ", ".join(
+              f"{NAMES[x.iso]} (" + ("largest 2012–16 d " + f"{x.max_d_splice:.3f}" if not x.splice_ok else f"median d {x.median_d:.3f}") + ")"
+              for x in fail.itertuples()) + ".", "",
+          "Most of the gap between the two sources is a level difference, not a different path: for most economies the "
+          "EIA's barrels are 5–9% below OWID's TWh converted at the fixed 7.33 barrels per tonne of oil equivalent (11% "
+          "above for Japan). That is about how many barrels a tonne of each country's oil holds, which the fixed factor "
+          "ignores. It puts several results close to the line: "
+          + ", ".join(f"{NAMES[x.iso]} (median {x.median_d:.3f}, largest 2012–16 {x.max_d_splice:.3f})" for x in near.itertuples())
+          + ". The rule is applied as fixed; changing it now would be choosing it after seeing the data. Where the EIA "
+          "extends a series, production steps down by that level difference at 2016–17; for these net importers the "
+          "step moves the oil weight by at most a few hundredths of a percent of GDP.", "",
+          "**True-zero producers (Sid, 13 October 2026): South Korea, Switzerland, Belgium, Finland and Portugal.** Their "
+          "oil production is zero in every year 1970–2022, so their oil weights are observed (minus consumption, valued). "
+          "Reason: neither source records any production for them. Our World in Data (The Shift Data Portal) records "
+          "zero in every year it lists them (1980–2016), and the EIA records zero crude oil and zero natural gas plant "
+          "liquids in every year it lists them (2004–2025; it lists no earlier year). The years no source lists "
+          "(1970–1979, 2017–2022) are set to zero by this classification and flagged `production_true_zero`. Sweden is "
+          "not in the list: OWID records small production to 1985 and zero after, and the EIA's zeros extend it.", "",
+          "Production source by economy and year (`owid`, `eia`, `true_zero`; blank = masked):", "",
+          "| Economy | OWID | EIA | True zero (classed) | Masked |", "|---|---|---|---|---|"]
+    for i in r['isos']:
+        row = src.loc[i] if i in src.index else pd.Series(dtype=str)
+        L.append(f"| {NAMES[i]} | {row.get('owid', '') or '—'} | {row.get('eia', '') or '—'} | {row.get('true_zero', '') or '—'} | {row.get('', '') or '—'} |")
+    L += ["", "Price: EIA Brent from 1987; before 1987 the BP series converted to dollars of the day (kept, Sid, 13 October "
+          "2026). Every edge row carries its price source (`oil_price_source`) and a model flag `price_from_bp_series`. "
+          "Year-by-year comparison: `gnn/G0/eia_owid_comparison.csv`.", ""]
+    return L
 
 
 def data_card(r, n, E, G):
     isos = r['isos']; X = n['X']; price, psrc, chk = g.oil_price_nominal()
+    V = g.wb_vintage_comparison(isos).dropna(subset=['old', 'new']); big = V[V.rel.abs() > 1e-3]
+    mx = big.assign(a=big.rel.abs()).groupby('iso').a.max().sort_values(ascending=False)
+    vs = {'cells': len(big), 'shared': len(V), 'econ': big.iso.nunique(),
+          'top': ', '.join(f"{NAMES[i]} up to {100 * v:.0f}%" for i, v in mx.head(3).items()),
+          'bra1989': float(V[(V.iso == 'BRA') & (V.year == 1989)].rel.iloc[0])}
     L = ["# G0 data card — the yearly graph dataset on S31", "",
          "Stage G0 of the GNN track (`gnn/README.md`). Built by `python -m ef.gnn.report` (`src/ef/gnn/dataset.py`) into "
          "`build/gnn/g0/` (git-ignored; rebuilt from the pinned sources). Status: **for Sid's review**; nothing is trained.", "",
@@ -197,15 +275,18 @@ def data_card(r, n, E, G):
           "| trade | exporter → importer | `w_exports_share_dst_gdp` (exporter's report, FOB) and `w_mirror_share_dst_gdp` (importer's report, CIF), each ÷ the importer's GDP | `s_exports_share_src_total`, `s_mirror_share_src_total`: each ÷ the exporter's goods exports to the world, as the exporter reports them | `raw_exports_fob_usd`, `raw_mirror_imports_cif_usd` | IMF IMTS, `imf_imts_s31` |",
           "| bank | lender → borrower | `w_claims_share_dst_gdp`: year-end (Q4) cross-border claims on all sectors ÷ the borrower's GDP | `s_claims_share_src_total`: ÷ the lender's cross-border claims on all countries | `raw_claims_usd`, `raw_lender_claims_all_countries_usd` | BIS LBS, `bis_lbs` |",
           "| oil | economy → world | `w_net_oil_exports_share_gdp`: net oil exports ÷ the economy's own GDP (below) | the same weight (no second normalisation is defined for oil) | `raw_oil_production_twh`, `raw_oil_consumption_twh`, `raw_net_oil_twh`, `raw_net_oil_value_usd` | Our World in Data energy, `owid_energy` |", "",
-          "Trade: the exporter's and the importer's reports of the same flow are two attributes, each with its own mask; "
-          "neither is filled from the other. The mirror's sensitivity weight divides an importer's figure by an exporter's "
+          "Trade: the exporter's and the importer's reports of the same flow are two attributes of one trade edge, each "
+          "with its own mask (decided by Sid, 13 October 2026, for G3); neither is filled from the other. The mirror's sensitivity weight divides an importer's figure by an exporter's "
           "total (the only world total available for the exporter). Bank: the BIS publishes bilateral claims for all "
           "sectors and for non-banks only, so no banks-only attribute is built. Filters: stocks, claims, all instruments, all "
           "currencies, all parent countries, all reporting banks, cross-border (`data/sources.yaml`, `read_with`). Lenders: "
           "the fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.", "",
           "**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD, the pinned "
           "`wb_gdp_current_usd` file). It is missing for Brazil 1970–1988, Iran 1991–1992 and Russia before 1988; weights "
-          "that need those years are masked, not filled from another source. The Global Macro Database's nominal GDP over "
+          "that need those years are masked, not filled from another source. A fresh World Bank download (approved by Sid "
+          "on condition that it matched the pinned file exactly where both have data) does not match: it carries revisions "
+          "of more than 0.1% in " + f"{vs['cells']:,} of {vs['shared']:,}" + " shared economy-years, so it is pinned but not used, and Brazil stays masked "
+          "(missing-data report, section 5). The Global Macro Database's nominal GDP over "
           "its exchange rate was the alternative and was not used: against the World Bank it is 6 times larger for Iran by "
           "2022 (the official rial rate) and about a third larger for Turkey and a fifth for Indonesia in most years.", "",
           "## Oil exposure: the conversion", "",
@@ -215,14 +296,23 @@ def data_card(r, n, E, G):
           "- **Quantities:** `oil_production` and `oil_consumption` (primary energy consumption from oil), both in TWh, from "
           "the Our World in Data energy dataset (legacy release, commit f8de88a; Energy Institute Statistical Review 2025, "
           "and The Shift Data Portal for production of economies the Energy Institute does not list).",
+          "- **Production after 2016** (Sid, 13 October 2026): where OWID's production ends in 2016, 2017–2022 come from the "
+          "EIA's International Energy Statistics (crude oil including lease condensate + natural gas plant liquids, "
+          "barrels a day converted with the same factor) for the economies where the EIA and OWID agree over 1980–2016 "
+          "within the tolerance fixed before the comparison: " + ", ".join(NAMES[i] for i in sorted(set(E['oil'][E['oil'].production_from_eia].src), key=isos.index)) +
+          ". Japan and South Africa fail it and stay masked in 2017–2022. Flag: `production_from_eia`.",
+          "- **True-zero producers** (Sid): South Korea, Switzerland, Belgium, Finland and Portugal produce no oil in any "
+          "year: OWID records zero in every year it lists (1980–2016) and so does the EIA (2004–2025). Their unlisted "
+          "years are zero, not masked. Flag: `production_true_zero`.",
           "- **Barrels:** the Energy Institute's factors, 1 tonne of oil equivalent = 11.63 MWh = 7.33 barrels, so 1 TWh = "
           "1,000,000 ÷ 11.63 × 7.33 = 630,266.6 ≈ 630,267 barrels. The common alternative, 5.8 million Btu per barrel, gives 588,300 "
           "barrels per TWh, 6.7% fewer; it would scale every oil weight by 0.933 and change no sign or ranking.",
           f"- **Price:** EIA Brent (`oil_brent`, dollars of the day) from 1987, the first year it covers. Before 1987 no Brent "
           f"series is pinned, so the BP series (`oil_bp`: Arabian Light posted at Ras Tanura to 1983, Brent dated 1984–86, in "
           f"2015 dollars) is converted back to dollars of the year with the US consumer price index (Global Macro Database). "
-          f"Check: over 1987–2015 the converted BP series differs from EIA Brent by {100 * chk:.2f}% on average. The edge table "
-          f"records the source of each year's price (`oil_price_source`). Prices: 1970 ${price[1970]:.2f}, 1974 ${price[1974]:.2f}, "
+          f"Check: over 1987–2015 the converted BP series differs from EIA Brent by {100 * chk:.2f}% on average. Kept by Sid "
+          f"(13 October 2026) with source flags: each edge row records its price source (`oil_price_source`) and models see "
+          f"the flag `price_from_bp_series`. Prices: 1970 ${price[1970]:.2f}, 1974 ${price[1974]:.2f}, "
           f"1980 ${price[1980]:.2f}, 1986 ${price[1986]:.2f}, 1987 ${price[1987]:.2f}, 2022 ${price[2022]:.2f}.",
           "- **What it approximates:** the value of net trade in crude oil and products at the crude price. It ignores stock "
           "changes, the different energy content of crude and refined products, and refinery gains; consumption includes "
@@ -240,22 +330,25 @@ def data_card(r, n, E, G):
           "(importer's report); Russia from 1992.",
           f"- Bank: {100 * (be.gap == 'observed').mean():.1f}% of lender-borrower-years observed ({100 * (be[be.year >= 1977].gap == 'observed').mean():.1f}% "
           f"from 1977); primary weight {100 * be.w_claims_share_dst_gdp.notna().mean():.1f}%.",
-          f"- Oil: weight observed in {100 * oe.w_net_oil_exports_share_gdp.notna().mean():.1f}% of economy-years; masked mainly "
-          "in 2017–2022 for the 15 economies whose production series end in 2016.", "",
+          f"- Oil: weight observed in {100 * oe.w_net_oil_exports_share_gdp.notna().mean():.1f}% of economy-years (88.5% before "
+          "the EIA extension and the true-zero class); still masked: Russia 1970–1987, Brazil 1970–1988 and Iran 1991–1992 "
+          "(GDP), Japan and South Africa 2017–2022, South Africa 1970–1979.", "",
+          "## Decided on 13 October 2026 (Sid)", "",
+          "- EIA production pinned and used within the tolerance fixed beforehand; the five true-zero producers.",
+          "- The BP-based price before 1987 kept, with source flags.",
+          "- Trade: both reports as two attributes of one edge in G3.",
+          "- A fresh World Bank download, used only if it matched the pinned file exactly: it does not (below).", "",
           "## Open for Sid", "",
-          "1. **Oil production after 2016.** For 15 economies (Germany, France, Japan, Spain, the Netherlands, Sweden, "
-          "Turkey, Austria, Greece, South Korea, Switzerland, Belgium, South Africa, Finland, Portugal) production ends in "
-          "2016, so their oil weights are masked in 2017–2022, including 2020. All are small producers and large net "
-          "importers. Options: keep the masks; or add a source that lists small producers after 2016 (for example the EIA "
-          "International Energy Statistics, a download pinned by checksum, from 1980), which needs your approval.",
-          "2. **The price before 1987** comes from the BP series converted to dollars of the day (Arabian Light to 1983), "
-          "because the pinned Brent series starts in 1987. Keep, or mask the oil weights before 1987 (that would drop the "
-          "1975 and 1982 recessions from the oil channel).",
-          "3. **GDP denominator.** World Bank current US dollars, masked for Brazil 1970–1988. Keep the masks, or approve a "
-          "fresh World Bank download (the API has Brazil from 1960) pinned by checksum.",
-          "4. **Trade attribute for G3.** Proposed: both reports enter as two masked attributes of one trade edge, rather "
-          "than choosing one.",
-          "5. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union "
+          f"1. **World Bank denominators.** The fresh download fails the exact-match check (revisions above 0.1% in "
+          f"{vs['cells']:,} of {vs['shared']:,} shared economy-years, in {vs['econ']} economies; {vs['top']}; Brazil matches "
+          f"except 1989, {vs['bra1989']:+.1%}). Brazil 1970–1988 therefore stays masked. Options: (a) keep the pinned file and the masks "
+          "(current); (b) switch every denominator to the fresh vintage, which is complete for S31 from 1970 except "
+          "Russia before 1988 and moves weights by the revisions; (c) take only the missing years from the fresh vintage "
+          "(two vintages mixed; a 3% step for Brazil at 1989).",
+          "2. **Japan and South Africa, oil 2017–2022**, stay masked under the stated tolerance (Japan's 2012–16 "
+          "differences reach 0.115; South Africa's median is 0.131). Changing the tolerance now would be choosing it "
+          "after seeing the data.",
+          "3. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union "
           "units (decided 11 October 2026); the rows are flagged."]
     return "\n".join(L) + "\n"
 
@@ -272,6 +365,9 @@ def main(argv=None):
     for k, e in E.items():
         e[['year', 'src', 'dst', 'gap'] + [c for c in e.columns if c.startswith('gap_')]].to_csv(
             os.path.join(d, f'edge_gaps_{k}.csv.gz'), index=False, compression={'method': 'gzip', 'mtime': 0})
+    g.eia_comparison(r['isos'])[1].to_csv(os.path.join(d, 'eia_owid_comparison.csv'), index=False, float_format='%.6g')
+    g.wb_vintage_comparison(r['isos']).to_csv(os.path.join(d, 'wb_vintage_comparison.csv.gz'), index=False,
+                                              compression={'method': 'gzip', 'mtime': 0})
     open(os.path.join(root, 'gnn', 'G0_missing_data.md'), 'w').write(missing_report(r, n, E, G))
     open(os.path.join(root, 'gnn', 'G0_data_card.md'), 'w').write(data_card(r, n, E, G))
     print(f"wrote {a.out}, gnn/G0_data_card.md, gnn/G0_missing_data.md and gnn/G0/")

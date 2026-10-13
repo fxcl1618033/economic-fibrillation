@@ -10,7 +10,8 @@ edges (Sid, 11 October 2026):
   bank   l -> b   cross-border claims of banks in l on b, year-end (Q4) stock (BIS LBS, bis_lbs); the fixed 10 lenders
                   reporting since 1977; Russia is a borrower only
   oil    i -> WLD one link per economy to the world node, weighted by net oil exports as a share of GDP (Our World
-                  in Data energy, owid_energy; valued at the pinned crude price)
+                  in Data energy, owid_energy; production 2017-22 from the EIA (eia_intl) where the two agree within
+                  the tolerance fixed beforehand; five documented non-producers; valued at the pinned crude price)
 Edge weights (fixed by Sid on 13 October 2026, before any training): primary = the flow as a share of the receiving
 economy's nominal GDP (World Bank current US dollars); sensitivity = the flow as a share of the exporter's or lender's
 total. Raw US dollars are stored (raw_* columns) for checking only and are never model inputs (model_inputs()).
@@ -40,11 +41,20 @@ BIS2 = {'USA': 'US', 'GBR': 'GB', 'DEU': 'DE', 'FRA': 'FR', 'ITA': 'IT', 'JPN': 
 # IMF reporting units before a country's own code starts (decided 11 October 2026, docs/data_edges.md): kept as a
 # flagged proxy, not a fill
 IMF_PROXY = {'BEL': ('TX126', 1996), 'ZAF': ('TX198', 1997)}       # (code, last year it stands in for the country)
-SOURCES_USED = ['maddison', 'gmd', 'pwt', 'oil_bp', 'oil_brent', 'owid_energy', 'wb_gdp_current_usd', 'imf_imts_s31', 'bis_lbs']
+SOURCES_USED = ['maddison', 'gmd', 'pwt', 'oil_bp', 'oil_brent', 'owid_energy', 'eia_intl', 'wb_gdp_current_usd',
+                'wb_wdi_gdp_2026_10', 'imf_imts_s31', 'bis_lbs']
 # Energy Institute conversion factors: 1 tonne of oil equivalent = 11.63 MWh = 7.33 barrels, so 1 TWh = 630,267 barrels
 BBL_PER_TWH = 1e6 / 11.63 * 7.33
 OIL_PRICE_SWITCH = 1987          # EIA Brent (oil_brent) from this year; the BP series (oil_bp) before it
 RUSSIA_OIL_FROM = 1985           # the Energy Institute reports Russia from 1985, the USSR before
+# EIA production where Our World in Data's ends in 2016 (Sid, 13 October 2026). Tolerance fixed in docs/decisions.md
+# before the comparison was run: d_t = |EIA_t - OWID_t| / max(OWID_t, 10 TWh); agree if the median d_t over 1980-2016
+# is at most 0.10 and d_t <= 0.10 in every year 2012-2016. EIA production = crude oil including lease condensate (57)
+# + natural gas plant liquids (58), thousand barrels a day, converted with BBL_PER_TWH.
+EIA_SERIES = (57, 58)
+EIA_TOL, EIA_FLOOR_TWH, EIA_COMPARE, EIA_SPLICE, EIA_EXTEND = 0.10, 10.0, (1980, 2016), (2012, 2016), (2017, 2022)
+# Documented non-producers (Sid, 13 October 2026): production is a true zero in every year
+TRUE_ZERO_PRODUCERS = ('KOR', 'CHE', 'BEL', 'FIN', 'PRT')
 
 ATLAS_FEATURES = [  # panel column, description
     ('growth', 'real GDP growth, %'), ('c_C', 'consumption contribution to growth, pp'),
@@ -85,8 +95,6 @@ GAP_CLASSES = {  # code: (true zero or missing, meaning)
                        'the sender\'s total)'),
     'other_report_only': ('missing', 'this side\'s report of the flow is missing; the other side\'s report exists and is '
                           'not used to fill it'),
-    'unlisted_producer': ('missing (probably zero)', 'oil production not listed in these years; the source records zero '
-                          'production in every year it lists this economy, so probably a true zero, but masked'),
 }
 
 
@@ -284,30 +292,112 @@ def bank_edges(isos, gdp):
                                        'gap_w_claims', 'gap_s_claims', 'gap'])
 
 
+def eia_production_twh(isos):
+    """EIA crude oil including lease condensate + natural gas plant liquids, in TWh (thousand barrels a day x 1,000 x
+    days in the year / BBL_PER_TWH), years 1970-2022 x economies. NaN where either series is missing ('--' or not
+    listed), so a year with crude but no NGL figure is missing, not crude only."""
+    import calendar
+    want = {f'INTL.{c}-1-{i}-TBPD.A': (c, i) for c in EIA_SERIES for i in isos}; S = {}
+    for line in open(config.raw_file('eia_intl', 'INTL.txt')):
+        if not line.startswith('{"series_id"'): continue
+        d = json.loads(line)
+        if d['series_id'] in want: S[want[d['series_id']]] = {int(y): v for y, v in d['data']}
+    out = pd.DataFrame(np.nan, index=YEARS, columns=isos)
+    for i in isos:
+        for y in YEARS:
+            v = [S.get((c, i), {}).get(int(y)) for c in EIA_SERIES]
+            if all(isinstance(x, (int, float)) for x in v):
+                out.at[y, i] = sum(v) * 1000 * (366 if calendar.isleap(int(y)) else 365) / BBL_PER_TWH
+    return out
+
+
+def owid_oil(isos):
+    """Our World in Data oil production and consumption (TWh), years x economies each."""
+    O = pd.read_csv(config.raw_file('owid_energy', 'owid-energy-data.csv'), usecols=['year', 'iso_code', 'oil_production', 'oil_consumption'])
+    O = O[O.iso_code.isin(isos)]
+    return tuple(O.pivot(index='year', columns='iso_code', values=c).reindex(index=YEARS, columns=isos).astype(float)
+                 for c in ('oil_production', 'oil_consumption'))
+
+
+def eia_comparison(isos):
+    """EIA against OWID production for every economy whose OWID production ends before 2022, by the tolerance fixed
+    beforehand (EIA_TOL). Returns (summary per economy, d_t per economy and year)."""
+    prod, _ = owid_oil(isos); eia = eia_production_twh(isos); rows, long = [], []
+    for i in isos:
+        p = prod[i]
+        if p.notna().any() and p.last_valid_index() >= EIA_EXTEND[1]: continue
+        both = p.notna() & eia[i].notna() & (YEARS >= EIA_COMPARE[0]) & (YEARS <= EIA_COMPARE[1])
+        d = (eia[i] - p).abs() / np.maximum(p, EIA_FLOOR_TWH)
+        ys = YEARS[both.to_numpy()]; dd = d[both]
+        spl = [y for y in range(EIA_SPLICE[0], EIA_SPLICE[1] + 1)]
+        spl_ok = all(bool(both.get(y, False)) and d[y] <= EIA_TOL for y in spl)
+        med = float(dd.median()) if len(dd) else np.nan
+        ratio = float((eia[i][both] / p[both]).median()) if (p[both] > 0).all() and len(dd) else np.nan
+        ext = [y for y in range(EIA_EXTEND[0], EIA_EXTEND[1] + 1) if not np.isnan(eia.at[y, i])]
+        rows.append(dict(iso=i, owid_last=int(p.last_valid_index()) if p.notna().any() else None, years_compared=len(ys),
+                         first=int(ys.min()) if len(ys) else None, median_d=med,
+                         max_d_splice=float(d[spl].max()) if all(bool(both.get(y, False)) for y in spl) else np.nan,
+                         splice_ok=spl_ok, agree=bool(len(dd) and med <= EIA_TOL and spl_ok),
+                         median_ratio_eia_owid=ratio, eia_years_2017_2022=len(ext), true_zero=i in TRUE_ZERO_PRODUCERS,
+                         eia_max_twh=float(eia[i].max()) if eia[i].notna().any() else np.nan,
+                         eia_listed=f"{int(eia[i].first_valid_index())}-{int(eia[i].last_valid_index())}" if eia[i].notna().any() else ''))
+        long += [(i, int(y), float(p[y]), float(eia.at[y, i]), float(d[y])) for y in ys]
+    return pd.DataFrame(rows), pd.DataFrame(long, columns=['iso', 'year', 'owid_twh', 'eia_twh', 'd'])
+
+
+def oil_production(isos):
+    """Production used for the oil weights (TWh, years x economies) and its source per cell: 'owid'; 'eia' (2017-2022,
+    economies where EIA and OWID agree); 'true_zero' (the documented non-producers, in the years OWID does not list);
+    '' where masked."""
+    prod, _ = owid_oil(isos); eia = eia_production_twh(isos); summ, _ = eia_comparison(isos)
+    agree = set(summ[summ.agree & ~summ.true_zero].iso)
+    P = prod.copy(); src = pd.DataFrame(np.where(prod.notna(), 'owid', ''), index=YEARS, columns=isos)
+    for i in isos:
+        for y in YEARS:
+            if not np.isnan(P.at[y, i]): continue
+            if i in TRUE_ZERO_PRODUCERS: P.at[y, i] = 0.0; src.at[y, i] = 'true_zero'
+            elif i in agree and EIA_EXTEND[0] <= y <= EIA_EXTEND[1] and not np.isnan(eia.at[y, i]):
+                P.at[y, i] = eia.at[y, i]; src.at[y, i] = 'eia'
+    return P, src
+
+
+def wb_vintage_comparison(isos):
+    """The fresh World Bank download (wb_wdi_gdp_2026_10) against the pinned denominator file, economy-years 1970-2022:
+    old value, new value and the relative difference (NaN where either is missing)."""
+    f = config.raw_file('wb_wdi_gdp_2026_10', 'API_NY.GDP.MKTP.CD_DS2_en_csv_v2_512.csv')
+    N = pd.read_csv(f, skiprows=4, float_precision='round_trip'); N = N[N['Country Code'].isin(isos)].set_index('Country Code')
+    N = N[[str(y) for y in YEARS]].T; N.index = YEARS; N = N.reindex(columns=isos).astype(float)
+    W = pd.read_csv(config.raw_file('wb_gdp_current_usd', 'data/gdp.csv'), float_precision='round_trip')
+    W = W[W['Country Code'].isin(isos)].pivot(index='Year', columns='Country Code', values='Value').reindex(index=YEARS, columns=isos).astype(float)
+    L = W.rename_axis('year').reset_index().melt(id_vars='year', var_name='iso', value_name='old')
+    L['new'] = N.rename_axis('year').reset_index().melt(id_vars='year', var_name='iso', value_name='new')['new'].to_numpy()
+    L['rel'] = L.new / L.old - 1
+    return L
+
+
 def oil_edges(isos, gdp):
     """One i -> WLD link per economy and year, weighted by net oil exports as a share of the economy's nominal GDP:
     (oil production - primary energy consumption from oil, TWh; owid_energy) x 630,267 barrels per TWh (Energy Institute
     factors) x the crude price in dollars of the year (oil_price_nominal) / GDP in current US dollars (World Bank).
     Positive for net exporters, negative for net importers."""
-    O = pd.read_csv(config.raw_file('owid_energy', 'owid-energy-data.csv'), usecols=['year', 'iso_code', 'oil_production', 'oil_consumption'])
+    P, psrc_prod = oil_production(isos); _, Cn = owid_oil(isos)
     price, psrc, _ = oil_price_nominal(); rows = []
     for i in isos:
-        s = O[O.iso_code == i].set_index('year')
-        prod, cons = s.oil_production.reindex(YEARS).to_numpy(float), s.oil_consumption.reindex(YEARS).to_numpy(float)
-        recorded = s.oil_production.dropna(); zero_only = len(recorded) > 0 and (recorded == 0).all()
+        prod, cons = P[i].to_numpy(float), Cn[i].to_numpy(float)
         cp, cc = _classify_series(prod, YEARS), _classify_series(cons, YEARS)
         for k, y in enumerate(YEARS):
-            y = int(y); g_i = gdp.at[y, i]
+            y = int(y); g_i = gdp.at[y, i]; ps = psrc_prod.at[y, i]
             net = prod[k] - cons[k]; value = net * BBL_PER_TWH * price[y]
             if np.isnan(net):
                 if i == 'RUS' and y < RUSSIA_OIL_FROM: cls = 'entity'
-                elif np.isnan(prod[k]): cls = 'unlisted_producer' if zero_only and cp[k] in ('not_yet', 'ended') else cp[k]
-                else: cls = cc[k]
+                else: cls = cp[k] if np.isnan(prod[k]) else cc[k]
             else: cls = 'observed' if not np.isnan(g_i) else 'no_denominator'
-            rows.append((y, i, WORLD, prod[k], cons[k], net, value, price[y], psrc[y], value / g_i, cls))
+            rows.append((y, i, WORLD, prod[k], cons[k], net, value, price[y], psrc[y], ps, value / g_i,
+                         ps == 'eia', ps == 'true_zero', psrc[y] == 'bp_deflated', cls))
     return pd.DataFrame(rows, columns=['year', 'src', 'dst', 'raw_oil_production_twh', 'raw_oil_consumption_twh',
                                        'raw_net_oil_twh', 'raw_net_oil_value_usd', 'oil_price_usd_per_bbl', 'oil_price_source',
-                                       'w_net_oil_exports_share_gdp', 'gap'])
+                                       'oil_production_source', 'w_net_oil_exports_share_gdp',
+                                       'production_from_eia', 'production_true_zero', 'price_from_bp_series', 'gap'])
 
 
 # The edge attributes a model may read (Sid, 13 October 2026): normalised weights only, never raw US dollars
@@ -316,7 +406,8 @@ MODEL_INPUTS = {
               'sensitivity': ['s_exports_share_src_total', 's_mirror_share_src_total'],
               'flags': ['exports_imf_estimate', 'mirror_imf_estimate', 'proxy_reporting_unit']},
     'bank': {'primary': ['w_claims_share_dst_gdp'], 'sensitivity': ['s_claims_share_src_total'], 'flags': []},
-    'oil': {'primary': ['w_net_oil_exports_share_gdp'], 'sensitivity': ['w_net_oil_exports_share_gdp'], 'flags': []},
+    'oil': {'primary': ['w_net_oil_exports_share_gdp'], 'sensitivity': ['w_net_oil_exports_share_gdp'],
+            'flags': ['production_from_eia', 'production_true_zero', 'price_from_bp_series']},
 }
 
 
