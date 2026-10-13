@@ -213,3 +213,18 @@ Brazil, Saudi Arabia, the UAE, Iran) and was never applied to every Maddison eco
 are the largest economies missing from the 26" is therefore not true as written. **What to do:** Sid gives the reason
 for leaving Russia out (it goes into §1), rewords the sentence ("with Russia, the five largest"), or adds Russia as a
 sensitivity run after a pre-registration amendment. Nothing is run until he decides.
+
+## 25. What the G1 simulations say about four Paper 1 tests — OPEN, for Sid (14 October 2026)
+
+From `gnn/G1_report.md` (8,000 simulated worlds, pre-registered in `docs/preregistration_G1.md`). **(a) The identity's
+swing-size test** rejects in 14–19% of uncoupled worlds on the real calendar, where it should reject in 5%. The cause
+is an edge effect (found by a check that was not pre-registered, `python -m ef.gnn.g1 checks`): under convention P
+the swing size is inflated in 2019–2020 and collapses in 2022, and the circular surrogates have no ends. The lean
+(+0.06 in the statistic) is small next to the real S31 value (1.02), so the result very likely stands, but its
+p = 0.0002 should be recomputed with an edge-matched null or under convention E before it is quoted. **(b) Two-sided
+lead-1 and crisis-year arcs** reject about twice as often as they should when recessions are dated from the same
+economies' output, even with no coupling; the past-only lead-1 does not, and no simulated world produces it above
+chance. **(c) The cross-term test** rejects in nearly every coupled world on any calendar: it shows co-movement, not
+co-movement at recessions. **(d) After-2** over-rejects on the real calendar in the Kuramoto worlds (6.2%, 11.6% with
+trade links). **What to do:** Sid decides which of these go into Methods and Limitations, and whether to rerun the
+swing-size test with an edge-matched null (a pre-registration amendment). Nothing in `docs/methods.md` is changed.

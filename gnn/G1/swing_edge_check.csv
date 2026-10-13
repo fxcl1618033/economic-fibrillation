@@ -1,0 +1,3 @@
+model,worlds,mean_stat_all_five,mean_stat_without_2020,mean_stat_2020_only,sd_stat_across_worlds,mean_sd_surrogate_null
+kuramoto,300,0.0605761,0.026673,0.179045,0.0721308,0.0858822
+stuart_landau,300,0.0636028,0.0306613,0.177982,0.0819192,0.0843027

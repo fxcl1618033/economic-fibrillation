@@ -57,9 +57,10 @@ phase3-s31: build-data         ## the pre-registered battery on S31 = S30 + Russ
 gnn-g0: build-data             ## GNN stage G0: yearly graphs on S31 -> build/gnn/g0, gnn/G0_data_card.md, gnn/G0_missing_data.md
 	$(PY) -m ef.gnn.report
 
-gnn-g1: gnn-g0                 ## GNN stage G1: calibrate the simulator, run every Paper 1 test on 8,000 simulated worlds (~25 min) -> gnn/G1/, gnn/G1_report.md
+gnn-g1: gnn-g0                 ## GNN stage G1: calibrate the simulator, run every Paper 1 test on 8,000 simulated worlds (~80 min) -> gnn/G1/, gnn/G1_report.md
 	$(PY) -m ef.gnn.g1 calibrate
 	$(PY) -m ef.gnn.g1 run
+	$(PY) -m ef.gnn.g1 checks
 	$(PY) -m ef.gnn.g1 report
 
 followup: build-data           ## follow-up checks Sid asked for after Phase 3 (not pre-registered) -> results/FOLLOWUP.md

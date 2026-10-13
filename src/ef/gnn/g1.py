@@ -3,6 +3,7 @@ worlds with known coupling, and write gnn/G1/ and gnn/G1_report.md.
 
     python -m ef.gnn.g1 calibrate     # -> gnn/G1/calibration.json, gnn/G1/r_curve.csv
     python -m ef.gnn.g1 run           # -> gnn/G1/pvalues.csv.gz (needs the calibration)
+    python -m ef.gnn.g1 checks        # -> gnn/G1/swing_edge_*.csv (not pre-registered: the swing-size test's edge bias)
     python -m ef.gnn.g1 report        # -> gnn/G1/rejections.csv, gnn/G1_report.md
 """
 import argparse
@@ -54,6 +55,8 @@ def run_config():
     return cfg
 
 
+_W = {}          # per-process state for the worker pools
+
 # ------------------------------------------------------------------ calibration
 
 def _calib_stats(model, T, Wy, kappa, phi, sigma, mu, m=1.0, n=None, seed=None):
@@ -61,6 +64,15 @@ def _calib_stats(model, T, Wy, kappa, phi, sigma, mu, m=1.0, n=None, seed=None):
     sig = S.simulate(model, Wy, T['omega'], kappa, phi, sigma, rng, n, mu=mu)
     z = S.pipeline_z(sig, T, model, m); st = S.stats(z)
     return {k: float(np.mean(v)) for k, v in st.items()} | {'m': float(np.abs(sig).mean())}, z
+
+
+def _init_calib():
+    warnings.filterwarnings('ignore'); _W['T'] = S.targets(); _W['Wy'] = S.trade_network()[0]
+
+
+def _grid_point(args):
+    model, mu, s = args
+    return _calib_stats(model, _W['T'], _W['Wy'], 0.0, 0.0, s, mu)[0]
 
 
 def _bisect(f, target, lo, hi, steps):
@@ -80,12 +92,13 @@ def calibrate():
     matches S31's, by bisection. Nothing here uses the recession years."""
     warnings.filterwarnings('ignore'); T = S.targets(); Wy, _ = S.trade_network(); out = {'targets': {k: float(T[k]) for k in ('sd_phase_step', 'cv_amplitude', 'mean_r')}}
     for model in S.MODELS:
+        pts = [(model, mu, s) for mu in (DESIGN['mu_grid'] if model == 'stuart_landau' else [0.0]) for s in DESIGN['sigma_grid']]
+        with Pool(max(1, (os.cpu_count() or 2) - 1), initializer=_init_calib) as pool:
+            sts = pool.map(_grid_point, pts)
         grid = []
-        for mu in (DESIGN['mu_grid'] if model == 'stuart_landau' else [0.0]):
-            for s in DESIGN['sigma_grid']:
-                st, _ = _calib_stats(model, T, Wy, 0.0, 0.0, s, mu)
-                d = (st['sd_phase_step'] / T['sd_phase_step'] - 1) ** 2 + ((st['cv_amplitude'] / T['cv_amplitude'] - 1) ** 2 if model == 'stuart_landau' else 0)
-                grid.append(dict(mu=mu, sigma=s, distance=d, **st))
+        for (_, mu, s), st in zip(pts, sts):
+            d = (st['sd_phase_step'] / T['sd_phase_step'] - 1) ** 2 + ((st['cv_amplitude'] / T['cv_amplitude'] - 1) ** 2 if model == 'stuart_landau' else 0)
+            grid.append(dict(mu=mu, sigma=s, distance=d, **st))
         G = pd.DataFrame(grid); best = G.loc[G.distance.idxmin()]; sigma, mu, m = float(best.sigma), float(best.mu), float(best.m)
         res = {'sigma': sigma, 'mu': mu, 'm': m, 'at_kappa0': {k: float(best[k]) for k in ('sd_phase_step', 'cv_amplitude', 'mean_r')},
                'grid': G.to_dict(orient='records')}
@@ -123,9 +136,6 @@ def r_curve(cal, T, Wy):
 
 
 # ------------------------------------------------------------------ the test runs
-
-_W = {}
-
 
 def _init():
     warnings.filterwarnings('ignore'); _W['T'] = S.targets(); _W['cfg'] = run_config()
@@ -182,11 +192,42 @@ def run(processes=None):
                                                      compression={'method': 'gzip', 'mtime': 0})
 
 
+def swing_edge_check(n=300, n_sur=100, seed=4101):
+    """Not pre-registered (added after the runs, 14 October 2026): why the identity's swing-size test over-rejects in
+    uncoupled worlds on the real calendar. For each model at kappa = phi = 0: the mean of 2 log Abar(t) by year minus its
+    average (the pipeline's swing size near the edges), the test statistic (recession years minus other years) with and
+    without 2020, and its spread across worlds against the spread of the surrogate null (first n_sur worlds)."""
+    from ef import crisis, nulls, order
+    from ef.phases import analytic
+    warnings.filterwarnings('ignore'); cal = json.load(open(os.path.join(OUT, 'calibration.json'))); T = S.targets(); Wy, _ = S.trade_network()
+    cfg = run_config(); yrs = np.arange(1970, 2023); rows, summ = [], []
+    for model in S.MODELS:
+        c = cal[model]; sig = S.simulate(model, Wy, T['omega'], 0.0, 0.0, c['sigma'], np.random.default_rng(seed), n, mu=c['mu'])
+        LA = np.array([2 * np.log(order.mean_amplitude(analytic(S.to_data(x, T, model, c['m']).logs, T['years'], (1970, 2022), 'P'))) for x in sig])
+        dev = LA.mean(axis=0) - LA.mean()
+        rows += [dict(model=model, year=int(y), mean_2logAbar_minus_average=float(v)) for y, v in zip(yrs, dev)]
+        stat = {}
+        for name, rec in (('all five', cfg['recessions']), ('without 2020', [e for e in cfg['recessions'] if e != 2020]), ('2020 only', [2020])):
+            cm = np.isin(yrs, rec); stat[name] = LA[:, cm].mean(axis=1) - LA[:, ~cm].mean(axis=1)
+        cm = crisis.indicator(yrs, cfg['recessions']) == 1; sd_null = []
+        for w in range(n_sur):
+            X, to_z = paper1.surrogate_source(S.to_data(sig[w], T, model, c['m']), (1970, 2022), 'P', cfg['band'])
+            nA = np.concatenate([(lambda l: l[:, cm].mean(1) - l[:, ~cm].mean(1))(2 * np.log(order.mean_amplitude(to_z(Xs))))
+                                 for Xs in nulls.surrogates(X, DESIGN['surrogates'], np.random.default_rng(seed + w), DESIGN['surrogates'])])
+            sd_null.append(nA.std())
+        summ.append(dict(model=model, worlds=n, mean_stat_all_five=float(stat['all five'].mean()), mean_stat_without_2020=float(stat['without 2020'].mean()),
+                         mean_stat_2020_only=float(stat['2020 only'].mean()), sd_stat_across_worlds=float(stat['all five'].std()),
+                         mean_sd_surrogate_null=float(np.mean(sd_null))))
+    pd.DataFrame(rows).to_csv(os.path.join(OUT, 'swing_edge_by_year.csv'), index=False, float_format='%.6g')
+    pd.DataFrame(summ).to_csv(os.path.join(OUT, 'swing_edge_check.csv'), index=False, float_format='%.6g')
+
+
 def main(argv=None):
-    ap = argparse.ArgumentParser(); ap.add_argument('step', choices=['calibrate', 'run', 'report']); ap.add_argument('--processes', type=int)
+    ap = argparse.ArgumentParser(); ap.add_argument('step', choices=['calibrate', 'run', 'checks', 'report']); ap.add_argument('--processes', type=int)
     a = ap.parse_args(argv)
     if a.step == 'calibrate': calibrate()
     elif a.step == 'run': run(a.processes)
+    elif a.step == 'checks': swing_edge_check()
     else:
         from ef.gnn import g1_report; g1_report.main()
 
