@@ -93,3 +93,14 @@ def test_world_share_counts_nothing_twice():
     for agg, parts in maddison.AGGREGATES.items():       # each aggregate is close to its successors' sum in 2022
         assert abs(G.loc[2022, agg] / G.loc[2022, list(parts)].sum() - 1) < 0.1
     assert W.loc[1970] < G.loc[1970].sum()                 # the successor states were dropped
+
+
+@needs_data
+def test_s31_atlas_adds_russia_and_leaves_the_others_unchanged():
+    """Amendment 3: Russia is built into build/data/atlas_s31 with the same pipeline; every other row is the as-used panel's."""
+    import pandas as pd
+    d = os.path.join(config.load()['paths']['build'], 'data')
+    a, b = pd.read_csv(os.path.join(d, 'atlas', 'panel.csv')), pd.read_csv(os.path.join(d, 'atlas_s31', 'panel.csv'))
+    assert a.equals(b[b.iso != 'RUS'].reset_index(drop=True)) and (b.iso == 'RUS').sum() == 73
+    fx = json.load(open(os.path.join(d, 'atlas_s31', 'meta.json')))['fixes']['RUS']
+    assert fx['components_from'] == 1994 and fx['contrib_from'] == 1996

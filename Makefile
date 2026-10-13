@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 followup golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -50,6 +50,9 @@ paper1: build-data             ## every Paper 1 test, as run, on S26; compare wi
 
 phase3: build-data             ## the pre-registered rerun on S26 and S30 with every variant -> results/, results/COMPARISON.md
 	$(PY) -m ef.phase3
+
+phase3-s31: build-data         ## the pre-registered battery on S31 = S30 + Russia (amendment 3) -> results/S31*, COMPARISON.md
+	$(PY) -m ef.phase3 --config configs/runs/phase3_s31.yaml
 
 followup: build-data           ## follow-up checks Sid asked for after Phase 3 (not pre-registered) -> results/FOLLOWUP.md
 	$(PY) -m ef.followup

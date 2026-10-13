@@ -46,7 +46,7 @@ variants:
 
 channels:
   samples: [S31]
-  panel: build/data/atlas                       # repaired atlas panel with Russia added (amendment 3.4b), GMD read as float64
+  panel: build/data/atlas_s31                   # repaired atlas panel with Russia added (amendment 3.4b), GMD read as float64
   coverage_from: 1965                           # an economy enters a channel only with continuous data 1965-2022
   surrogates: 2000
   seed: 2610

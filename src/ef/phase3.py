@@ -98,6 +98,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(); ap.add_argument('--config', default=os.path.join(root, 'configs/runs/phase3.yaml'))
     ap.add_argument('--out', default=os.path.join(root, 'results')); ap.add_argument('--atlas', default=os.path.join(config.load()['paths']['build'], 'data/atlas'))
     args = ap.parse_args(argv)
+    ch = load_run_config(args.config).get('channels')
+    if ch and ch.get('panel') and '--atlas' not in (argv or __import__('sys').argv): args.atlas = os.path.join(root, ch['panel'])
     if not os.path.exists(os.path.join(args.atlas, 'panel.csv')): raise SystemExit("run make data first (the atlas panel)")
     t0 = time.time(); n = run(args.config, args.out, args.atlas)
     print(f"wrote {n} result files under {args.out} in {time.time() - t0:.0f}s")

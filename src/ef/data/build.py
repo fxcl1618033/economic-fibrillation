@@ -16,6 +16,7 @@ import os
 import sys
 import warnings
 
+import pandas as pd
 import yaml
 
 from ef import config
@@ -58,6 +59,13 @@ def main(argv=None):
     A = os.path.join(out, 'atlas')
     atlas.build_panel(A, p26, verbose=v, float64=f64); atlas.build_stats(A, verbose=v); atlas.build_sync(A, verbose=v, float64=f64)
     print(f"wrote {A}/panel.csv, global.csv, meta.json, stats.json, sync.json")
+    if f64:   # S31: Russia added in a separate panel (pre-registration amendment 3); the other 30 must be unchanged
+        A31 = os.path.join(out, 'atlas_s31'); os.makedirs(A31, exist_ok=True)
+        atlas.build_panel(A31, p26, verbose=False, float64=f64, extra=atlas.EXTRA_S31)
+        a, b = pd.read_csv(os.path.join(A, 'panel.csv')), pd.read_csv(os.path.join(A31, 'panel.csv'))
+        b30 = b[b.iso != 'RUS'].reset_index(drop=True)
+        if not (a.shape == b30.shape and a.equals(b30)): sys.exit("atlas_s31: adding Russia changed another economy's rows")
+        print(f"wrote {A31}/panel.csv, global.csv, meta.json (the 30 others identical to atlas/)")
     for s, p in maddison.write(out).items(): print(f"wrote {p}")
 
     root = cfg['root']; checksums = yaml.safe_load(open(cfg['paths']['sources']))['derived_checksums']

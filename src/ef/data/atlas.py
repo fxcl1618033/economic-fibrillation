@@ -51,9 +51,14 @@ ISOS = [o[0] for o in ORDER]
 EXTRA = [('CHN', 'China', 'Added · East Asia'), ('BRA', 'Brazil', 'Added · Latin America'), ('SAU', 'Saudi Arabia', 'Added · Middle East'),
  ('ARE', 'United Arab Emirates', 'Added · Middle East'), ('IRN', 'Iran', 'Added · Middle East')]
 XISOS = [o[0] for o in EXTRA]; ALLS = ISOS+XISOS
+# S31 (pre-registration amendment 3): Russia added with the same pipeline, into a separate panel (build/data/atlas_s31),
+# so the as-run atlas files above are unchanged
+EXTRA_S31 = EXTRA + [('RUS', 'Russia', 'Added · Eastern Europe')]
 GDP_FROM = {'SAU': 1970, 'ARE': 1975}      # earlier national-accounts levels are spliced estimates (SAU: +53% "growth" in 1970; ARE: +77% in 1973)
-COMP_FROM = {'BRA': 1981, 'ARE': 1975}     # Brazil's expenditure components before 1980 do not add up (C+I+X-M = 128-141% of GDP; imports recorded as 0)
-CONTRIB_FROM = {'BRA': 1996}               # annual-average deflation is unreliable through hyperinflation and the 1994 Real Plan
+COMP_FROM = {'BRA': 1981, 'ARE': 1975,     # Brazil's expenditure components before 1980 do not add up (C+I+X-M = 128-141% of GDP; imports recorded as 0)
+             'RUS': 1994}                  # Russia's before 1994 do not add up (C+I+X-M = 49-60% of GDP; investment negative, 1988-93)
+CONTRIB_FROM = {'BRA': 1996,               # annual-average deflation is unreliable through hyperinflation and the 1994 Real Plan
+                'RUS': 1996}               # the same for Russia's 1992-95 hyperinflation (inflation 93-1593% a year)
 INFL_FROM = {'ARE': 1980}                  # 1970-77 values are a constant 22.0 placeholder; CPI starts in 1980
 STRATE_FROM_POLICY = ['SAU']               # money-market rate covers only 2010-17; use the SAMA policy (repo) rate, 1999-2022
 GROWTH_PATCH = [('AUT', 1988), ('SWE', 1981), ('PRT', 1988), ('PRT', 1990)]   # GMD splice errors (vs PWT and Maddison)
@@ -69,8 +74,10 @@ def _gmd(): return config.raw_file('gmd', 'data/final/data_final.dta')
 def _imf(name): return config.raw_file('gmd', f'data/clean/aggregators/IMF/IMF_{name}.dta')
 
 
-def build_panel(out_dir, panel26_path, verbose=True, float64=True):
-    """data.py: the country-year panel (1950-2022) with every repair logged, and the global factors."""
+def build_panel(out_dir, panel26_path, verbose=True, float64=True, extra=None):
+    """data.py: the country-year panel (1950-2022) with every repair logged, and the global factors. extra: the added
+    economies (default EXTRA, as run; EXTRA_S31 adds Russia)."""
+    extra = EXTRA if extra is None else extra; ALLS = ISOS + [o[0] for o in extra]
     G = gmd.read(_gmd(), float64=float64)
     G = G[G.ISO3.isin(ALLS) & (G.year >= 1950) & (G.year <= 2022)].copy(); G['year'] = G.year.astype(int)
     WEO = gmd.read(_imf('WEO'), float64=float64); FPP = gmd.read(_imf('FPP'), float64=float64); HDD = gmd.read(_imf('HDD'), float64=float64)
@@ -266,7 +273,7 @@ def build_panel(out_dir, panel26_path, verbose=True, float64=True):
     for ch in ['GDP', 'inv', 'imports', 'strate', 'govexp']:
         glob['sync_'+ch] = pd.Series(r26['r_t'][ch], index=r26['years'])
     glob.index.name = 'year'; glob.to_csv(os.path.join(out_dir, 'global.csv'))
-    json.dump({'order': ORDER, 'extra': EXTRA, 'fixes': FIX}, open(os.path.join(out_dir, 'meta.json'), 'w'), indent=1, default=int)
+    json.dump({'order': ORDER, 'extra': extra, 'fixes': FIX}, open(os.path.join(out_dir, 'meta.json'), 'w'), indent=1, default=int)
     if verbose:
         print("panel", P.shape, "global", glob.shape)
         print("oil splice check 1988-2015: mean |EIA/BP-1| =", f"{(ov.eia/ov.bp-1).abs().mean():.3f}")

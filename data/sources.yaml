@@ -140,6 +140,25 @@ downloads:
     used_by: GNN G0 trade edges
     cite: International Monetary Fund, International Trade in Goods (by partner country) (IMTS), data.imf.org, retrieved 11 October 2026.
 
+  - id: imf_imts_s31
+    what: IMF International Trade in Goods by partner country (IMTS), annual, goods exports FOB (XG_FOB_USD) and imports CIF (MG_CIF_USD) in US dollars. Reporters and partners - the 31 S31 economies, the USSR (SUN, before 1992), Belgium-Luxembourg (TX126) and the South African Common Customs Area (TX198); the world (G001) as a partner. A superset of imf_imts for pre-registration amendment 3 (Russia; approved by Sid, 13 October 2026)
+    url: see query_url.txt (SDMX 3.0, same endpoint and header as imf_imts)
+    downloaded: 2026-10-13T15:35:09Z
+    dir: imf_imts_s31
+    files:
+      - path: IMTS_S31_annual.csv
+        sha256: abdf03ba742ba4b7394ea7037bd48d6c6ee49ffbd34b8c9437f6ce9517c46282
+        bytes: 11181386
+      - path: query_url.txt
+        sha256: 00c153f7bc7dead0540c857535e779894ae4a0c407f289246d1b9b8717d5fe27
+        bytes: 375
+    read_with: as imf_imts (the dataflow structure is IMTS_structure.json there)
+    check: its rows without RUS or SUN are identical to imf_imts (all 131,093 rows and values), so the IMF made no revision between the two downloads
+    coverage_russia: Russia (RUS) as reporter and partner 1992-2025, with all 31 others; the USSR (SUN) as reporter 1955-1991 and as partner 1948-1998
+    coverage_russia_bis: in bis_lbs Russia is a borrower only - the 10 main lenders report claims on Russia from 1993-Q4 (11 more later); Russia reports no bilateral claims by counterparty, so it is never a lender
+    used_by: GNN G0 trade edges for S31
+    cite: International Monetary Fund, International Trade in Goods (by partner country) (IMTS), data.imf.org, retrieved 13 October 2026.
+
 not_pinned:
   - id: jst_xlsx
     what: Jordà–Schularick–Taylor Macrohistory Database (jst.xlsx), used only by crisis_dating_test.py (banking-crisis dating, superseded)

@@ -77,7 +77,7 @@ def wide(long, var='gdppc'):
     return long.pivot(index='year', columns='iso', values=var)[list(dict.fromkeys(long.iso))]
 
 
-def write(out_dir, samples=('S26', 'S30'), md=None):
+def write(out_dir, samples=('S26', 'S30', 'S31'), md=None):
     """Write maddison_<sample>.csv for each sample; return their paths."""
     md = load() if md is None else md
     paths = {}
