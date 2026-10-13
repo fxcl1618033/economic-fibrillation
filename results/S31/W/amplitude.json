@@ -1,0 +1,58 @@
+{
+ "sample": "S31",
+ "economies": [
+  "USA",
+  "GBR",
+  "DEU",
+  "FRA",
+  "ITA",
+  "JPN",
+  "CAN",
+  "ESP",
+  "AUS",
+  "KOR",
+  "IND",
+  "MEX",
+  "NLD",
+  "SWE",
+  "CHE",
+  "BEL",
+  "ZAF",
+  "TUR",
+  "NOR",
+  "AUT",
+  "DNK",
+  "FIN",
+  "GRC",
+  "PRT",
+  "IDN",
+  "THA",
+  "CHN",
+  "BRA",
+  "SAU",
+  "IRN",
+  "RUS"
+ ],
+ "convention": "W",
+ "test": "amplitude",
+ "settings": {
+  "convention": "W",
+  "detrend_sigma": 8.0,
+  "surrogates": 5000,
+  "seed": 404,
+  "batch": 250
+ },
+ "seed": 404,
+ "code_version": "2a686a34ffcf577298407829d7142ff72f52d1e9",
+ "run_at": "2026-10-13T15:37:40+00:00",
+ "results": {
+  "corr_detrended": 0.5662564775443854,
+  "p_shift": 0.018867924528301886,
+  "p_surrogate": 0.0003999200159968006,
+  "null_mean": 0.0010023181733861332,
+  "corr_raw": [
+   0.4121516602234143,
+   0.018867924528301886
+  ]
+ }
+}
