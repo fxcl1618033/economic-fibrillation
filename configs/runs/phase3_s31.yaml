@@ -1,0 +1,45 @@
+# Phase 3 on S31 (S30 + Russia), as pre-registered in docs/preregistration_S30.md amendment 3, before any Russia run.
+# Same tests, settings and seeds as configs/runs/phase3.yaml; channel tests not run (Russia is not in the atlas panel).
+# Convention P throughout; rolling windows may start in 1962, never earlier (at least 12 years of filter run-in);
+# partly defined pre-crisis windows kept as first run (strict: false); the as-run seeds.
+# Run by the Phase 3 driver (python -m ef.phase3 --config configs/runs/phase3_s31.yaml); each run writes
+# results/<sample or variant>/<convention>/<test>.json.
+
+name: phase3_s31
+samples: [S31]
+band: [9.0, 0.49]
+span: [1950, 2022]
+window: [1970, 2022]
+recessions: [1975, 1982, 1991, 2009, 2020]
+downturns: [1998, 2001, 2012]
+
+tests:
+  arc:              {convention: P, bootstrap: 10000, seed: 11}
+  conventions:      {conventions: [P, W, N, E, C], detrend_sigma: 8.0}
+  amplitude:        {convention: P, detrend_sigma: 8.0, surrogates: 5000, seed: 404, batch: 250}
+  diversification:  {window: [1962, 2022], win: 10, weights: [gdp_mean, equal], surrogates: 5000, seed: 707, batch: 200}
+  cross_split:      {window: [1962, 2022], win: 10, weights: [gdp_mean, equal]}
+  structure:        {convention: P, surrogates: 5000, seed: 909, batch: 250}
+  mst:              {window: [1962, 2022], win: 10, pre: 8, strict: false, detrend_sigma: 8.0,
+                     decades: [[1979, 1989], [2013, 2022]], surrogates: 5000, seed: 303, batch: 100}
+  phase_lags:       {convention: P, surrogates: 5000, seed: 505, batch: 250}
+  csd:              {convention: P, window: [1962, 2022], win: 15, sigma: 5.0, pre: 8, strict: false,
+                     surrogates: 5000, seed: 101, batch: 250}
+  bifurcation:      {convention: P, window: [1962, 2022], win: 12, sigma: 5.0, surrogates: 5000, seed: 202, batch: 250}
+  robustness:       {convention: P, drop_economies: all}
+
+variants:
+  conventions: [W, N, E, C]                    # E mirrors 9 years; C: circular-shift tests only
+  base: S31                                     # the sample the leave-out variants start from
+  drop_one_added: [CHN, BRA, SAU, IRN, RUS]     # every test, on S31 (S31 without RUS = S30, run as a check)
+  swing_size:                                   # amplitude, diversification, cross_split, structure, on S31
+    - [IRN, SAU]
+  strict_inside_1970_2022:                      # sensitivity for every rolling test
+    window: [1970, 2022]
+    strict: true
+    tests: [mst, diversification, cross_split, csd, bifurcation]
+  gmd_growth_swap: {economies: [NOR, CHE, ZAF], years: [1991, 2011], tests: [arc, amplitude, diversification]}
+  past_only_leads: [arc.lead1, arc.lead2]
+  late_entry: {economy: RUS, from: 1992, tests: [arc, amplitude], name: S31_rus_from_1992}
+
+channels: null                                  # not run on S31 (amendment 3.4)

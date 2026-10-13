@@ -16,6 +16,9 @@ samples:
   # S30: main sample for Paper 1 and the GNN (Sid, 11 October 2026)
   S30: [USA, GBR, DEU, FRA, ITA, JPN, CAN, ESP, AUS, KOR, IND, MEX, NLD, SWE,
         CHE, BEL, ZAF, TUR, NOR, AUT, DNK, FIN, GRC, PRT, IDN, THA, CHN, BRA, SAU, IRN]
+  # S31: S30 + Russia, sensitivity sample (pre-registration amendment 3, 13 October 2026)
+  S31: [USA, GBR, DEU, FRA, ITA, JPN, CAN, ESP, AUS, KOR, IND, MEX, NLD, SWE,
+        CHE, BEL, ZAF, TUR, NOR, AUT, DNK, FIN, GRC, PRT, IDN, THA, CHN, BRA, SAU, IRN, RUS]
 
 excluded:
-  ARE: "United Arab Emirates: Maddison series misses 1991-1992, which breaks the band-pass filter; no S31 run (Sid, 11 October 2026)"
+  ARE: "United Arab Emirates: Maddison series misses 1991-1992, which breaks the band-pass filter; not run (Sid, 11 October 2026). S31 now means S30 + Russia"
