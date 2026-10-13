@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup gnn-g0 gnn-g1 golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null gnn-g0 gnn-g1 golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -53,6 +53,11 @@ phase3: build-data             ## the pre-registered rerun on S26 and S30 with e
 
 phase3-s31: build-data         ## the pre-registered battery on S31 = S30 + Russia (amendment 3) -> results/S31*, COMPARISON.md
 	$(PY) -m ef.phase3 --config configs/runs/phase3_s31.yaml
+
+edge-null: build-data           ## amendment 4: edge-matched nulls, validated on the G1 worlds, run on S31/S30/S26 -> results/edge_matched/, results/EDGE_MATCHED.md
+	$(PY) -m ef.edge_null validate
+	$(PY) -m ef.edge_null run
+	$(PY) -m ef.edge_null report
 
 gnn-g0: build-data             ## GNN stage G0: yearly graphs on S31 -> build/gnn/g0, gnn/G0_data_card.md, gnn/G0_missing_data.md
 	$(PY) -m ef.gnn.report
