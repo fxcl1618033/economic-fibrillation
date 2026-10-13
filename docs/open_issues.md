@@ -214,7 +214,7 @@ are the largest economies missing from the 26" is therefore not true as written.
 for leaving Russia out (it goes into §1), rewords the sentence ("with Russia, the five largest"), or adds Russia as a
 sensitivity run after a pre-registration amendment. Nothing is run until he decides.
 
-## 25. What the G1 simulations say about four Paper 1 tests — OPEN, for Sid (14 October 2026)
+## 25. What the G1 simulations say about four Paper 1 tests — DECIDED 14 October 2026: (a) rerun with surrogates with ends (amendment 4; the swing-size result stands at the floor); (b) and (c) are Limitations L8 and L9; (d) after-2 stays in Limitations with its new p
 
 From `gnn/G1_report.md` (8,000 simulated worlds, pre-registered in `docs/preregistration_G1.md`). **(a) The identity's
 swing-size test** rejects in 14–19% of uncoupled worlds on the real calendar, where it should reject in 5%. The cause
@@ -228,3 +228,9 @@ chance. **(c) The cross-term test** rejects in nearly every coupled world on any
 co-movement at recessions. **(d) After-2** over-rejects on the real calendar in the Kuramoto worlds (6.2%, 11.6% with
 trade links). **What to do:** Sid decides which of these go into Methods and Limitations, and whether to rerun the
 swing-size test with an edge-matched null (a pre-registration amendment). Nothing in `docs/methods.md` is changed.
+
+**Outcome (14 October 2026).** Sid decided: (a) an edge-matched null for the swing-size test and every test leaning
+on 2019–2022, pre-registered as amendment 4 and run (`results/EDGE_MATCHED.md`): the null rejects at about 5% on the
+G1 worlds (the swing-size test 1.5% and 4.8%, from 13.8% and 18.9%), and the real swing-size p stays at the floor on
+S31, S30 and S26; (b) and (c) go into Limitations as L8 and L9 in `docs/methods_proposed_edits.md`; the κ = 0 table
+goes into the proposed Methods as §5.3. `docs/methods.md` is unchanged.

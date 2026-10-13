@@ -233,7 +233,11 @@ def report(R, cal, curve, W, B, P=None, real=None, edge=None):
           "- Own-dated recessions use a simple rank rule (five lowest-growth years, at least 5 years apart), not Kose, "
           "Sugawara and Terrones's full method.",
           "- One noise level for every economy; the world node pulls every economy equally; trade links only (no banks "
-          "or oil).", "",
+          "or oil).",
+          "- The cross-term and MST tests drew their surrogates from the 1962–2022 cycles (the as-run scheme), not from the "
+          "1950–2022 cycles cut to 1962–2022 as Phase 3 does; found on 14 October 2026. On the same uncoupled worlds the "
+          "two schemes give rejection rates within a point of each other (`results/EDGE_MATCHED.md`, section 2), so the "
+          "rows stand.", "",
           "## Files", "",
           "`gnn/G1/calibration.json` (targets, grids, κ\\*, φ\\*), `r_curve.csv`, `pvalues.csv.gz` (every p-value of every "
           "world), `rejections.csv` (the tables above with intervals), `world_stats.csv.gz` (r overall, in own-dated "

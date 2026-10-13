@@ -215,3 +215,51 @@ An economy enters a channel only with continuous data 1965–2022 (amendment 1.5
 | H2 | Real GDP, hand-picked windows: same | 0.70 / 0.30 / 0.52; +0.202 | 0.020 | crisis_results_real.json |
 | H3 | JST banking crises (17 economies, 1970–2016): same year / lead-1 / lead-2 | +0.23 / +0.21 / +0.13 | 0.106 / 0.149 / 0.298 | crisis_dating_results.json (not re-verified) |
 | H4 | First-pass surrogate test on current-dollar GDP: 2009 / 2020 | R 0.74 / 0.81 | 0.0002 / 0.0002 | surrogate_results.csv |
+
+## 9. Edge-matched nulls (pre-registration amendment 4, 14 October 2026)
+
+Each listed test's statistic with its current p and, after the arrow, its p against edge-matched surrogates (surrogates
+with ends, passed through the same band-pass and Hilbert transform; 5,000, floor 0.0002; multivariate for the arcs,
+independent otherwise). **Bold**: the two fall on opposite sides of 0.05. The current p-values above are unchanged.
+Validation on the G1 worlds and the reading of each crossing: `results/EDGE_MATCHED.md`.
+
+| ID | Test | S31 | S30 | S26 | Source | Status |
+|---|---|---|---|---|---|---|
+| X1 | Arc, lead-1, convention P (A2) | +0.231 (0.019 → 0.033) | +0.217 (0.019 → 0.043) | +0.216 (0.019 → 0.042) | `edge_matched/<sample>.json` (`arc.P.lead1`) | second null |
+| X2 | Arc, crisis year, convention P (A3) | +0.159 (0.189 → 0.116) | +0.161 (0.189 → 0.108) | +0.149 (0.189 → 0.123) | `edge_matched/<sample>.json` (`arc.P.crisis`) | second null |
+| X3 | Arc, after-1, convention P (A4) | +0.099 (0.717 → 0.760) | +0.111 (0.755 → 0.786) | +0.078 (0.679 → 0.707) | `edge_matched/<sample>.json` (`arc.P.after1`) | second null |
+| X4 | Arc, after-2, convention P (A5) | -0.258 (0.057 → **0.039**) | -0.236 (0.057 → 0.054) | -0.277 (0.019 → 0.026) | `edge_matched/<sample>.json` (`arc.P.after2`) | second null |
+| X5 | Arc, lead-1, convention W (A10) | +0.204 (0.019 → **0.056**) | +0.184 (0.057 → 0.079) | +0.178 (0.094 → 0.085) | `edge_matched/<sample>.json` (`arc.W.lead1`) | second null |
+| X6 | Arc, crisis year, convention W (A10) | +0.134 (0.189 → 0.161) | +0.130 (0.226 → 0.167) | +0.112 (0.208 → 0.198) | `edge_matched/<sample>.json` (`arc.W.crisis`) | second null |
+| X7 | Arc, after-1, convention W (A10) | +0.109 (0.774 → 0.784) | +0.121 (0.774 → 0.806) | +0.088 (0.698 → 0.734) | `edge_matched/<sample>.json` (`arc.W.after1`) | second null |
+| X8 | Arc, after-2, convention W (A10) | -0.165 (0.113 → 0.142) | -0.131 (0.170 → 0.204) | -0.144 (0.170 → 0.177) | `edge_matched/<sample>.json` (`arc.W.after2`) | second null |
+| X9 | Arc, lead-1, convention N (A11) | +0.192 (0.057 → 0.071) | +0.173 (0.094 → 0.093) | +0.178 (0.094 → 0.083) | `edge_matched/<sample>.json` (`arc.N.lead1`) | second null |
+| X10 | Arc, crisis year, convention N (A11) | +0.135 (0.208 → 0.156) | +0.133 (0.189 → 0.158) | +0.124 (0.189 → 0.168) | `edge_matched/<sample>.json` (`arc.N.crisis`) | second null |
+| X11 | Arc, after-1, convention N (A11) | +0.105 (0.755 → 0.775) | +0.116 (0.774 → 0.800) | +0.089 (0.679 → 0.737) | `edge_matched/<sample>.json` (`arc.N.after1`) | second null |
+| X12 | Arc, after-2, convention N (A11) | -0.190 (0.094 → 0.101) | -0.158 (0.132 → 0.151) | -0.197 (0.094 → 0.088) | `edge_matched/<sample>.json` (`arc.N.after2`) | second null |
+| X13 | Arc, lead-1, convention E (A12) | +0.236 (0.019 → 0.029) | +0.226 (0.019 → 0.037) | +0.220 (0.019 → 0.038) | `edge_matched/<sample>.json` (`arc.E.lead1`) | second null |
+| X14 | Arc, crisis year, convention E (A12) | +0.159 (0.189 → 0.110) | +0.164 (0.170 → 0.103) | +0.152 (0.170 → 0.118) | `edge_matched/<sample>.json` (`arc.E.crisis`) | second null |
+| X15 | Arc, after-1, convention E (A12) | +0.101 (0.755 → 0.780) | +0.107 (0.755 → 0.794) | +0.075 (0.717 → 0.719) | `edge_matched/<sample>.json` (`arc.E.after1`) | second null |
+| X16 | Arc, after-2, convention E (A12) | -0.160 (0.132 → 0.090) | -0.136 (0.170 → 0.120) | -0.170 (0.113 → 0.080) | `edge_matched/<sample>.json` (`arc.E.after2`) | second null |
+| X17 | Arc within the Fiedler blocs, lead-1 (E11) | +0.250 (0.019 → 0.023) | +0.212 (0.019 → **0.050**) | +0.182 (0.057 → 0.082) | `edge_matched/<sample>.json` (`E11.within.lead1`) | second null |
+| X18 | Arc between the Fiedler blocs, lead-1 (E11) | +0.066 (0.358 → 0.354) | +0.135 (0.151 → 0.152) | +0.180 (0.038 → 0.025) | `edge_matched/<sample>.json` (`E11.between.lead1`) | second null |
+| X19 | Real-GDP channel arc, lead-1 (G3) | +0.254 (0.019 → 0.020) | +0.245 (0.019 → 0.023) | +0.237 (0.019 → 0.025) | `edge_matched/<sample>.json` (`G3.lead1`) | second null |
+| X20 | Real-GDP channel arc, crisis year (G3) | +0.208 (0.094 → **0.046**) | +0.202 (0.094 → **0.050**) | +0.192 (0.094 → 0.061) | `edge_matched/<sample>.json` (`G3.same`) | second null |
+| X21 | Real-GDP channel arc, after-2 (G3) | -0.320 (0.019 → 0.018) | -0.291 (0.019 → 0.029) | -0.332 (0.019 → 0.015) | `edge_matched/<sample>.json` (`G3.after2`) | second null |
+| X22 | Cross share at recessions, GDP weights (D5) | +0.706 (0.0002 → 0.0002) | +0.707 (0.0002 → 0.0002) | +0.704 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D5.gdp_mean`) | second null |
+| X23 | Cross share at recessions, equal weights (D5) | +0.783 (0.0002 → 0.0002) | +0.771 (0.0002 → 0.0002) | +0.876 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D5.equal`) | second null |
+| X24 | Share of the excess from the cross term, GDP weights (D6) | +0.843 (0.316 → 0.319) | +0.833 (0.319 → 0.313) | +0.802 (0.344 → 0.349) | `edge_matched/<sample>.json` (`D6.ratio.gdp_mean`) | second null |
+| X25 | Share of the excess from the cross term, equal weights (D6) | +0.970 (0.478 → 0.476) | +0.968 (0.466 → 0.459) | +0.965 (0.476 → 0.466) | `edge_matched/<sample>.json` (`D6.ratio.equal`) | second null |
+| X26 | Δcross at recessions, GDP weights (D6) | +4.17e-05 (0.0002 → 0.0002) | +4.48e-05 (0.0002 → 0.0002) | +5.72e-05 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D6.cross.gdp_mean`) | second null |
+| X27 | Δcross at recessions, equal weights (D6) | +4.72e-05 (0.0002 → 0.0002) | +4.97e-05 (0.0002 → 0.0002) | +5.22e-05 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D6.cross.equal`) | second null |
+| X28 | Δown at recessions, GDP weights (D6) | +7.78e-06 (0.038 → **0.053**) | +8.96e-06 (0.035 → 0.047) | +1.41e-05 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D6.own.gdp_mean`) | second null |
+| X29 | Δown at recessions, equal weights (D6) | +1.46e-06 (0.0002 → 0.0004) | +1.65e-06 (0.0002 → 0.0004) | +1.88e-06 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D6.own.equal`) | second null |
+| X30 | Identity: alignment at recessions (D11) | +0.406 (0.239 → 0.228) | +0.241 (0.356 → 0.355) | +0.654 (0.103 → 0.105) | `edge_matched/<sample>.json` (`D11.align`) | second null |
+| X31 | Identity: swing size at recessions (D11) | +1.021 (0.0002 → 0.0002) | +1.033 (0.0002 → 0.0002) | +1.010 (0.0002 → 0.0002) | `edge_matched/<sample>.json` (`D11.swing`) | second null |
+| X32 | MST contraction before recessions (E4) | -0.157 (0.206 → 0.185) | -0.143 (0.219 → 0.216) | -0.171 (0.168 → 0.166) | `edge_matched/<sample>.json` (`E4.raw`) | second null |
+| X33 | MST contraction, detrended (E4) | +0.014 (0.561 → 0.524) | +0.057 (0.659 → 0.624) | -0.057 (0.356 → 0.338) | `edge_matched/<sample>.json` (`E4.detrended`) | second null |
+| X34 | MST fragility before recessions (E6) | +0.129 (0.271 → 0.252) | +0.086 (0.338 → 0.336) | +0.100 (0.311 → 0.299) | `edge_matched/<sample>.json` (`E6`) | second null |
+| X35 | Slowing down: autocorrelation of r (F1) | -0.152 (0.789 → 0.770) | -0.098 (0.676 → 0.678) | +0.027 (0.456 → 0.456) | `edge_matched/<sample>.json` (`F1`) | second null |
+| X36 | Slowing down: variance of r (F2) | +0.438 (0.031 → 0.029) | +0.420 (0.037 → 0.037) | +0.438 (0.033 → 0.036) | `edge_matched/<sample>.json` (`F2`) | second null |
+| X37 | Slower recovery after recessions (F4) | +2.26e-03 (0.502 → 0.478) | +0.024 (0.507 → 0.488) | +0.078 (0.534 → 0.517) | `edge_matched/<sample>.json` (`F4`) | second null |
+| X38 | r with swing size, detrended (outside the rule) (C1) | +0.646 (0.0002 → 0.0002) | +0.641 (0.0002 → 0.0002) | +0.608 (0.0002 → 0.0006) | `edge_matched/<sample>.json` (`C1`) | second null |

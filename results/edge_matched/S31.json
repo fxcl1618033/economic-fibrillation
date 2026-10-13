@@ -1,0 +1,421 @@
+{
+ "sample": "S31",
+ "economies": [
+  "USA",
+  "GBR",
+  "DEU",
+  "FRA",
+  "ITA",
+  "JPN",
+  "CAN",
+  "ESP",
+  "AUS",
+  "KOR",
+  "IND",
+  "MEX",
+  "NLD",
+  "SWE",
+  "CHE",
+  "BEL",
+  "ZAF",
+  "TUR",
+  "NOR",
+  "AUT",
+  "DNK",
+  "FIN",
+  "GRC",
+  "PRT",
+  "IDN",
+  "THA",
+  "CHN",
+  "BRA",
+  "SAU",
+  "IRN",
+  "RUS"
+ ],
+ "channel_economies": [
+  "USA",
+  "GBR",
+  "DEU",
+  "FRA",
+  "ITA",
+  "JPN",
+  "CAN",
+  "ESP",
+  "AUS",
+  "KOR",
+  "IND",
+  "MEX",
+  "NLD",
+  "SWE",
+  "CHE",
+  "BEL",
+  "ZAF",
+  "TUR",
+  "NOR",
+  "AUT",
+  "DNK",
+  "FIN",
+  "GRC",
+  "PRT",
+  "IDN",
+  "THA",
+  "CHN",
+  "BRA",
+  "IRN",
+  "RUS"
+ ],
+ "surrogates": 5000,
+ "seeds": {
+  "ind": 6001,
+  "multi": 6002,
+  "channel": 6003
+ },
+ "fine": 8,
+ "code_version": "fc63e8730b4ba0d73685f6396fb7dbafb6e27e16+uncommitted",
+ "run_at": "2026-10-13T19:40:34+00:00",
+ "tests": {
+  "arc.P.lead1": {
+   "label": "Arc, lead-1, convention P",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.2308000631507991,
+   "p_edge": 0.033193361327734455,
+   "null_mean": 0.0004157826634455727,
+   "p_current": 0.018867924528301886
+  },
+  "arc.P.crisis": {
+   "label": "Arc, crisis year, convention P",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.15855012864616444,
+   "p_edge": 0.11577684463107378,
+   "null_mean": 0.00043132214533673607,
+   "p_current": 0.18867924528301888
+  },
+  "arc.P.after1": {
+   "label": "Arc, after-1, convention P",
+   "null": "multi",
+   "direction": "neg",
+   "stat": 0.09917480586161206,
+   "p_edge": 0.7596480703859229,
+   "null_mean": 0.003531461204169216,
+   "p_current": 0.7169811320754716
+  },
+  "arc.P.after2": {
+   "label": "Arc, after-2, convention P",
+   "null": "multi",
+   "direction": "neg",
+   "stat": -0.25773176321006075,
+   "p_edge": 0.03939212157568486,
+   "null_mean": -0.008159700090113667,
+   "p_current": 0.05660377358490566
+  },
+  "E11.within.lead1": {
+   "label": "Arc within the Fiedler blocs, lead-1",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.25028619145789605,
+   "p_edge": 0.022595480903819236,
+   "null_mean": 0.0008284912095787199,
+   "p_current": 0.018867924528301886
+  },
+  "E11.between.lead1": {
+   "label": "Arc between the Fiedler blocs, lead-1",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.06612710657261668,
+   "p_edge": 0.35372925414917017,
+   "null_mean": -0.00016781131946641973,
+   "p_current": 0.3584905660377358
+  },
+  "arc.W.lead1": {
+   "label": "Arc, lead-1, convention W",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.20352641276899933,
+   "p_edge": 0.05558888222355529,
+   "null_mean": -0.0005398169090027567,
+   "p_current": 0.018867924528301886
+  },
+  "arc.W.crisis": {
+   "label": "Arc, crisis year, convention W",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.13366662890740094,
+   "p_edge": 0.16076784643071385,
+   "null_mean": 0.0013597069277363793,
+   "p_current": 0.18867924528301888
+  },
+  "arc.W.after1": {
+   "label": "Arc, after-1, convention W",
+   "null": "multi",
+   "direction": "neg",
+   "stat": 0.1089635546335465,
+   "p_edge": 0.7842431513697261,
+   "null_mean": 0.0045285530358639475,
+   "p_current": 0.7735849056603774
+  },
+  "arc.W.after2": {
+   "label": "Arc, after-2, convention W",
+   "null": "multi",
+   "direction": "neg",
+   "stat": -0.16458240266809238,
+   "p_edge": 0.14157168566286743,
+   "null_mean": -0.01194503114148395,
+   "p_current": 0.11320754716981132
+  },
+  "arc.N.lead1": {
+   "label": "Arc, lead-1, convention N",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.1916866990559711,
+   "p_edge": 0.07138572285542892,
+   "null_mean": 0.0007878383156865285,
+   "p_current": 0.05660377358490566
+  },
+  "arc.N.crisis": {
+   "label": "Arc, crisis year, convention N",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.13513749840237588,
+   "p_edge": 0.15556888622275544,
+   "null_mean": 0.00026762859354055547,
+   "p_current": 0.20754716981132076
+  },
+  "arc.N.after1": {
+   "label": "Arc, after-1, convention N",
+   "null": "multi",
+   "direction": "neg",
+   "stat": 0.10483988314179578,
+   "p_edge": 0.7748450309938012,
+   "null_mean": 0.004137376302374332,
+   "p_current": 0.7547169811320755
+  },
+  "arc.N.after2": {
+   "label": "Arc, after-2, convention N",
+   "null": "multi",
+   "direction": "neg",
+   "stat": -0.19048508987087712,
+   "p_edge": 0.10057988402319536,
+   "null_mean": -0.008256363280064254,
+   "p_current": 0.09433962264150944
+  },
+  "arc.E.lead1": {
+   "label": "Arc, lead-1, convention E",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.23589722416722073,
+   "p_edge": 0.028794241151769647,
+   "null_mean": 0.0014326175265563456,
+   "p_current": 0.018867924528301886
+  },
+  "arc.E.crisis": {
+   "label": "Arc, crisis year, convention E",
+   "null": "multi",
+   "direction": "pos",
+   "stat": 0.1588814013480221,
+   "p_edge": 0.10997800439912017,
+   "null_mean": -0.0016642291259370901,
+   "p_current": 0.18867924528301888
+  },
+  "arc.E.after1": {
+   "label": "Arc, after-1, convention E",
+   "null": "multi",
+   "direction": "neg",
+   "stat": 0.10056454683352485,
+   "p_edge": 0.7800439912017596,
+   "null_mean": -0.004498333943440728,
+   "p_current": 0.7547169811320755
+  },
+  "arc.E.after2": {
+   "label": "Arc, after-2, convention E",
+   "null": "multi",
+   "direction": "neg",
+   "stat": -0.1596804484155508,
+   "p_edge": 0.09038192361527694,
+   "null_mean": 0.026988526897972268,
+   "p_current": 0.1320754716981132
+  },
+  "D11.align": {
+   "label": "Identity: alignment at recessions",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.406024413475929,
+   "p_edge": 0.22775444911017798,
+   "null_mean": -0.0016963502944249526,
+   "p_current": 0.23895220955808838
+  },
+  "D11.swing": {
+   "label": "Identity: swing size at recessions",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 1.0209226842391663,
+   "p_edge": 0.0001999600079984003,
+   "null_mean": 0.0451273379448528,
+   "p_current": 0.0001999600079984003
+  },
+  "C1": {
+   "label": "r with swing size, detrended (outside the rule)",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.6460467261261352,
+   "p_edge": 0.0001999600079984003,
+   "null_mean": 0.005666103372970662,
+   "p_current": 0.0001999600079984003
+  },
+  "D5.gdp_mean": {
+   "label": "Cross share at recessions, GDP weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.7060955156871208,
+   "p_edge": 0.0001999600079984003,
+   "null_mean": -0.22730758831238976,
+   "p_current": 0.0001999600079984003
+  },
+  "D6.cross.gdp_mean": {
+   "label": "\u0394cross at recessions, GDP weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 4.169303978005652e-05,
+   "p_edge": 0.0001999600079984003,
+   "null_mean": 9.590317607129182e-09,
+   "p_current": 0.0001999600079984003
+  },
+  "D6.own.gdp_mean": {
+   "label": "\u0394own at recessions, GDP weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 7.779494708275597e-06,
+   "p_edge": 0.052789442111577684,
+   "null_mean": 1.5701055072370258e-06,
+   "p_current": 0.03839232153569286
+  },
+  "D6.ratio.gdp_mean": {
+   "label": "Share of the excess from the cross term, GDP weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.8427512398801731,
+   "p_edge": 0.31853629274145173,
+   "null_mean": -0.1391133113445627,
+   "p_current": 0.3163367326534693
+  },
+  "D5.equal": {
+   "label": "Cross share at recessions, equal weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.7830698639097691,
+   "p_edge": 0.0001999600079984003,
+   "null_mean": -0.3557091274260218,
+   "p_current": 0.0001999600079984003
+  },
+  "D6.cross.equal": {
+   "label": "\u0394cross at recessions, equal weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 4.721365892311635e-05,
+   "p_edge": 0.0001999600079984003,
+   "null_mean": -2.7383302519165457e-08,
+   "p_current": 0.0001999600079984003
+  },
+  "D6.own.equal": {
+   "label": "\u0394own at recessions, equal weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 1.4614325289332663e-06,
+   "p_edge": 0.0003999200159968006,
+   "null_mean": 3.4048240741476785e-08,
+   "p_current": 0.0001999600079984003
+  },
+  "D6.ratio.equal": {
+   "label": "Share of the excess from the cross term, equal weights",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.9699757620307105,
+   "p_edge": 0.47630473905218956,
+   "null_mean": 0.07088973765438795,
+   "p_current": 0.47810437912417514
+  },
+  "E4.raw": {
+   "label": "MST contraction before recessions",
+   "null": "ind",
+   "direction": "neg",
+   "stat": -0.15714285714285708,
+   "p_edge": 0.1847630473905219,
+   "null_mean": 0.01009142857142857,
+   "p_current": 0.20635872825434912
+  },
+  "E4.detrended": {
+   "label": "MST contraction, detrended",
+   "null": "ind",
+   "direction": "neg",
+   "stat": 0.014285714285714301,
+   "p_edge": 0.5238952209558089,
+   "null_mean": 0.011108571428571428,
+   "p_current": 0.5610877824435113
+  },
+  "E6": {
+   "label": "MST fragility before recessions",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.12857142857142856,
+   "p_edge": 0.251749650069986,
+   "null_mean": -0.008542857142857144,
+   "p_current": 0.27114577084583086
+  },
+  "F1": {
+   "label": "Slowing down: autocorrelation of r",
+   "null": "ind",
+   "direction": "pos",
+   "stat": -0.1517857142857143,
+   "p_edge": 0.7700459908018397,
+   "null_mean": 0.0010642857142857155,
+   "p_current": 0.7894421115776845
+  },
+  "F2": {
+   "label": "Slowing down: variance of r",
+   "null": "ind",
+   "direction": "pos",
+   "stat": 0.4375,
+   "p_edge": 0.028794241151769647,
+   "null_mean": 7.857142857142954e-05,
+   "p_current": 0.03099380123975205
+  },
+  "F4": {
+   "label": "Slower recovery after recessions",
+   "null": "ind",
+   "direction": "neg",
+   "stat": 0.0022611667094487586,
+   "p_edge": 0.47790441911617676,
+   "null_mean": 0.045611012840358754,
+   "p_current": 0.5018996200759848
+  },
+  "G3.lead1": {
+   "label": "Real-GDP channel arc, lead-1",
+   "null": "channel",
+   "direction": "pos",
+   "stat": 0.2537590081840914,
+   "p_edge": 0.01979604079184163,
+   "null_mean": -0.0012924089899439654,
+   "p_current": 0.018867924528301886
+  },
+  "G3.same": {
+   "label": "Real-GDP channel arc, crisis year",
+   "null": "channel",
+   "direction": "pos",
+   "stat": 0.20797636391165233,
+   "p_edge": 0.04559088182363527,
+   "null_mean": 0.001655770582272241,
+   "p_current": 0.09433962264150944
+  },
+  "G3.after2": {
+   "label": "Real-GDP channel arc, after-2",
+   "null": "channel",
+   "direction": "neg",
+   "stat": -0.32006051310591366,
+   "p_edge": 0.01839632073585283,
+   "null_mean": -0.02164476117086078,
+   "p_current": 0.018867924528301886
+  }
+ }
+}

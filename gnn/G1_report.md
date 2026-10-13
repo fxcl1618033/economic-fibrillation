@@ -165,6 +165,7 @@ Three kinds of behaviour. (1) **The arc** responds to coupling only when recessi
 - 199 surrogates per test (floor 0.005) instead of 5,000: a rejection at 0.05 is exact, but floors are coarser than Paper 1's.
 - Own-dated recessions use a simple rank rule (five lowest-growth years, at least 5 years apart), not Kose, Sugawara and Terrones's full method.
 - One noise level for every economy; the world node pulls every economy equally; trade links only (no banks or oil).
+- The cross-term and MST tests drew their surrogates from the 1962–2022 cycles (the as-run scheme), not from the 1950–2022 cycles cut to 1962–2022 as Phase 3 does; found on 14 October 2026. On the same uncoupled worlds the two schemes give rejection rates within a point of each other (`results/EDGE_MATCHED.md`, section 2), so the rows stand.
 
 ## Files
 

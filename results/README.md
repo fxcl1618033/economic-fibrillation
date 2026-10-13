@@ -9,5 +9,7 @@ seed, code version and timestamp (Phase 3 of `HANDOFF.md`). Generated files that
   `*_gmd_growth/` (open issue 13), `S30_minus_<ISO>/` (added economies left out).
 - `COMPARISON.md`: every registry quantity on S26 and S30, with the sensitivity tables; `SUMMARY.md` is the plain-words
   summary written after the run.
+- `edge_matched/` and `EDGE_MATCHED.md`: pre-registration amendment 4, the tests that lean on 2019–2022 against
+  surrogates with ends, validated on the G1 worlds (`make edge-null`). A second null beside the current one.
 - `followup/` and `FOLLOWUP.md`: checks Sid asked for after reading the results (`make followup`). **Not
   pre-registered**; labelled so in each file.

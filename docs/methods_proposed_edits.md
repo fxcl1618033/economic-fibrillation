@@ -10,6 +10,13 @@ Sources: `results/S31/P/*.json` (code 2a686a3) and `results/S30/P/*.json` (code 
 `results/FOLLOWUP.md` (the leave-one-crisis-out check Sid asked for, not pre-registered) and
 `docs/data_validation.md` (share of world GDP, Russia's data).
 
+**Fifth draft, 14 October 2026 (Sid):** adds §5.3, the size of every test on simulated uncoupled worlds (the G1
+κ = 0 table, V1), and §5.4, surrogates with ends for the tests that lean on 2019–2022 (pre-registration amendment 4,
+V2; `results/EDGE_MATCHED.md`); two Limitations, L8 (dating recessions from world output inflates the two-sided crisis
+and lead-1 tests, so the lead claim rests on the past-only version) and L9 (the cross-term test detects co-movement in
+general; the recession-specific claim rests on the descriptive crisis-versus-normal gap); and the surrogates-with-ends
+values in L3 and L6. No current number changes.
+
 **The paper's framing (Sid, second round):** the mechanism is loss of diversification, not bifurcation tipping; the
 tipping tests are the "what it isn't" that led to it. Results say "loss of diversification"; the Discussion proposes
 "diversification-type tipping" as our own term (D2).
@@ -31,7 +38,10 @@ The edits are in Methods order. Each heading carries its label from the first dr
 | N1–N3 | Expected r under random phases; the cross-share formula needs equal variances; surrogates follow P | §3, §6.1, §5.2 | approved (Sid) |
 | — | Why the five economies were added (Russia by amendment 3); share of world GDP | §1 | drafted from Sid's wording; Russia settled (S31) |
 | — | The original 26, S30 and the added economies | §7.8, Appendix Table A1 | decided: one paragraph, full table in an Appendix (Sid); now with S31 |
-| L1–L7 | Results and Limitations text | outside the Methods | drafted from Sid's decisions; for the paper, not for `methods.md` |
+| L1–L7 | Results and Limitations text | outside the Methods | drafted from Sid's decisions; for the paper, not for `methods.md`; L3 and L6 gain the surrogates-with-ends values |
+| V1 | The size of every test on simulated uncoupled worlds (Table 1) | §5.3 (new) | drafted (Sid, 14 October 2026) |
+| V2 | Surrogates with ends for the tests that lean on 2019–2022 | §5.4 (new) | drafted from amendment 4 and its run |
+| L8, L9 | Limitations: how recessions are dated; what the cross-term test shows | outside the Methods | drafted from Sid's wording (14 October 2026) |
 | D1–D2 | Discussion text: the mechanism and "diversification-type tipping" | outside the Methods | drafted from Sid's framing |
 
 ---
@@ -104,6 +114,87 @@ paragraph: "Surrogates are drawn from each economy's 1950–2022 cycle and pass 
 
 **Why (N3, new):** the pre-registration fixed this; several first-run scripts drew surrogates under convention W while
 the data used P. It is why the amplitude link's surrogate p moved from 0.0006 to the floor 0.0002 on S26.
+
+## §5.3 Size of the tests on simulated worlds (new section, V1; Sid, 14 October 2026)
+
+**Current:** none.
+
+**Proposed:** "To check that each test rejects at its nominal rate when there is nothing to find, we ran every test on
+1,000 simulated 31-economy worlds of each of two kinds — phase oscillators (Kuramoto) and phase-and-amplitude
+oscillators (Stuart–Landau) — with no coupling between economies and no common forcing. Each economy keeps its observed
+mean period, swing size and trend, and the noise is set so that the year-to-year spread of phase steps matches the
+data; the simulated series pass through the same band-pass, Hilbert transform and tests as the data, with 199
+surrogates per test. Table 1 gives the share of worlds in which each test rejects at $p \le 0.05$. With the real
+recession dates, which are unrelated to a simulated world, a correct test rejects in 3.8% of worlds when its null is
+the circular shift (below 0.05 only $1/53$ and $2/53$ are possible) and in 5% when it is 199 surrogates. Seventeen of
+the twenty tests stay at or below that rate in each kind of world. The exceptions are the swing-size term of the
+identity (13.8–18.9%), which leans on the last years of the sample and is checked against
+surrogates with ends in §5.4; the circular-shift test of $r$ against swing size (5.7–6.2%); and,
+in one kind of world each, the lag $-2$ arc (6.2%) and the alignment term
+(6.5%). At least one of the five arc lags rejects in
+17.3–18.4% of uncoupled worlds, the multiplicity of §7.4 in numbers. With recession years taken
+instead from each simulated world's own output, the way global recessions are dated, the two-sided crisis-year and
+lead-1 arcs reject in 8.2–8.9% and 8.5–8.6% of uncoupled worlds (Limitations, L8)."
+
+**Table 1 (proposed).** Share of 1,000 uncoupled simulated worlds in which each test rejects at $p \le 0.05$.
+**Bold**: the 95% interval lies above the correct rate. Real dates: 1975, 1982, 1991, 2009, 2020. Own dates: each
+world's five years of lowest growth in world GDP per capita, at least five years apart.
+
+| Test | Correct rate | Kuramoto, real dates | Stuart–Landau, real dates | Kuramoto, own dates | Stuart–Landau, own dates |
+|---|---|---|---|---|---|
+| Arc, lead-2 | 3.8% | 3.3% | 3.6% | **5.2%** | **5.3%** |
+| Arc, lead-1 | 3.8% | 2.9% | 4.4% | **8.5%** | **8.6%** |
+| Arc, crisis year | 3.8% | 4.4% | 3.3% | **8.9%** | **8.2%** |
+| Arc, after-1 | 3.8% | 4.5% | 3.6% | 4.2% | 2.6% |
+| Arc, after-2 | 3.8% | **6.2%** | 4.6% | 3.9% | 4.3% |
+| Arc, lead-2, past-only phases | 3.8% | 4.1% | 3.4% | 3.3% | 3.5% |
+| Arc, lead-1, past-only phases | 3.8% | 3.5% | 3.8% | 2.9% | 2.3% |
+| r with swing size (shifts) | 3.8% | **6.2%** | **5.7%** | **6.2%** | **5.7%** |
+| r with swing size (surrogates) | 5.0% | 5.5% | 5.4% | 5.5% | 5.4% |
+| Cross term at recessions, GDP weights | 5.0% | 5.3% | 5.4% | **8.9%** | **10.8%** |
+| Cross term at recessions, equal weights | 5.0% | 4.6% | 4.6% | **6.8%** | **6.8%** |
+| Identity: alignment at recessions | 5.0% | 4.8% | **6.5%** | **11.4%** | **12.1%** |
+| Identity: swing size at recessions | 5.0% | **13.8%** | **18.9%** | **7.5%** | **14.9%** |
+| MST contraction before recessions | 5.0% | 2.8% | 4.1% | 5.0% | 3.8% |
+| MST contraction, detrended | 5.0% | 3.0% | 4.5% | 5.1% | 3.7% |
+| MST fragility before recessions | 5.0% | 4.9% | 5.2% | 5.3% | 5.1% |
+| Phase leads clustered | 5.0% | 3.0% | 5.3% | 3.0% | 5.3% |
+| Slowing down: autocorrelation of r | 5.0% | 5.1% | 4.2% | 5.7% | 4.5% |
+| Slowing down: variance of r | 5.0% | 5.1% | 6.1% | 5.0% | 5.5% |
+| Slower recovery after recessions | 5.0% | 4.8% | 4.5% | 5.2% | 4.0% |
+| Any of the five arc lags | — | 18.4% | 17.3% | 26.2% | 25.0% |
+| Any of lead-2, lead-1, crisis | — | 9.9% | 10.2% | 20.2% | 20.1% |
+
+**Why (V1):** Sid asked for the κ = 0 table as a validation of test size. Source: `gnn/G1/rejections.csv`
+(`gnn/G1_report.md`, pre-registered in `docs/preregistration_G1.md`). The swing sizes of the simulated worlds vary less
+than the real ones (no crises), which the Limitations of the G1 report state.
+
+## §5.4 Surrogates with ends (new section, V2; pre-registration amendment 4)
+
+**Current:** none.
+
+**Proposed:** "The surrogates of §5.2 are circular: they have no first or last year, so the band-pass and the Hilbert
+transform treat their ends differently from the data's, where the last years of the sample are the least reliable.
+For every test whose statistic uses a year from 2019 to 2022 — the crisis year 2020, a lead or lag reaching those
+years, or a window ending in them — we also compare the statistic with surrogates that have ends. Each economy's growth
+rates are given random Fourier phases on a series eight times longer than the sample, with the same periodogram; a
+72-year stretch from a random start is cumulated from the real 1950 level and passed through the same band-pass,
+Hilbert transform and windows as the data. For tests whose null is independent surrogates the phases are drawn
+independently for every economy; for the lead–lag arcs, whose null is the circular shift, one random phase per
+frequency is shared by every economy, which keeps their co-movement and so the level and persistence of $r(t)$ and
+randomizes only the timing. We draw 5,000 such surrogates (floor 0.0002). On uncoupled simulated worlds (§5.3) these
+nulls reject at about 5%, including the swing-size term (1.5% and
+4.8%). On the 31 economies no result we claim changes side of 0.05: the swing-size
+term and $r$ against swing size stay at the floor ($p = 0.0002$), the variance rise of §6.7 is $p = 0.029$,
+and the two-sided lead-1 moves from the circular-shift floor 0.019 to $p = 0.033$ (0.043 on the 30,
+0.042 on the 26). Six p-values of sensitivity or unclaimed results move across 0.05; the largest change among
+them is the lag $-2$ arc on the 31 ($0.057 \to 0.039$; Limitations)."
+
+**Why (V2):** Sid asked (14 October 2026) for an edge-matched null for the swing-size test and for every test that
+leans on years within three of the end, listed and pre-registered before running (amendment 4). Full table, the
+validation and the reading of each crossing: `results/EDGE_MATCHED.md`; registry section 9. **For Sid:** L1 quotes
+the two-sided lead-1 at $p = 0.019$; under surrogates with ends it is $0.033$. Whether L1 should give both,
+or lead with the past-only value as L8 now argues, is your call.
 
 ## §6.1 Loss-of-diversification decomposition (C, N2, B3)
 
@@ -579,7 +670,10 @@ not hold up. It is not significant on the 31 or the 30; it disappears with the 3
 (§7.1–7.2); it is significant under none of the alternative phase conventions, including phases from past data only
 (§7.2); and without 2020 it is $-0.18$ ($p = 0.15$). On the 31 it sits on the threshold: leaving out any of 20 of the
 31 economies, or computing Russia's phases from 1992, takes it to $p = 0.019$–$0.038$. It also sits where the filters
-are least reliable: the lag $-2$ test for 2020 uses $r(2022)$, the last observation. We report it and do not claim it."
+are least reliable: the lag $-2$ test for 2020 uses $r(2022)$, the last observation. Against surrogates with ends
+(§5.4) it is $p = 0.039$ on the 31 and $0.054$ on the 30; that null still rejects lag $-2$ slightly too often in
+simulated coupled worlds (6.5%), and most of the move from 0.057 is the finer resolution of 5,000
+surrogates against 53 shifts. We report it and do not claim it."
 
 ### L4. Limitations: what multiplicity correction can show (Sid)
 
@@ -601,7 +695,8 @@ $41\%$; on the original 26, $33\%$ and $53\%$)."
 
 "Splitting the recession excess in world swing (the identity $|Z| = \bar A R_A$) into alignment and swing size gives
 an alignment share of $28\%$ on the 31, $19\%$ on the 30, $33\%$ on the 30 without Iran and $39\%$ on the original
-26. The swing-size part is significant on every sample ($p = 0.0002$, the floor); the alignment part on none
+26. The swing-size part is significant on every sample ($p = 0.0002$, the floor, also against surrogates with ends,
+§5.4); the alignment part on none
 ($p = 0.10$–$0.36$). The share depends on which economies are in the sample, and we draw no conclusion from it."
 
 ### L7. Results: the variance of synchronization (Sid: consistent with loss of diversification)
@@ -611,6 +706,27 @@ $p = 0.037$) while its lag-1 autocorrelation does not ($-0.152$, $p = 0.79$). Th
 which needs both; it is consistent with loss of diversification — shocks stop cancelling, so synchronization swings
 more widely without recovering more slowly. It rests on 2009 and 2020 (before them alone $+0.857$, $p = 0.003$; before
 1982 and 1991, $+0.018$, $p = 0.51$)."
+
+### L8. Limitations: how global recessions are dated (Sid, 14 October 2026)
+
+"Global recessions are dated from world output, and the economies whose synchronization we measure make up most of it.
+The years in which world output falls most are years in which many cycles happen to be falling together, so dating
+recessions this way builds some synchronization into them even when economies are not coupled at all. In simulated
+worlds with no coupling, recession years dated the same way from each world's own output make the two-sided arc reject
+at the crisis year in 8.2–8.9% and at lead-1 in 8.5–8.6% of worlds, about twice the
+correct 3.8% (§5.3). Phases built from past data only are free of this (2.3–2.9%). The lead claim
+therefore rests on the past-only lead-1 ($+0.379$, $p = 0.038$), not on the two-sided one."
+
+### L9. Limitations: what the cross-term test shows (Sid, 14 October 2026)
+
+"The surrogate test of the cross term (§7.6) asks whether the cross term's share of world variance in recession
+windows exceeds what independent economies would give. In simulated worlds it rejects in nearly every coupled world
+whatever dates are used — 97.1–99.3% of trade-coupled worlds with the real
+recession dates, which have nothing to do with those worlds — and in about 5% of uncoupled ones. It detects co-movement
+in general, not co-movement at recessions. The recession-specific claim — that co-movement supplies more of world
+variance in recessions than in normal years — rests on the gap between recession and normal windows (cross share
+0.706 against 0.620, GDP-weighted; 84.3% of the extra
+variance from the cross term), which is descriptive."
 
 The other Limitations items in `docs/paper_plan.md` (five events; annual data; the end of the sample is edge-affected)
 stand; L4 and the variance rise's dependence on 2009 and 2020 join the item on the lead.
