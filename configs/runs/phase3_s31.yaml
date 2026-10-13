@@ -1,5 +1,5 @@
-# Phase 3 on S31 (S30 + Russia), as pre-registered in docs/preregistration_S30.md amendment 3, before any Russia run.
-# Same tests, settings and seeds as configs/runs/phase3.yaml; channel tests not run (Russia is not in the atlas panel).
+# Phase 3 on S31 (S30 + Russia), the main sample from 13 October 2026, as pre-registered in docs/preregistration_S30.md
+# amendment 3, before any Russia run. Same tests, settings and seeds as configs/runs/phase3.yaml (S30 is the comparison).
 # Convention P throughout; rolling windows may start in 1962, never earlier (at least 12 years of filter run-in);
 # partly defined pre-crisis windows kept as first run (strict: false); the as-run seeds.
 # Run by the Phase 3 driver (python -m ef.phase3 --config configs/runs/phase3_s31.yaml); each run writes
@@ -33,6 +33,8 @@ variants:
   base: S31                                     # the sample the leave-out variants start from
   drop_one_added: [CHN, BRA, SAU, IRN, RUS]     # every test, on S31 (S31 without RUS = S30, run as a check)
   swing_size:                                   # amplitude, diversification, cross_split, structure, on S31
+    - [IRN]
+    - [SAU]
     - [IRN, SAU]
   strict_inside_1970_2022:                      # sensitivity for every rolling test
     window: [1970, 2022]
@@ -42,4 +44,9 @@ variants:
   past_only_leads: [arc.lead1, arc.lead2]
   late_entry: {economy: RUS, from: 1992, tests: [arc, amplitude], name: S31_rus_from_1992}
 
-channels: null                                  # not run on S31 (amendment 3.4)
+channels:
+  samples: [S31]
+  panel: build/data/atlas                       # repaired atlas panel with Russia added (amendment 3.4b), GMD read as float64
+  coverage_from: 1965                           # an economy enters a channel only with continuous data 1965-2022
+  surrogates: 2000
+  seed: 2610

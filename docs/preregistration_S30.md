@@ -222,31 +222,42 @@ year, r(t) under C is computed over the economies whose phase is defined, and th
 per year. Under P nothing changes.
 
 
-### Amendment 3 — Russia: the S31 sensitivity sample (13 October 2026, before any test is run with Russia)
+### Amendment 3 — Russia: the main sample becomes S31 (dated 13 October 2026; to be committed before anything is run with Russia)
 
-Sid approved adding Russia (open issue 24, option c) and asked for the full battery. This amendment was written by
-Claude from that approval and committed before any test was run with Russia in the sample; nothing in it was chosen
-after seeing a Russia result.
+Replaces a narrower draft of this amendment committed on 13 October 2026 (ef0dc40), which made S31 a sensitivity
+sample. Nothing was run with Russia under that draft or before this text.
 
-1. **Sample S31** = S30 + Russia (RUS). The name S31 meant "S30 + the UAE" before 11 October; that sample was never run,
-   and S31 now means S30 + Russia. Russia passes the inclusion rule (Maddison complete 1950–2022). Its cycle size is
-   2.0% (1.4× the median of the 26).
-2. **Status.** S31 is a sensitivity sample, reported beside S30. **S30 remains the main sample**, so the main-sample
-   choice is not made after seeing the S31 results. Hypotheses, directions, conventions, windows, seeds, nulls and the
-   replication criteria are those of sections 1–8, with S31 read against S30 as S30 was read against S26.
-3. **Battery on S31**, under P: every test of section 4 except the channel tests; the conventions W, N, E and C as in
-   amendment 1; the strict inside-1970–2022 windows; the GMD-growth swap for Norway, Switzerland and South Africa;
-   leaving each of the five added economies out (China, Brazil, Saudi Arabia, Iran, Russia), every test; Iran and Saudi
-   Arabia left out together for the swing-size tests; the robustness table with each of the 31 left out. Leaving Russia
-   out of S31 gives S30 exactly; it is run anyway as a check.
-4. **Channel tests (G1–G8) are not run on S31**: Russia is not in the repaired atlas panel, and adding it would need new
-   Global Macro Database repairs, a separate decision.
-5. **Post-1992 Russia sensitivity (S31, Russia from 1992).** Russia's figures before 1992 are reconstructions for a
-   planned economy. In this variant Russia's log GDP per capita is used from 1992 only: its band-pass and Hilbert
-   transform run on 1992–2022 alone (no run-in), and it has no phase before 1992. r(t) and the mean swing size Ā(t) are
-   means over the economies with a phase in that year (30 before 1992, 31 from 1992). Run: the arc (A1–A5) and the
-   r–swing-size link (C1, C2), against the circular-shift null. Not run: the surrogate, rolling-window and decomposition
-   tests, which need every economy in every year. Russia's 1992–1996 phases sit at the edge of a 31-year series; the
-   variant is read as a check on whether the Soviet-era years matter, not as a better estimate.
-6. **Results folders:** `results/S31/`, `results/S31_strict/`, `results/S31_gmd_growth/`, `results/S31_minus_<ISO>/`,
-   `results/S31_minus_IRN_SAU/`, `results/S31_rus_from_1992/`. Config: `configs/runs/phase3_s31.yaml`.
+1. **Sample.** The main sample becomes **S31 = S30 + Russia (RUS)** (Sid). S30 is kept as the reported comparison:
+   every result is shown for S30 and S31 side by side, and S31 is read against S30 under the criteria of sections 1–8.
+   The name S31 meant "S30 + the UAE" before 11 October; that sample was never run.
+2. **Reason.** Over 1970–2022 Russia was the second-largest economy missing from the 26 (mean real GDP 2.18 trillion
+   2011 PPP dollars, after China's 8.06 and ahead of Brazil's 1.74; `docs/data_validation.md`). It was left out by
+   oversight, not by the inclusion rule: its Maddison series is complete for 1950–2022 and passes the rule (open
+   issue 24).
+3. **Unchanged.** Hypotheses, test directions, phase conventions (P primary; W, N, E, C sensitivity), the rolling-window
+   rule, seeds, nulls, the five recessions and the replication criteria. A1–A5 on S31 under P become the primary
+   family for the multiplicity corrections.
+4. **Russia's data.** (a) The validation report checks Russia's Maddison series for 1950–2022 and states that its values
+   before 1991 are back-cast from Soviet aggregates, citing the Maddison documentation for how. (b) Russia is added to
+   the atlas panel from the Global Macro Database, with the same repairs and checks as the other added economies and
+   every gap reported. In the database Russia's short rate starts in 1997, unemployment in 1992 and money is missing,
+   so under the 1965 coverage rule (amendment 1.5) Russia will drop out of some channels; that is reported, not
+   repaired. (c) For the GNN edge data, Russia is added to the IMF bilateral trade download, which is a new pinned
+   download with its own date and sha256 because the current file covers only the S30 economies. Russia also reports
+   to the BIS Locational Banking Statistics (it appears in the pinned file as a reporter and as a counterparty), so its
+   banking links come from the existing pinned file.
+5. **The battery on S31**, as on S30: every test of section 4 under P, including the channel tests on the extended
+   panel; conventions W, N, E and C (amendment 1); the strict inside-1970–2022 windows; the GMD-growth swap for Norway,
+   Switzerland and South Africa; leaving out each of the five added economies (China, Brazil, Saudi Arabia, Iran,
+   Russia) with every test, where S31 without Russia equals S30 and is run as a check; Iran, Saudi Arabia and both
+   left out for the swing-size tests; the robustness table with each of the 31 left out; the world GDP share of S31.
+6. **Post-1992 sensitivity, so the back-cast years cannot drive the result.** Russia's phases are computed only from
+   1992 onward: its band-pass and Hilbert transform run on 1992–2022 alone (no run-in), and it has no phase before 1992.
+   r(t) and the mean swing size Ā(t) are means over the economies with a phase in each year (30 before 1992, 31 from
+   1992). Run: the arc (A1–A5) and the r–swing-size link (C1, C2), against the circular-shift null. Not run: the
+   surrogate, rolling-window and decomposition tests, which need every economy in every year. Russia's 1992–1996 phases
+   sit at the edge of a 31-year series and include the transition collapse (−12.7%, −6.7%, −10.7% in 1992–94).
+7. **Reporting.** `results/COMPARISON.md`, the registry and the proposed Methods edits show S30 and S31 side by side and
+   flag every result that changes sign or crosses p = 0.05 between them. Folders: `results/S31/`, `results/S31_strict/`,
+   `results/S31_gmd_growth/`, `results/S31_minus_<ISO>/`, `results/S31_rus_from_1992/`. Config:
+   `configs/runs/phase3_s31.yaml`.
