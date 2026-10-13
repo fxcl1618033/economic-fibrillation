@@ -46,9 +46,10 @@ to understand how the coupling between economies works.
 - **Phases.** Convention P is the paper's: band-pass and Hilbert transform on the full 1950–2022 series, statistics on
   1970–2022. Several as-run scripts used other conventions (W, N, or a 1962 start; see open issue 1). In the rerun,
   compute every test under P and report W, N and an edge-robust variant as sensitivity.
-- **Samples.** S26 = the original 26 (frozen reference). S30 = S26 + China, Brazil, Saudi Arabia and Iran, the working
-  main sample **pending Sid's confirmation**. S31 = S30 + the United Arab Emirates, sensitivity only. Never pool the
-  added economies into the 26's averages in the atlas.
+- **Samples.** S26 = the original 26 (frozen reference). S30 = S26 + China, Brazil, Saudi Arabia and Iran (the
+  reported comparison). **S31 = S30 + Russia, the main sample** (pre-registration amendment 3, 13 October 2026). The
+  UAE is excluded (its Maddison series misses 1991–1992). Never pool the added economies into the 26's averages in
+  the atlas.
 - **Data repairs** live in `atlas/data.py` and are listed per economy in `atlas/meta.json` ("fixes"). Do not add,
   remove or change a repair without recording it.
 - **Figures.** Every figure has an ID and a category (`docs/FIGURES.md`). Regenerated figures keep their ID and

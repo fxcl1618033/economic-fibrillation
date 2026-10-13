@@ -203,7 +203,7 @@ on the as-run windows (from 1962, seed 303) gives τ between −0.043 and −0.0
 original script is not in the repository. The conclusion (null) is the same. **What to do:** the pre-registration fixes
 σ = 8 and the new windows; Phase 3 reports that value and edit B5 rewrites the sentence.
 
-## 24. Russia is not in the sample, and no reason is recorded — Sid decides
+## 24. Russia is not in the sample, and no reason is recorded — DECIDED 13 October 2026: Russia added; S31 = S30 + Russia is the main sample (amendment 3); results in `results/S31*`
 
 By mean real GDP over 1970–2022, the largest economies missing from the 26 are China (8.06 trillion 2011 PPP dollars),
 Russia (2.18), Brazil (1.74), Iran (0.71), Saudi Arabia (0.65) and Poland (0.54); in 2022 Russia (3.73) is still larger
