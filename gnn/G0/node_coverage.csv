@@ -1,0 +1,628 @@
+node,feature,observed,first,last,missing
+USA,phase_sin,53,1970.0,2022.0,
+USA,phase_cos,53,1970.0,2022.0,
+USA,log_amplitude,53,1970.0,2022.0,
+USA,row_phase_sin,53,1970.0,2022.0,
+USA,row_phase_cos,53,1970.0,2022.0,
+USA,growth,53,1970.0,2022.0,
+USA,c_C,53,1970.0,2022.0,
+USA,c_I,53,1970.0,2022.0,
+USA,c_NX,53,1970.0,2022.0,
+USA,govexp_GDP,53,1970.0,2022.0,
+USA,govdef_GDP,53,1970.0,2022.0,
+USA,govdebt_GDP,53,1970.0,2022.0,
+USA,infl,53,1970.0,2022.0,
+USA,strate,53,1970.0,2022.0,
+USA,ltrate,53,1970.0,2022.0,
+USA,real_money_growth,53,1970.0,2022.0,
+USA,exports_GDP,53,1970.0,2022.0,
+USA,imports_GDP,53,1970.0,2022.0,
+USA,CA_GDP,53,1970.0,2022.0,
+USA,unemp,53,1970.0,2022.0,
+GBR,phase_sin,53,1970.0,2022.0,
+GBR,phase_cos,53,1970.0,2022.0,
+GBR,log_amplitude,53,1970.0,2022.0,
+GBR,row_phase_sin,53,1970.0,2022.0,
+GBR,row_phase_cos,53,1970.0,2022.0,
+GBR,growth,53,1970.0,2022.0,
+GBR,c_C,53,1970.0,2022.0,
+GBR,c_I,53,1970.0,2022.0,
+GBR,c_NX,53,1970.0,2022.0,
+GBR,govexp_GDP,43,1980.0,2022.0,not_yet 1970–1979
+GBR,govdef_GDP,43,1980.0,2022.0,not_yet 1970–1979
+GBR,govdebt_GDP,53,1970.0,2022.0,
+GBR,infl,53,1970.0,2022.0,
+GBR,strate,53,1970.0,2022.0,
+GBR,ltrate,53,1970.0,2022.0,
+GBR,real_money_growth,53,1970.0,2022.0,
+GBR,exports_GDP,53,1970.0,2022.0,
+GBR,imports_GDP,53,1970.0,2022.0,
+GBR,CA_GDP,53,1970.0,2022.0,
+GBR,unemp,53,1970.0,2022.0,
+DEU,phase_sin,53,1970.0,2022.0,
+DEU,phase_cos,53,1970.0,2022.0,
+DEU,log_amplitude,53,1970.0,2022.0,
+DEU,row_phase_sin,53,1970.0,2022.0,
+DEU,row_phase_cos,53,1970.0,2022.0,
+DEU,growth,53,1970.0,2022.0,
+DEU,c_C,51,1971.0,2022.0,not_yet 1970; repair 1991
+DEU,c_I,52,1970.0,2022.0,repair 1991
+DEU,c_NX,51,1971.0,2022.0,not_yet 1970; repair 1991
+DEU,govexp_GDP,53,1970.0,2022.0,
+DEU,govdef_GDP,53,1970.0,2022.0,
+DEU,govdebt_GDP,53,1970.0,2022.0,
+DEU,infl,53,1970.0,2022.0,
+DEU,strate,53,1970.0,2022.0,
+DEU,ltrate,53,1970.0,2022.0,
+DEU,real_money_growth,51,1970.0,2020.0,ended 2021–2022
+DEU,exports_GDP,53,1970.0,2022.0,
+DEU,imports_GDP,53,1970.0,2022.0,
+DEU,CA_GDP,53,1970.0,2022.0,
+DEU,unemp,53,1970.0,2022.0,
+FRA,phase_sin,53,1970.0,2022.0,
+FRA,phase_cos,53,1970.0,2022.0,
+FRA,log_amplitude,53,1970.0,2022.0,
+FRA,row_phase_sin,53,1970.0,2022.0,
+FRA,row_phase_cos,53,1970.0,2022.0,
+FRA,growth,53,1970.0,2022.0,
+FRA,c_C,53,1970.0,2022.0,
+FRA,c_I,53,1970.0,2022.0,
+FRA,c_NX,53,1970.0,2022.0,
+FRA,govexp_GDP,45,1978.0,2022.0,not_yet 1970–1977
+FRA,govdef_GDP,45,1978.0,2022.0,not_yet 1970–1977
+FRA,govdebt_GDP,53,1970.0,2022.0,
+FRA,infl,53,1970.0,2022.0,
+FRA,strate,53,1970.0,2022.0,
+FRA,ltrate,53,1970.0,2022.0,
+FRA,real_money_growth,52,1970.0,2022.0,repair 1978
+FRA,exports_GDP,53,1970.0,2022.0,
+FRA,imports_GDP,53,1970.0,2022.0,
+FRA,CA_GDP,53,1970.0,2022.0,
+FRA,unemp,53,1970.0,2022.0,
+ITA,phase_sin,53,1970.0,2022.0,
+ITA,phase_cos,53,1970.0,2022.0,
+ITA,log_amplitude,53,1970.0,2022.0,
+ITA,row_phase_sin,53,1970.0,2022.0,
+ITA,row_phase_cos,53,1970.0,2022.0,
+ITA,growth,53,1970.0,2022.0,
+ITA,c_C,53,1970.0,2022.0,
+ITA,c_I,53,1970.0,2022.0,
+ITA,c_NX,53,1970.0,2022.0,
+ITA,govexp_GDP,53,1970.0,2022.0,
+ITA,govdef_GDP,53,1970.0,2022.0,
+ITA,govdebt_GDP,53,1970.0,2022.0,
+ITA,infl,53,1970.0,2022.0,
+ITA,strate,53,1970.0,2022.0,
+ITA,ltrate,53,1970.0,2022.0,
+ITA,real_money_growth,50,1970.0,2020.0,ended 2021–2022; repair 1999
+ITA,exports_GDP,53,1970.0,2022.0,
+ITA,imports_GDP,53,1970.0,2022.0,
+ITA,CA_GDP,53,1970.0,2022.0,
+ITA,unemp,53,1970.0,2022.0,
+JPN,phase_sin,53,1970.0,2022.0,
+JPN,phase_cos,53,1970.0,2022.0,
+JPN,log_amplitude,53,1970.0,2022.0,
+JPN,row_phase_sin,53,1970.0,2022.0,
+JPN,row_phase_cos,53,1970.0,2022.0,
+JPN,growth,53,1970.0,2022.0,
+JPN,c_C,53,1970.0,2022.0,
+JPN,c_I,53,1970.0,2022.0,
+JPN,c_NX,53,1970.0,2022.0,
+JPN,govexp_GDP,53,1970.0,2022.0,
+JPN,govdef_GDP,53,1970.0,2022.0,
+JPN,govdebt_GDP,53,1970.0,2022.0,
+JPN,infl,53,1970.0,2022.0,
+JPN,strate,53,1970.0,2022.0,
+JPN,ltrate,53,1970.0,2022.0,
+JPN,real_money_growth,51,1971.0,2022.0,"repair 1970, 2001"
+JPN,exports_GDP,53,1970.0,2022.0,
+JPN,imports_GDP,53,1970.0,2022.0,
+JPN,CA_GDP,53,1970.0,2022.0,
+JPN,unemp,53,1970.0,2022.0,
+CAN,phase_sin,53,1970.0,2022.0,
+CAN,phase_cos,53,1970.0,2022.0,
+CAN,log_amplitude,53,1970.0,2022.0,
+CAN,row_phase_sin,53,1970.0,2022.0,
+CAN,row_phase_cos,53,1970.0,2022.0,
+CAN,growth,53,1970.0,2022.0,
+CAN,c_C,53,1970.0,2022.0,
+CAN,c_I,53,1970.0,2022.0,
+CAN,c_NX,53,1970.0,2022.0,
+CAN,govexp_GDP,53,1970.0,2022.0,
+CAN,govdef_GDP,53,1970.0,2022.0,
+CAN,govdebt_GDP,53,1970.0,2022.0,
+CAN,infl,53,1970.0,2022.0,
+CAN,strate,53,1970.0,2022.0,
+CAN,ltrate,53,1970.0,2022.0,
+CAN,real_money_growth,51,1970.0,2022.0,"repair 2001, 2007"
+CAN,exports_GDP,53,1970.0,2022.0,
+CAN,imports_GDP,53,1970.0,2022.0,
+CAN,CA_GDP,53,1970.0,2022.0,
+CAN,unemp,53,1970.0,2022.0,
+ESP,phase_sin,53,1970.0,2022.0,
+ESP,phase_cos,53,1970.0,2022.0,
+ESP,log_amplitude,53,1970.0,2022.0,
+ESP,row_phase_sin,53,1970.0,2022.0,
+ESP,row_phase_cos,53,1970.0,2022.0,
+ESP,growth,53,1970.0,2022.0,
+ESP,c_C,53,1970.0,2022.0,
+ESP,c_I,53,1970.0,2022.0,
+ESP,c_NX,53,1970.0,2022.0,
+ESP,govexp_GDP,43,1980.0,2022.0,not_yet 1970–1979
+ESP,govdef_GDP,43,1980.0,2022.0,not_yet 1970–1979
+ESP,govdebt_GDP,53,1970.0,2022.0,
+ESP,infl,53,1970.0,2022.0,
+ESP,strate,53,1970.0,2022.0,
+ESP,ltrate,53,1970.0,2022.0,
+ESP,real_money_growth,50,1970.0,2020.0,ended 2021–2022; repair 1999
+ESP,exports_GDP,53,1970.0,2022.0,
+ESP,imports_GDP,53,1970.0,2022.0,
+ESP,CA_GDP,53,1970.0,2022.0,
+ESP,unemp,53,1970.0,2022.0,
+AUS,phase_sin,53,1970.0,2022.0,
+AUS,phase_cos,53,1970.0,2022.0,
+AUS,log_amplitude,53,1970.0,2022.0,
+AUS,row_phase_sin,53,1970.0,2022.0,
+AUS,row_phase_cos,53,1970.0,2022.0,
+AUS,growth,53,1970.0,2022.0,
+AUS,c_C,51,1970.0,2022.0,"repair 2010, 2021"
+AUS,c_I,51,1970.0,2022.0,"repair 2010, 2021"
+AUS,c_NX,51,1970.0,2022.0,"repair 2010, 2021"
+AUS,govexp_GDP,35,1988.0,2022.0,not_yet 1970–1987
+AUS,govdef_GDP,35,1988.0,2022.0,not_yet 1970–1987
+AUS,govdebt_GDP,34,1989.0,2022.0,not_yet 1970–1988
+AUS,infl,53,1970.0,2022.0,
+AUS,strate,53,1970.0,2022.0,
+AUS,ltrate,53,1970.0,2022.0,
+AUS,real_money_growth,53,1970.0,2022.0,
+AUS,exports_GDP,53,1970.0,2022.0,
+AUS,imports_GDP,53,1970.0,2022.0,
+AUS,CA_GDP,53,1970.0,2022.0,
+AUS,unemp,53,1970.0,2022.0,
+KOR,phase_sin,53,1970.0,2022.0,
+KOR,phase_cos,53,1970.0,2022.0,
+KOR,log_amplitude,53,1970.0,2022.0,
+KOR,row_phase_sin,53,1970.0,2022.0,
+KOR,row_phase_cos,53,1970.0,2022.0,
+KOR,growth,53,1970.0,2022.0,
+KOR,c_C,53,1970.0,2022.0,
+KOR,c_I,53,1970.0,2022.0,
+KOR,c_NX,53,1970.0,2022.0,
+KOR,govexp_GDP,53,1970.0,2022.0,
+KOR,govdef_GDP,53,1970.0,2022.0,
+KOR,govdebt_GDP,33,1990.0,2022.0,not_yet 1970–1989
+KOR,infl,53,1970.0,2022.0,
+KOR,strate,46,1977.0,2022.0,not_yet 1970–1976
+KOR,ltrate,50,1973.0,2022.0,not_yet 1970–1972
+KOR,real_money_growth,53,1970.0,2022.0,
+KOR,exports_GDP,53,1970.0,2022.0,
+KOR,imports_GDP,53,1970.0,2022.0,
+KOR,CA_GDP,53,1970.0,2022.0,
+KOR,unemp,53,1970.0,2022.0,
+IND,phase_sin,53,1970.0,2022.0,
+IND,phase_cos,53,1970.0,2022.0,
+IND,log_amplitude,53,1970.0,2022.0,
+IND,row_phase_sin,53,1970.0,2022.0,
+IND,row_phase_cos,53,1970.0,2022.0,
+IND,growth,53,1970.0,2022.0,
+IND,c_C,44,1970.0,2022.0,"repair 1973–1975, 1980, 1991, 1999–2001, 2008"
+IND,c_I,44,1970.0,2022.0,"repair 1973–1975, 1980, 1991, 1999–2001, 2008"
+IND,c_NX,44,1970.0,2022.0,"repair 1973–1975, 1980, 1991, 1999–2001, 2008"
+IND,govexp_GDP,53,1970.0,2022.0,
+IND,govdef_GDP,53,1970.0,2022.0,
+IND,govdebt_GDP,53,1970.0,2022.0,
+IND,infl,53,1970.0,2022.0,
+IND,strate,50,1971.0,2022.0,internal 1998–1999; not_yet 1970
+IND,ltrate,34,1970.0,2022.0,internal 1986–2004
+IND,real_money_growth,53,1970.0,2022.0,
+IND,exports_GDP,53,1970.0,2022.0,
+IND,imports_GDP,53,1970.0,2022.0,
+IND,CA_GDP,53,1970.0,2022.0,
+IND,unemp,10,1994.0,2022.0,"internal 1995–1999, 2001–2004, 2006–2009, 2011, 2013–2017; not_yet 1970–1993"
+MEX,phase_sin,53,1970.0,2022.0,
+MEX,phase_cos,53,1970.0,2022.0,
+MEX,log_amplitude,53,1970.0,2022.0,
+MEX,row_phase_sin,53,1970.0,2022.0,
+MEX,row_phase_cos,53,1970.0,2022.0,
+MEX,growth,53,1970.0,2022.0,
+MEX,c_C,51,1971.0,2022.0,not_yet 1970; repair 1993
+MEX,c_I,51,1971.0,2022.0,not_yet 1970; repair 1993
+MEX,c_NX,51,1971.0,2022.0,not_yet 1970; repair 1993
+MEX,govexp_GDP,33,1990.0,2022.0,not_yet 1970–1989
+MEX,govdef_GDP,33,1990.0,2022.0,not_yet 1970–1989
+MEX,govdebt_GDP,53,1970.0,2022.0,
+MEX,infl,53,1970.0,2022.0,
+MEX,strate,45,1978.0,2022.0,not_yet 1970–1977
+MEX,ltrate,19,1991.0,2011.0,"ended 2012–2020; internal 1995, 1998; not_yet 1970–1990; repair 2021–2022"
+MEX,real_money_growth,47,1970.0,2022.0,"repair 1976–1977, 1988–1989, 1997, 2000"
+MEX,exports_GDP,53,1970.0,2022.0,
+MEX,imports_GDP,53,1970.0,2022.0,
+MEX,CA_GDP,44,1979.0,2022.0,not_yet 1970–1978
+MEX,unemp,43,1980.0,2022.0,not_yet 1970–1979
+NLD,phase_sin,53,1970.0,2022.0,
+NLD,phase_cos,53,1970.0,2022.0,
+NLD,log_amplitude,53,1970.0,2022.0,
+NLD,row_phase_sin,53,1970.0,2022.0,
+NLD,row_phase_cos,53,1970.0,2022.0,
+NLD,growth,53,1970.0,2022.0,
+NLD,c_C,53,1970.0,2022.0,
+NLD,c_I,53,1970.0,2022.0,
+NLD,c_NX,53,1970.0,2022.0,
+NLD,govexp_GDP,43,1980.0,2022.0,not_yet 1970–1979
+NLD,govdef_GDP,43,1980.0,2022.0,not_yet 1970–1979
+NLD,govdebt_GDP,53,1970.0,2022.0,
+NLD,infl,53,1970.0,2022.0,
+NLD,strate,53,1970.0,2022.0,
+NLD,ltrate,53,1970.0,2022.0,
+NLD,real_money_growth,50,1970.0,2020.0,ended 2021–2022; repair 1982
+NLD,exports_GDP,53,1970.0,2022.0,
+NLD,imports_GDP,53,1970.0,2022.0,
+NLD,CA_GDP,53,1970.0,2022.0,
+NLD,unemp,53,1970.0,2022.0,
+SWE,phase_sin,53,1970.0,2022.0,
+SWE,phase_cos,53,1970.0,2022.0,
+SWE,log_amplitude,53,1970.0,2022.0,
+SWE,row_phase_sin,53,1970.0,2022.0,
+SWE,row_phase_cos,53,1970.0,2022.0,
+SWE,growth,53,1970.0,2022.0,
+SWE,c_C,52,1970.0,2022.0,repair 1981
+SWE,c_I,52,1970.0,2022.0,repair 1981
+SWE,c_NX,52,1970.0,2022.0,repair 1981
+SWE,govexp_GDP,43,1980.0,2022.0,not_yet 1970–1979
+SWE,govdef_GDP,43,1980.0,2022.0,not_yet 1970–1979
+SWE,govdebt_GDP,53,1970.0,2022.0,
+SWE,infl,53,1970.0,2022.0,
+SWE,strate,53,1970.0,2022.0,
+SWE,ltrate,53,1970.0,2022.0,
+SWE,real_money_growth,53,1970.0,2022.0,
+SWE,exports_GDP,53,1970.0,2022.0,
+SWE,imports_GDP,53,1970.0,2022.0,
+SWE,CA_GDP,53,1970.0,2022.0,
+SWE,unemp,53,1970.0,2022.0,
+CHE,phase_sin,53,1970.0,2022.0,
+CHE,phase_cos,53,1970.0,2022.0,
+CHE,log_amplitude,53,1970.0,2022.0,
+CHE,row_phase_sin,53,1970.0,2022.0,
+CHE,row_phase_cos,53,1970.0,2022.0,
+CHE,growth,53,1970.0,2022.0,
+CHE,c_C,53,1970.0,2022.0,
+CHE,c_I,53,1970.0,2022.0,
+CHE,c_NX,53,1970.0,2022.0,
+CHE,govexp_GDP,53,1970.0,2022.0,
+CHE,govdef_GDP,53,1970.0,2022.0,
+CHE,govdebt_GDP,53,1970.0,2022.0,
+CHE,infl,53,1970.0,2022.0,
+CHE,strate,53,1970.0,2022.0,
+CHE,ltrate,53,1970.0,2022.0,
+CHE,real_money_growth,51,1970.0,2022.0,"repair 1974, 2000"
+CHE,exports_GDP,53,1970.0,2022.0,
+CHE,imports_GDP,53,1970.0,2022.0,
+CHE,CA_GDP,53,1970.0,2022.0,
+CHE,unemp,53,1970.0,2022.0,
+BEL,phase_sin,53,1970.0,2022.0,
+BEL,phase_cos,53,1970.0,2022.0,
+BEL,log_amplitude,53,1970.0,2022.0,
+BEL,row_phase_sin,53,1970.0,2022.0,
+BEL,row_phase_cos,53,1970.0,2022.0,
+BEL,growth,53,1970.0,2022.0,
+BEL,c_C,53,1970.0,2022.0,
+BEL,c_I,53,1970.0,2022.0,
+BEL,c_NX,53,1970.0,2022.0,
+BEL,govexp_GDP,53,1970.0,2022.0,
+BEL,govdef_GDP,53,1970.0,2022.0,
+BEL,govdebt_GDP,53,1970.0,2022.0,
+BEL,infl,53,1970.0,2022.0,
+BEL,strate,53,1970.0,2022.0,
+BEL,ltrate,53,1970.0,2022.0,
+BEL,real_money_growth,45,1970.0,2020.0,"ended 2021–2022; internal 1991–1994, 1998–1999"
+BEL,exports_GDP,53,1970.0,2022.0,
+BEL,imports_GDP,53,1970.0,2022.0,
+BEL,CA_GDP,53,1970.0,2022.0,
+BEL,unemp,53,1970.0,2022.0,
+ZAF,phase_sin,53,1970.0,2022.0,
+ZAF,phase_cos,53,1970.0,2022.0,
+ZAF,log_amplitude,53,1970.0,2022.0,
+ZAF,row_phase_sin,53,1970.0,2022.0,
+ZAF,row_phase_cos,53,1970.0,2022.0,
+ZAF,growth,53,1970.0,2022.0,
+ZAF,c_C,51,1970.0,2022.0,"repair 1981, 1983"
+ZAF,c_I,51,1970.0,2022.0,"repair 1981, 1983"
+ZAF,c_NX,51,1970.0,2022.0,"repair 1981, 1983"
+ZAF,govexp_GDP,53,1970.0,2022.0,
+ZAF,govdef_GDP,53,1970.0,2022.0,
+ZAF,govdebt_GDP,53,1970.0,2022.0,
+ZAF,infl,53,1970.0,2022.0,
+ZAF,strate,53,1970.0,2022.0,
+ZAF,ltrate,53,1970.0,2022.0,
+ZAF,real_money_growth,52,1970.0,2022.0,repair 2000
+ZAF,exports_GDP,53,1970.0,2022.0,
+ZAF,imports_GDP,53,1970.0,2022.0,
+ZAF,CA_GDP,53,1970.0,2022.0,
+ZAF,unemp,43,1980.0,2022.0,not_yet 1970–1979
+TUR,phase_sin,53,1970.0,2022.0,
+TUR,phase_cos,53,1970.0,2022.0,
+TUR,log_amplitude,53,1970.0,2022.0,
+TUR,row_phase_sin,53,1970.0,2022.0,
+TUR,row_phase_cos,53,1970.0,2022.0,
+TUR,growth,53,1970.0,2022.0,
+TUR,c_C,45,1970.0,2022.0,"repair 1981, 1983–1985, 1987, 1995–1996, 1998"
+TUR,c_I,45,1970.0,2022.0,"repair 1981, 1983–1985, 1987, 1995–1996, 1998"
+TUR,c_NX,45,1970.0,2022.0,"repair 1981, 1983–1985, 1987, 1995–1996, 1998"
+TUR,govexp_GDP,23,2000.0,2022.0,not_yet 1970–1999
+TUR,govdef_GDP,23,2000.0,2022.0,not_yet 1970–1999
+TUR,govdebt_GDP,53,1970.0,2022.0,
+TUR,infl,53,1970.0,2022.0,
+TUR,strate,35,1987.0,2022.0,internal 1997; not_yet 1970–1986
+TUR,ltrate,18,2005.0,2022.0,not_yet 1970–2004
+TUR,real_money_growth,53,1970.0,2022.0,
+TUR,exports_GDP,53,1970.0,2022.0,
+TUR,imports_GDP,53,1970.0,2022.0,
+TUR,CA_GDP,53,1970.0,2022.0,
+TUR,unemp,53,1970.0,2022.0,
+NOR,phase_sin,53,1970.0,2022.0,
+NOR,phase_cos,53,1970.0,2022.0,
+NOR,log_amplitude,53,1970.0,2022.0,
+NOR,row_phase_sin,53,1970.0,2022.0,
+NOR,row_phase_cos,53,1970.0,2022.0,
+NOR,growth,53,1970.0,2022.0,
+NOR,c_C,53,1970.0,2022.0,
+NOR,c_I,53,1970.0,2022.0,
+NOR,c_NX,53,1970.0,2022.0,
+NOR,govexp_GDP,53,1970.0,2022.0,
+NOR,govdef_GDP,53,1970.0,2022.0,
+NOR,govdebt_GDP,53,1970.0,2022.0,
+NOR,infl,53,1970.0,2022.0,
+NOR,strate,53,1970.0,2022.0,
+NOR,ltrate,53,1970.0,2022.0,
+NOR,real_money_growth,53,1970.0,2022.0,
+NOR,exports_GDP,53,1970.0,2022.0,
+NOR,imports_GDP,53,1970.0,2022.0,
+NOR,CA_GDP,53,1970.0,2022.0,
+NOR,unemp,53,1970.0,2022.0,
+AUT,phase_sin,53,1970.0,2022.0,
+AUT,phase_cos,53,1970.0,2022.0,
+AUT,log_amplitude,53,1970.0,2022.0,
+AUT,row_phase_sin,53,1970.0,2022.0,
+AUT,row_phase_cos,53,1970.0,2022.0,
+AUT,growth,53,1970.0,2022.0,
+AUT,c_C,52,1970.0,2022.0,repair 1988
+AUT,c_I,52,1970.0,2022.0,repair 1988
+AUT,c_NX,52,1970.0,2022.0,repair 1988
+AUT,govexp_GDP,35,1988.0,2022.0,not_yet 1970–1987
+AUT,govdef_GDP,35,1988.0,2022.0,not_yet 1970–1987
+AUT,govdebt_GDP,53,1970.0,2022.0,
+AUT,infl,53,1970.0,2022.0,
+AUT,strate,53,1970.0,2022.0,
+AUT,ltrate,53,1970.0,2022.0,
+AUT,real_money_growth,28,1970.0,1997.0,ended 1998–2022
+AUT,exports_GDP,53,1970.0,2022.0,
+AUT,imports_GDP,53,1970.0,2022.0,
+AUT,CA_GDP,53,1970.0,2022.0,
+AUT,unemp,53,1970.0,2022.0,
+DNK,phase_sin,53,1970.0,2022.0,
+DNK,phase_cos,53,1970.0,2022.0,
+DNK,log_amplitude,53,1970.0,2022.0,
+DNK,row_phase_sin,53,1970.0,2022.0,
+DNK,row_phase_cos,53,1970.0,2022.0,
+DNK,growth,53,1970.0,2022.0,
+DNK,c_C,53,1970.0,2022.0,
+DNK,c_I,53,1970.0,2022.0,
+DNK,c_NX,53,1970.0,2022.0,
+DNK,govexp_GDP,52,1971.0,2022.0,not_yet 1970
+DNK,govdef_GDP,52,1971.0,2022.0,not_yet 1970
+DNK,govdebt_GDP,53,1970.0,2022.0,
+DNK,infl,53,1970.0,2022.0,
+DNK,strate,53,1970.0,2022.0,
+DNK,ltrate,53,1970.0,2022.0,
+DNK,real_money_growth,53,1970.0,2022.0,
+DNK,exports_GDP,53,1970.0,2022.0,
+DNK,imports_GDP,53,1970.0,2022.0,
+DNK,CA_GDP,53,1970.0,2022.0,
+DNK,unemp,53,1970.0,2022.0,
+FIN,phase_sin,53,1970.0,2022.0,
+FIN,phase_cos,53,1970.0,2022.0,
+FIN,log_amplitude,53,1970.0,2022.0,
+FIN,row_phase_sin,53,1970.0,2022.0,
+FIN,row_phase_cos,53,1970.0,2022.0,
+FIN,growth,53,1970.0,2022.0,
+FIN,c_C,53,1970.0,2022.0,
+FIN,c_I,53,1970.0,2022.0,
+FIN,c_NX,53,1970.0,2022.0,
+FIN,govexp_GDP,43,1980.0,2022.0,not_yet 1970–1979
+FIN,govdef_GDP,43,1980.0,2022.0,not_yet 1970–1979
+FIN,govdebt_GDP,53,1970.0,2022.0,
+FIN,infl,53,1970.0,2022.0,
+FIN,strate,53,1970.0,2022.0,
+FIN,ltrate,53,1970.0,2022.0,
+FIN,real_money_growth,51,1970.0,2020.0,ended 2021–2022
+FIN,exports_GDP,53,1970.0,2022.0,
+FIN,imports_GDP,53,1970.0,2022.0,
+FIN,CA_GDP,53,1970.0,2022.0,
+FIN,unemp,53,1970.0,2022.0,
+GRC,phase_sin,53,1970.0,2022.0,
+GRC,phase_cos,53,1970.0,2022.0,
+GRC,log_amplitude,53,1970.0,2022.0,
+GRC,row_phase_sin,53,1970.0,2022.0,
+GRC,row_phase_cos,53,1970.0,2022.0,
+GRC,growth,53,1970.0,2022.0,
+GRC,c_C,53,1970.0,2022.0,
+GRC,c_I,53,1970.0,2022.0,
+GRC,c_NX,53,1970.0,2022.0,
+GRC,govexp_GDP,53,1970.0,2022.0,
+GRC,govdef_GDP,53,1970.0,2022.0,
+GRC,govdebt_GDP,53,1970.0,2022.0,
+GRC,infl,53,1970.0,2022.0,
+GRC,strate,52,1971.0,2022.0,not_yet 1970
+GRC,ltrate,47,1973.0,2022.0,internal 1989–1991; not_yet 1970–1972
+GRC,real_money_growth,29,1970.0,2000.0,"ended 2001–2022; repair 1994, 1999"
+GRC,exports_GDP,53,1970.0,2022.0,
+GRC,imports_GDP,53,1970.0,2022.0,
+GRC,CA_GDP,53,1970.0,2022.0,
+GRC,unemp,53,1970.0,2022.0,
+PRT,phase_sin,53,1970.0,2022.0,
+PRT,phase_cos,53,1970.0,2022.0,
+PRT,log_amplitude,53,1970.0,2022.0,
+PRT,row_phase_sin,53,1970.0,2022.0,
+PRT,row_phase_cos,53,1970.0,2022.0,
+PRT,growth,53,1970.0,2022.0,
+PRT,c_C,51,1970.0,2022.0,"repair 1988, 1990"
+PRT,c_I,51,1970.0,2022.0,"repair 1988, 1990"
+PRT,c_NX,51,1970.0,2022.0,"repair 1988, 1990"
+PRT,govexp_GDP,37,1986.0,2022.0,not_yet 1970–1985
+PRT,govdef_GDP,37,1986.0,2022.0,not_yet 1970–1985
+PRT,govdebt_GDP,53,1970.0,2022.0,
+PRT,infl,53,1970.0,2022.0,
+PRT,strate,53,1970.0,2022.0,
+PRT,ltrate,53,1970.0,2022.0,
+PRT,real_money_growth,51,1970.0,2020.0,ended 2021–2022
+PRT,exports_GDP,53,1970.0,2022.0,
+PRT,imports_GDP,53,1970.0,2022.0,
+PRT,CA_GDP,53,1970.0,2022.0,
+PRT,unemp,53,1970.0,2022.0,
+IDN,phase_sin,53,1970.0,2022.0,
+IDN,phase_cos,53,1970.0,2022.0,
+IDN,log_amplitude,53,1970.0,2022.0,
+IDN,row_phase_sin,53,1970.0,2022.0,
+IDN,row_phase_cos,53,1970.0,2022.0,
+IDN,growth,53,1970.0,2022.0,
+IDN,c_C,45,1970.0,2020.0,"repair 1981, 1983, 1993, 2000, 2003–2004, 2021–2022"
+IDN,c_I,45,1970.0,2020.0,"repair 1981, 1983, 1993, 2000, 2003–2004, 2021–2022"
+IDN,c_NX,45,1970.0,2020.0,"repair 1981, 1983, 1993, 2000, 2003–2004, 2021–2022"
+IDN,govexp_GDP,41,1982.0,2022.0,not_yet 1970–1981
+IDN,govdef_GDP,41,1982.0,2022.0,not_yet 1970–1981
+IDN,govdebt_GDP,47,1976.0,2022.0,not_yet 1970–1975
+IDN,infl,53,1970.0,2022.0,
+IDN,strate,48,1974.0,2022.0,internal 1986; not_yet 1970–1973
+IDN,ltrate,11,2012.0,2022.0,not_yet 1970–2011
+IDN,real_money_growth,53,1970.0,2022.0,
+IDN,exports_GDP,53,1970.0,2022.0,
+IDN,imports_GDP,53,1970.0,2022.0,
+IDN,CA_GDP,53,1970.0,2022.0,
+IDN,unemp,44,1976.0,2022.0,"internal 1979, 1981, 1983; not_yet 1970–1975"
+THA,phase_sin,53,1970.0,2022.0,
+THA,phase_cos,53,1970.0,2022.0,
+THA,log_amplitude,53,1970.0,2022.0,
+THA,row_phase_sin,53,1970.0,2022.0,
+THA,row_phase_cos,53,1970.0,2022.0,
+THA,growth,53,1970.0,2022.0,
+THA,c_C,51,1971.0,2022.0,not_yet 1970; repair 1985
+THA,c_I,51,1971.0,2022.0,not_yet 1970; repair 1985
+THA,c_NX,51,1971.0,2022.0,not_yet 1970; repair 1985
+THA,govexp_GDP,53,1970.0,2022.0,
+THA,govdef_GDP,53,1970.0,2022.0,
+THA,govdebt_GDP,53,1970.0,2022.0,
+THA,infl,53,1970.0,2022.0,
+THA,strate,43,1977.0,2022.0,internal 1998–2000; not_yet 1970–1976
+THA,ltrate,10,1999.0,2008.0,ended 2009–2022; not_yet 1970–1998
+THA,real_money_growth,50,1970.0,2019.0,ended 2020–2022
+THA,exports_GDP,53,1970.0,2022.0,
+THA,imports_GDP,53,1970.0,2022.0,
+THA,CA_GDP,53,1970.0,2022.0,
+THA,unemp,38,1985.0,2022.0,not_yet 1970–1984
+CHN,phase_sin,53,1970.0,2022.0,
+CHN,phase_cos,53,1970.0,2022.0,
+CHN,log_amplitude,53,1970.0,2022.0,
+CHN,row_phase_sin,53,1970.0,2022.0,
+CHN,row_phase_cos,53,1970.0,2022.0,
+CHN,growth,53,1970.0,2022.0,
+CHN,c_C,52,1971.0,2022.0,not_yet 1970
+CHN,c_I,52,1971.0,2022.0,not_yet 1970
+CHN,c_NX,52,1971.0,2022.0,not_yet 1970
+CHN,govexp_GDP,41,1982.0,2022.0,not_yet 1970–1981
+CHN,govdef_GDP,41,1982.0,2022.0,not_yet 1970–1981
+CHN,govdebt_GDP,39,1984.0,2022.0,not_yet 1970–1983
+CHN,infl,53,1970.0,2022.0,
+CHN,strate,43,1980.0,2022.0,not_yet 1970–1979
+CHN,ltrate,9,2014.0,2022.0,not_yet 1970–2013
+CHN,real_money_growth,53,1970.0,2022.0,
+CHN,exports_GDP,53,1970.0,2022.0,
+CHN,imports_GDP,53,1970.0,2022.0,
+CHN,CA_GDP,41,1982.0,2022.0,not_yet 1970–1981
+CHN,unemp,53,1970.0,2022.0,
+BRA,phase_sin,53,1970.0,2022.0,
+BRA,phase_cos,53,1970.0,2022.0,
+BRA,log_amplitude,53,1970.0,2022.0,
+BRA,row_phase_sin,53,1970.0,2022.0,
+BRA,row_phase_cos,53,1970.0,2022.0,
+BRA,growth,53,1970.0,2022.0,
+BRA,c_C,27,1996.0,2022.0,repair 1970–1995
+BRA,c_I,27,1996.0,2022.0,repair 1970–1995
+BRA,c_NX,27,1996.0,2022.0,repair 1970–1995
+BRA,govexp_GDP,22,2001.0,2022.0,not_yet 1970–2000
+BRA,govdef_GDP,22,2001.0,2022.0,not_yet 1970–2000
+BRA,govdebt_GDP,45,1978.0,2022.0,not_yet 1970–1977
+BRA,infl,53,1970.0,2022.0,
+BRA,strate,53,1970.0,2022.0,
+BRA,ltrate,28,1995.0,2022.0,not_yet 1970–1994
+BRA,real_money_growth,47,1970.0,2022.0,"repair 1988–1990, 1992–1994"
+BRA,exports_GDP,42,1981.0,2022.0,repair 1970–1980
+BRA,imports_GDP,42,1981.0,2022.0,repair 1970–1980
+BRA,CA_GDP,53,1970.0,2022.0,
+BRA,unemp,39,1984.0,2022.0,not_yet 1970–1983
+SAU,phase_sin,53,1970.0,2022.0,
+SAU,phase_cos,53,1970.0,2022.0,
+SAU,log_amplitude,53,1970.0,2022.0,
+SAU,row_phase_sin,53,1970.0,2022.0,
+SAU,row_phase_cos,53,1970.0,2022.0,
+SAU,growth,52,1971.0,2022.0,repair 1970
+SAU,c_C,52,1971.0,2022.0,repair 1970
+SAU,c_I,52,1971.0,2022.0,repair 1970
+SAU,c_NX,52,1971.0,2022.0,repair 1970
+SAU,govexp_GDP,33,1990.0,2022.0,not_yet 1970–1989
+SAU,govdef_GDP,32,1991.0,2022.0,not_yet 1970–1990
+SAU,govdebt_GDP,32,1991.0,2022.0,not_yet 1970–1990
+SAU,infl,53,1970.0,2022.0,
+SAU,strate,24,1999.0,2022.0,not_yet 1970–1998
+SAU,ltrate,0,,,absent 1970–2022
+SAU,real_money_growth,48,1970.0,2017.0,ended 2018–2022
+SAU,exports_GDP,53,1970.0,2022.0,
+SAU,imports_GDP,53,1970.0,2022.0,
+SAU,CA_GDP,53,1970.0,2022.0,
+SAU,unemp,25,1992.0,2022.0,internal 1993–1998; not_yet 1970–1991
+IRN,phase_sin,53,1970.0,2022.0,
+IRN,phase_cos,53,1970.0,2022.0,
+IRN,log_amplitude,53,1970.0,2022.0,
+IRN,row_phase_sin,53,1970.0,2022.0,
+IRN,row_phase_cos,53,1970.0,2022.0,
+IRN,growth,53,1970.0,2022.0,
+IRN,c_C,49,1970.0,2022.0,"repair 1974, 1977, 1979, 2011"
+IRN,c_I,49,1970.0,2022.0,"repair 1974, 1977, 1979, 2011"
+IRN,c_NX,49,1970.0,2022.0,"repair 1974, 1977, 1979, 2011"
+IRN,govexp_GDP,43,1980.0,2022.0,not_yet 1970–1979
+IRN,govdef_GDP,43,1980.0,2022.0,not_yet 1970–1979
+IRN,govdebt_GDP,53,1970.0,2022.0,
+IRN,infl,53,1970.0,2022.0,
+IRN,strate,0,,,absent 1970–2022
+IRN,ltrate,0,,,absent 1970–2022
+IRN,real_money_growth,47,1970.0,2016.0,ended 2017–2022
+IRN,exports_GDP,53,1970.0,2022.0,
+IRN,imports_GDP,53,1970.0,2022.0,
+IRN,CA_GDP,53,1970.0,2022.0,
+IRN,unemp,34,1986.0,2022.0,internal 1987–1989; not_yet 1970–1985
+RUS,phase_sin,53,1970.0,2022.0,
+RUS,phase_cos,53,1970.0,2022.0,
+RUS,log_amplitude,53,1970.0,2022.0,
+RUS,row_phase_sin,53,1970.0,2022.0,
+RUS,row_phase_cos,53,1970.0,2022.0,
+RUS,growth,53,1970.0,2022.0,
+RUS,c_C,26,1996.0,2022.0,"repair 1970–1995, 2011"
+RUS,c_I,26,1996.0,2022.0,"repair 1970–1995, 2011"
+RUS,c_NX,26,1996.0,2022.0,"repair 1970–1995, 2011"
+RUS,govexp_GDP,25,1998.0,2022.0,not_yet 1970–1997
+RUS,govdef_GDP,25,1998.0,2022.0,not_yet 1970–1997
+RUS,govdebt_GDP,31,1992.0,2022.0,not_yet 1970–1991
+RUS,infl,53,1970.0,2022.0,
+RUS,strate,25,1997.0,2021.0,ended 2022; not_yet 1970–1996
+RUS,ltrate,19,1999.0,2017.0,ended 2018–2022; not_yet 1970–1998
+RUS,real_money_growth,27,1996.0,2022.0,not_yet 1970–1995
+RUS,exports_GDP,29,1994.0,2022.0,repair 1970–1993
+RUS,imports_GDP,29,1994.0,2022.0,repair 1970–1993
+RUS,CA_GDP,31,1992.0,2022.0,not_yet 1970–1991
+RUS,unemp,31,1992.0,2022.0,not_yet 1970–1991
+WLD,r_past,53,1970.0,2022.0,
+WLD,world_phase_sin,53,1970.0,2022.0,
+WLD,world_phase_cos,53,1970.0,2022.0,
+WLD,us_strate,53,1970.0,2022.0,
+WLD,us_real_strate,53,1970.0,2022.0,
+WLD,oil_real_2015usd,53,1970.0,2022.0,
+WLD,world_growth,53,1970.0,2022.0,

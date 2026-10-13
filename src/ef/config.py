@@ -20,9 +20,10 @@ def load(path="configs/default.yaml"):
 
 
 def raw_file(source_id, path=None):
-    """Absolute path of a pinned file: data/raw/<dir>/<path>. With one listed file, `path` may be omitted."""
-    cfg = load()
-    for s in yaml.safe_load(open(cfg["paths"]["sources"]))["sources"]:
+    """Absolute path of a pinned file (a source or a download in data/sources.yaml): data/raw/<dir>/<path>. With one
+    listed file, `path` may be omitted."""
+    cfg = load(); y = yaml.safe_load(open(cfg["paths"]["sources"]))
+    for s in y["sources"] + y.get("downloads", []):
         if s["id"] == source_id:
             files = [f["path"] for f in s["files"]]
             if path is None:
