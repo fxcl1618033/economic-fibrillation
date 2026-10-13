@@ -7,8 +7,8 @@ Stage G0 of the GNN track (`gnn/README.md`). Built by `python -m ef.gnn.report` 
 - **Years:** 53 yearly graphs, 1970–2022.
 - **Nodes:** the 31 economies of S31 (United States, United Kingdom, Germany, France, Italy, Japan, Canada, Spain, Australia, South Korea, India, Mexico, Netherlands, Sweden, Switzerland, Belgium, South Africa, Turkey, Norway, Austria, Denmark, Finland, Greece, Portugal, Indonesia, Thailand, China, Brazil, Saudi Arabia, Iran, Russia) and one world node.
 - **Edge types:** trade (economy → economy), bank (lender → borrower), oil (economy → world node). No correlation edges (Sid, 11 October 2026: correlation edges carry the target).
-- **Missing values:** masked, never filled. `mask` is True where a value is observed; every cell also has a gap class (`gnn/G0_missing_data.md`).
-- **Files:** `nodes.npz` (X: years × nodes × features, mask, gap, years, nodes, features); `edges_trade.csv`, `edges_bank.csv`, `edges_oil.csv` (one row per directed pair and year, NaN = masked, `gap` = class). `ef.gnn.dataset.load()` reads them. PyTorch Geometric objects are built in G3; this environment has no torch.
+- **Missing values:** masked, never filled. `mask` is True where a value is observed; every cell and every edge weight also has a gap class (`gnn/G0_missing_data.md`).
+- **Files:** `nodes.npz` (X: years × nodes × features, mask, gap, years, nodes, features); `edges_trade.csv`, `edges_bank.csv`, `edges_oil.csv` (one row per directed pair and year, NaN = masked); `gdp_current_usd.csv` (the denominators). `ef.gnn.dataset.load()` reads them; `ef.gnn.dataset.model_inputs()` returns only what a model may read. PyTorch Geometric objects are built in G3; this environment has no torch.
 
 ## Node features
 
@@ -44,15 +44,32 @@ Stage G0 of the GNN track (`gnn/README.md`). Built by `python -m ef.gnn.report` 
 
 Predictive use: phases and amplitude use data up to year t only (rule 7). The atlas features are year t's values as published, without filtering; they carry no two-sided filter. The atlas's own `cycle`, `phase`, `row_cycle` and `row_phase` columns are two-sided and are not used. `world_growth` weights the 26 of the atlas, not the 31.
 
-## Edges
+## Edges and their weights
 
-| Type | Direction | Attributes | Source | Normalisation |
-|---|---|---|---|---|
-| trade | exporter → importer | `exports_fob_usd` (exporter's report), `mirror_imports_cif_usd` (importer's report), IMF-estimate flags, proxy-unit flag | IMF IMTS, `imf_imts_s31` (downloaded 13 October 2026) | raw US dollars; shares (of the exporter's exports or GDP) are chosen in G3 |
-| bank | lender → borrower | `claims_all_sectors_usd`, `claims_on_banks_usd` (year-end Q4 stocks) | BIS LBS, `bis_lbs` (June 2026 file) | raw US dollars; the BIS spec's row shares are chosen in G3 |
-| oil | economy → world | `net_oil_exports_share_gdp` | **none pinned yet** | masked |
+**Normalisation, fixed by Sid on 13 October 2026 before any training:** the primary weight is the flow as a share of the receiving economy's nominal GDP; the sensitivity weight is the flow as a share of the exporter's or lender's total; raw US dollars are never model inputs. The `raw_*` columns are kept for checking only, and `model_inputs()` leaves them out.
 
-Bank filters (data/sources.yaml `read_with`): stocks, claims, all instruments, all currencies, all parent countries, all reporting banks, cross-border; all sectors, and banks only as a second attribute. Lenders: the fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.
+| Type | Direction | Primary weight (`w_`) | Sensitivity weight (`s_`) | Raw columns (never inputs) | Source |
+|---|---|---|---|---|---|
+| trade | exporter → importer | `w_exports_share_dst_gdp` (exporter's report, FOB) and `w_mirror_share_dst_gdp` (importer's report, CIF), each ÷ the importer's GDP | `s_exports_share_src_total`, `s_mirror_share_src_total`: each ÷ the exporter's goods exports to the world, as the exporter reports them | `raw_exports_fob_usd`, `raw_mirror_imports_cif_usd` | IMF IMTS, `imf_imts_s31` |
+| bank | lender → borrower | `w_claims_share_dst_gdp`: year-end (Q4) cross-border claims on all sectors ÷ the borrower's GDP | `s_claims_share_src_total`: ÷ the lender's cross-border claims on all countries | `raw_claims_usd`, `raw_lender_claims_all_countries_usd` | BIS LBS, `bis_lbs` |
+| oil | economy → world | `w_net_oil_exports_share_gdp`: net oil exports ÷ the economy's own GDP (below) | the same weight (no second normalisation is defined for oil) | `raw_oil_production_twh`, `raw_oil_consumption_twh`, `raw_net_oil_twh`, `raw_net_oil_value_usd` | Our World in Data energy, `owid_energy` |
+
+Trade: the exporter's and the importer's reports of the same flow are two attributes, each with its own mask; neither is filled from the other. The mirror's sensitivity weight divides an importer's figure by an exporter's total (the only world total available for the exporter). Bank: the BIS publishes bilateral claims for all sectors and for non-banks only, so no banks-only attribute is built. Filters: stocks, claims, all instruments, all currencies, all parent countries, all reporting banks, cross-border (`data/sources.yaml`, `read_with`). Lenders: the fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.
+
+**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD, the pinned `wb_gdp_current_usd` file). It is missing for Brazil 1970–1988, Iran 1991–1992 and Russia before 1988; weights that need those years are masked, not filled from another source. The Global Macro Database's nominal GDP over its exchange rate was the alternative and was not used: against the World Bank it is 6 times larger for Iran by 2022 (the official rial rate) and about a third larger for Turkey and a fifth for Indonesia in most years.
+
+## Oil exposure: the conversion
+
+Net oil exports as a share of nominal GDP (Sid, 13 October 2026), positive for net exporters:
+
+    w = (oil production − oil consumption) [TWh] × 630,267 barrels per TWh × crude price [US$ of the year per barrel]
+        ÷ nominal GDP [current US$, World Bank]
+
+- **Quantities:** `oil_production` and `oil_consumption` (primary energy consumption from oil), both in TWh, from the Our World in Data energy dataset (legacy release, commit f8de88a; Energy Institute Statistical Review 2025, and The Shift Data Portal for production of economies the Energy Institute does not list).
+- **Barrels:** the Energy Institute's factors, 1 tonne of oil equivalent = 11.63 MWh = 7.33 barrels, so 1 TWh = 1,000,000 ÷ 11.63 × 7.33 = 630,266.6 ≈ 630,267 barrels. The common alternative, 5.8 million Btu per barrel, gives 588,300 barrels per TWh, 6.7% fewer; it would scale every oil weight by 0.933 and change no sign or ranking.
+- **Price:** EIA Brent (`oil_brent`, dollars of the day) from 1987, the first year it covers. Before 1987 no Brent series is pinned, so the BP series (`oil_bp`: Arabian Light posted at Ras Tanura to 1983, Brent dated 1984–86, in 2015 dollars) is converted back to dollars of the year with the US consumer price index (Global Macro Database). Check: over 1987–2015 the converted BP series differs from EIA Brent by 0.15% on average. The edge table records the source of each year's price (`oil_price_source`). Prices: 1970 $1.80, 1974 $11.58, 1980 $36.82, 1986 $14.44, 1987 $18.53, 2022 $100.93.
+- **What it approximates:** the value of net trade in crude oil and products at the crude price. It ignores stock changes, the different energy content of crude and refined products, and refinery gains; consumption includes bunkers and, in the Energy Institute's definition, some biofuels and coal- or gas-derived liquids.
+- **Russia:** from 1985 (the Energy Institute reports the USSR before; not used, Sid). Its GDP denominator starts in 1988, so its weight runs 1988–2022.
 
 ## Sources, verified against data/sources.yaml (sha256)
 
@@ -67,6 +84,10 @@ Bank filters (data/sources.yaml `read_with`): stocks, claims, all instruments, a
 | pwt | `data/pwt10.01.rda` | 957b298fd7 | ok |
 | oil_bp | `datasets/Crude Oil Consumption vs. Price - BP Statistics (2016)/Crude Oil Consumption vs. Price - BP Statistics (2016).csv` | 6155d4ca1e | ok |
 | oil_brent | `data/brent-year.csv` | b1d944f943 | ok |
+| owid_energy | `owid-energy-data.csv` | f8de88a4f6 | ok |
+| owid_energy | `owid-energy-codebook.csv` | f8de88a4f6 | ok |
+| owid_energy | `README.md` | f8de88a4f6 | ok |
+| wb_gdp_current_usd | `data/gdp.csv` | 36d761dc56 | ok |
 | bis_lbs | `WS_LBS_D_PUB_csv_col.zip` | 2026-07-15 | ok |
 | bis_lbs | `WS_LBS_D_PUB_csv_col.csv` | 2026-07-15 | ok |
 | imf_imts_s31 | `IMTS_S31_annual.csv` | 2026-10-13 | ok |
@@ -75,13 +96,14 @@ Bank filters (data/sources.yaml `read_with`): stocks, claims, all instruments, a
 ## Coverage in one line each
 
 - Node features: 94.2% of economy-feature-years observed; phases complete; the largest gaps are long rates, demand contributions and budget series before the 1990s (details in the missing-data report).
-- Trade: 96.4% of directed pair-years observed; Russia from 1992.
-- Bank: 83.4% of lender-borrower-years observed, 96.1% from 1977.
-- Oil: links present, weights masked (no source).
+- Trade: 96.4% of directed pair-years observed; primary weights 92.1% (exporter's report) and 92.7% (importer's report); Russia from 1992.
+- Bank: 83.4% of lender-borrower-years observed (96.1% from 1977); primary weight 82.5%.
+- Oil: weight observed in 88.5% of economy-years; masked mainly in 2017–2022 for the 15 economies whose production series end in 2016.
 
 ## Open for Sid
 
-1. **Oil exposure source.** Net oil exports as a share of GDP needs country oil production and consumption. Candidate: the Our World in Data energy dataset (GitHub `owid/energy-data`, pinnable by commit, oil production and consumption by country from 1965), or the Energy Institute Statistical Review. Not added without approval.
-2. **Russia before 1992.** Trade and bank links are masked. The USSR's trade (IMF, from 1955) and the BIS claims on the USSR are in the pinned files; using them for Russia would be a substitution, not data for Russia.
-3. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union units (decided 11 October 2026); the rows are flagged.
-4. **Edge weights.** Raw US dollars are stored; the normalisation (row shares, or the partner's share of GDP) is a G3 modelling choice to be fixed before any training.
+1. **Oil production after 2016.** For 15 economies (Germany, France, Japan, Spain, the Netherlands, Sweden, Turkey, Austria, Greece, South Korea, Switzerland, Belgium, South Africa, Finland, Portugal) production ends in 2016, so their oil weights are masked in 2017–2022, including 2020. All are small producers and large net importers. Options: keep the masks; or add a source that lists small producers after 2016 (for example the EIA International Energy Statistics, a download pinned by checksum, from 1980), which needs your approval.
+2. **The price before 1987** comes from the BP series converted to dollars of the day (Arabian Light to 1983), because the pinned Brent series starts in 1987. Keep, or mask the oil weights before 1987 (that would drop the 1975 and 1982 recessions from the oil channel).
+3. **GDP denominator.** World Bank current US dollars, masked for Brazil 1970–1988. Keep the masks, or approve a fresh World Bank download (the API has Brazil from 1960) pinned by checksum.
+4. **Trade attribute for G3.** Proposed: both reports enter as two masked attributes of one trade edge, rather than choosing one.
+5. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union units (decided 11 October 2026); the rows are flagged.

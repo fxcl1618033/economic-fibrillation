@@ -79,7 +79,9 @@ def missing_report(r, n, E, G):
           "confirmed as a true zero: pairs with no recorded flow while both sides report other partners (`unrecorded`) "
           "are probable zeros, mostly South Africa's trade with Asian and Middle Eastern economies during the apartheid "
           "sanctions (1970–91) and China–South Korea before 1990, but they are masked like missing data. For bank claims "
-          "no reported value is exactly zero; every gap is missing data. Oil exposure has no pinned source yet.", ""]
+          "no reported value is exactly zero; every gap is missing data. For oil, a recorded production of zero is a true "
+          "zero (observed); where production is not listed but the source records zero in every year it covers the "
+          "economy (`unlisted_producer`), it is probably zero but masked.", ""]
     # nodes
     cov = coverage_table(G); allc = G.gap.value_counts()
     L += ["## 1. Node features", "",
@@ -99,41 +101,66 @@ def missing_report(r, n, E, G):
     gaps = cov[cov.observed < 53].copy(); gaps['node'] = gaps.node.map(lambda x: NAMES.get(x, x))
     L += _md(gaps[['node', 'feature', 'observed', 'first', 'last', 'missing']])
     # edges
+    WEIGHTS = {'trade': [('w_exports_share_dst_gdp', 'gap_w_exports'), ('w_mirror_share_dst_gdp', 'gap_w_mirror'),
+                         ('s_exports_share_src_total', 'gap_s_exports'), ('s_mirror_share_src_total', 'gap_s_mirror')],
+               'bank': [('w_claims_share_dst_gdp', 'gap_w_claims'), ('s_claims_share_src_total', 'gap_s_claims')],
+               'oil': [('w_net_oil_exports_share_gdp', 'gap')]}
     for k, title in (('trade', 'Trade edges (IMF IMTS, i → j goods exports)'), ('bank', 'Bank edges (BIS LBS, the fixed 10 lenders → borrowers, Q4 stocks)'),
-                     ('oil', 'Oil edges (economy → world node)')):
+                     ('oil', 'Oil edges (economy → world node, net oil exports as a share of GDP)')):
         e = E[k]; vc = e.gap.value_counts()
         L += ["", f"## {2 + ['trade', 'bank', 'oil'].index(k)}. {title}", "",
-              f"{len(e):,} directed pair-years; " + ", ".join(f"{a} {b:,}" for a, b in vc.items()) + ".", ""]
+              f"{len(e):,} directed pair-years; the flow itself: " + ", ".join(f"{a} {b:,}" for a, b in vc.items()) + ".", "",
+              "Each model weight (primary `w_`, sensitivity `s_`) is masked where its flow or its denominator is missing:", "",
+              "| Weight | " + " | ".join(g.GAP_CLASSES) + " |", "|---|" + "---|" * len(g.GAP_CLASSES)]
+        for w, gc in WEIGHTS[k]:
+            c = e[gc].value_counts(); L.append(f"| `{w}` | " + " | ".join(f"{c.get(x, 0):,}" if c.get(x, 0) else '' for x in g.GAP_CLASSES) + " |")
+        L.append("")
         if k == 'trade':
-            L += [f"Of the observed pair-years, {int((e.exports_fob_usd.notna() & e.mirror_imports_cif_usd.isna()).sum()):,} have the "
-                  f"exporter's figure only and {int((e.exports_fob_usd.isna() & e.mirror_imports_cif_usd.notna()).sum()):,} the "
-                  f"partner's mirror only; neither is filled from the other. {int(e.exports_imf_estimate.sum()):,} exporter figures and "
+            L += [f"Of the observed pair-years, {int((e.raw_exports_fob_usd.notna() & e.raw_mirror_imports_cif_usd.isna()).sum()):,} have the "
+                  f"exporter's figure only and {int((e.raw_exports_fob_usd.isna() & e.raw_mirror_imports_cif_usd.notna()).sum()):,} the "
+                  f"importer's mirror only; neither is filled from the other (`other_report_only`). {int(e.exports_imf_estimate.sum()):,} exporter figures and "
                   f"{int(e.mirror_imf_estimate.sum()):,} mirror figures are IMF estimates (flagged). {int(e.proxy_reporting_unit.sum()):,} "
                   "pair-years use Belgium-Luxembourg (to 1996) or the South African Customs Union (to 1997) for Belgium and "
                   "South Africa (flagged). Russia's pairs before 1992 are `entity`: the USSR (code SUN) reported instead; its "
-                  "trade is in the pinned file but is not used for Russia.", ""]
+                  "trade is in the pinned file but is not used for Russia (Sid, 13 October 2026). `no_denominator`: the "
+                  "importer's GDP is missing (Brazil 1970–1988, Iran 1991–1992, Russia before 1988 in the World Bank file).", ""]
             u = e[e.gap.isin(['unrecorded', 'not_reporting'])].groupby(['src', 'dst', 'gap']).year.apply(_years).reset_index()
             L += ["Pairs with `unrecorded` or `not_reporting` years:", ""] + _md(u.rename(columns={'year': 'years'}))
         if k == 'bank':
             L += ["Lenders: France, Belgium, Sweden, Switzerland, Germany, Denmark, the Netherlands, the United States, the "
                   "United Kingdom and Japan (reporting since 1977-Q4; Sid's main set). No values before 1977 (`before_bis`). "
-                  "Russia is a borrower only, from 1993-Q4 (claims on the USSR, BIS code SU, exist before and are not used). "
-                  "The United States reports no claims on Iran in any year (`series_absent`). The United Kingdom has no 1982-Q4 "
-                  "value for any borrower. Saudi Arabia's series start late for most lenders (to 2011).", ""]
+                  "Russia is a borrower only, from 1993-Q4 (claims on the USSR, BIS code SU, exist before and are not used: "
+                  "Sid, 13 October 2026). The United States reports no claims on Iran in any year (`series_absent`). The United "
+                  "Kingdom has no 1982-Q4 value for any borrower. Saudi Arabia's series start late for most lenders (to 2011). "
+                  "The sensitivity denominator (each lender's claims on all countries) is complete from 1977.", ""]
             u = e[e.gap.isin(['series_gap', 'series_absent', 'not_yet'])].groupby(['src', 'dst', 'gap']).year.apply(_years).reset_index()
             L += ["Pairs with gaps after 1976:", ""] + _md(u.rename(columns={'year': 'years'}))
         if k == 'oil':
-            L += ["Every economy has a link to the world node in every year. Its weight (net oil exports as a share of GDP) "
-                  "is masked: no pinned source gives oil production and consumption by country (the pinned oil files are "
-                  "prices and world consumption only). Adding one needs Sid's approval (CLAUDE.md).", ""]
+            L += ["Every economy has a link to the world node in every year; its weight is masked where production, "
+                  "consumption or GDP is missing. By economy:", ""]
+            rows = []
+            for i in isos:
+                d = e[e.src == i]; miss = d[d.gap != 'observed']
+                rows.append((NAMES[i], int((d.gap == 'observed').sum()), '; '.join(f"{c} {_years(m.year)}" for c, m in miss.groupby('gap')) or '—'))
+            L += _md(pd.DataFrame(rows, columns=['economy', 'years observed of 53', 'masked years by class']))
+            L += ["", "Production ends in 2016 for the 15 economies the Energy Institute does not list separately (their "
+                  "production comes from the Shift Data Portal, 2019 release), so their weights are masked in 2017–2022. For "
+                  "South Korea, Switzerland, Belgium, Finland and Portugal the source records zero production in every year it "
+                  "covers (1980–2016): their 1970–1979 and 2017–2022 gaps are `unlisted_producer`, probably true zeros, but "
+                  "masked. South Africa's production starts in 1980 with non-zero values later, so its gaps are plain missing.", ""]
         if k != 'oil':
-            L += ["", "By year:", ""] + _md(edge_year_table(e))
+            L += ["", "Flow gaps by year:", ""] + _md(edge_year_table(e))
             L += ["", "By economy:", ""] + _md(edge_node_table(e, isos))
+    gdp = r['gdp']
+    L += ["", "## 5. GDP denominators (World Bank, current US dollars)", "",
+          "Missing years, masked wherever a weight needs them: " +
+          "; ".join(f"{NAMES[c]} {_years(gdp.index[gdp[c].isna()])}" for c in gdp.columns if gdp[c].isna().any()) + ". Nothing is "
+          "spliced in from another source.", ""]
     return "\n".join(L) + "\n"
 
 
 def data_card(r, n, E, G):
-    isos = r['isos']; X = n['X']
+    isos = r['isos']; X = n['X']; price, psrc, chk = g.oil_price_nominal()
     L = ["# G0 data card — the yearly graph dataset on S31", "",
          "Stage G0 of the GNN track (`gnn/README.md`). Built by `python -m ef.gnn.report` (`src/ef/gnn/dataset.py`) into "
          "`build/gnn/g0/` (git-ignored; rebuilt from the pinned sources). Status: **for Sid's review**; nothing is trained.", "",
@@ -142,11 +169,12 @@ def data_card(r, n, E, G):
          f"- **Nodes:** the {len(isos)} economies of S31 (" + ", ".join(NAMES[i] for i in isos) + ") and one world node.",
          "- **Edge types:** trade (economy → economy), bank (lender → borrower), oil (economy → world node). No "
          "correlation edges (Sid, 11 October 2026: correlation edges carry the target).",
-         "- **Missing values:** masked, never filled. `mask` is True where a value is observed; every cell also has a gap "
-         "class (`gnn/G0_missing_data.md`).",
+         "- **Missing values:** masked, never filled. `mask` is True where a value is observed; every cell and every edge "
+         "weight also has a gap class (`gnn/G0_missing_data.md`).",
          "- **Files:** `nodes.npz` (X: years × nodes × features, mask, gap, years, nodes, features); `edges_trade.csv`, "
-         "`edges_bank.csv`, `edges_oil.csv` (one row per directed pair and year, NaN = masked, `gap` = class). "
-         "`ef.gnn.dataset.load()` reads them. PyTorch Geometric objects are built in G3; this environment has no torch.", "",
+         "`edges_bank.csv`, `edges_oil.csv` (one row per directed pair and year, NaN = masked); `gdp_current_usd.csv` (the "
+         "denominators). `ef.gnn.dataset.load()` reads them; `ef.gnn.dataset.model_inputs()` returns only what a model "
+         "may read. PyTorch Geometric objects are built in G3; this environment has no torch.", "",
          "## Node features", "", "| Feature | Nodes | Source | Note |", "|---|---|---|---|"]
     for f, d in g.PHASE_FEATURES:
         L.append(f"| `{f}` | economies | Maddison 2023, log GDP per capita; band-pass and Hilbert transform on data up to each year (convention C) | {d}; past data only |")
@@ -159,33 +187,76 @@ def data_card(r, n, E, G):
           "values as published, without filtering; they carry no two-sided filter. The atlas's own `cycle`, `phase`, "
           "`row_cycle` and `row_phase` columns are two-sided and are not used. `world_growth` weights the 26 of the atlas, "
           "not the 31.", "",
-          "## Edges", "", "| Type | Direction | Attributes | Source | Normalisation |", "|---|---|---|---|---|",
-          "| trade | exporter → importer | `exports_fob_usd` (exporter's report), `mirror_imports_cif_usd` (importer's report), IMF-estimate flags, proxy-unit flag | IMF IMTS, `imf_imts_s31` (downloaded 13 October 2026) | raw US dollars; shares (of the exporter's exports or GDP) are chosen in G3 |",
-          "| bank | lender → borrower | `claims_all_sectors_usd`, `claims_on_banks_usd` (year-end Q4 stocks) | BIS LBS, `bis_lbs` (June 2026 file) | raw US dollars; the BIS spec's row shares are chosen in G3 |",
-          "| oil | economy → world | `net_oil_exports_share_gdp` | **none pinned yet** | masked |", "",
-          "Bank filters (data/sources.yaml `read_with`): stocks, claims, all instruments, all currencies, all parent "
-          "countries, all reporting banks, cross-border; all sectors, and banks only as a second attribute. Lenders: the "
-          "fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.", "",
+          "## Edges and their weights", "",
+          "**Normalisation, fixed by Sid on 13 October 2026 before any training:** the primary weight is the flow as a share "
+          "of the receiving economy's nominal GDP; the sensitivity weight is the flow as a share of the exporter's or "
+          "lender's total; raw US dollars are never model inputs. The `raw_*` columns are kept for checking only, and "
+          "`model_inputs()` leaves them out.", "",
+          "| Type | Direction | Primary weight (`w_`) | Sensitivity weight (`s_`) | Raw columns (never inputs) | Source |",
+          "|---|---|---|---|---|---|",
+          "| trade | exporter → importer | `w_exports_share_dst_gdp` (exporter's report, FOB) and `w_mirror_share_dst_gdp` (importer's report, CIF), each ÷ the importer's GDP | `s_exports_share_src_total`, `s_mirror_share_src_total`: each ÷ the exporter's goods exports to the world, as the exporter reports them | `raw_exports_fob_usd`, `raw_mirror_imports_cif_usd` | IMF IMTS, `imf_imts_s31` |",
+          "| bank | lender → borrower | `w_claims_share_dst_gdp`: year-end (Q4) cross-border claims on all sectors ÷ the borrower's GDP | `s_claims_share_src_total`: ÷ the lender's cross-border claims on all countries | `raw_claims_usd`, `raw_lender_claims_all_countries_usd` | BIS LBS, `bis_lbs` |",
+          "| oil | economy → world | `w_net_oil_exports_share_gdp`: net oil exports ÷ the economy's own GDP (below) | the same weight (no second normalisation is defined for oil) | `raw_oil_production_twh`, `raw_oil_consumption_twh`, `raw_net_oil_twh`, `raw_net_oil_value_usd` | Our World in Data energy, `owid_energy` |", "",
+          "Trade: the exporter's and the importer's reports of the same flow are two attributes, each with its own mask; "
+          "neither is filled from the other. The mirror's sensitivity weight divides an importer's figure by an exporter's "
+          "total (the only world total available for the exporter). Bank: the BIS publishes bilateral claims for all "
+          "sectors and for non-banks only, so no banks-only attribute is built. Filters: stocks, claims, all instruments, all "
+          "currencies, all parent countries, all reporting banks, cross-border (`data/sources.yaml`, `read_with`). Lenders: "
+          "the fixed 10 reporting since 1977-Q4 (Sid); the expanding set is a sensitivity check for later.", "",
+          "**Denominator.** Nominal GDP in current US dollars from the World Bank (NY.GDP.MKTP.CD, the pinned "
+          "`wb_gdp_current_usd` file). It is missing for Brazil 1970–1988, Iran 1991–1992 and Russia before 1988; weights "
+          "that need those years are masked, not filled from another source. The Global Macro Database's nominal GDP over "
+          "its exchange rate was the alternative and was not used: against the World Bank it is 6 times larger for Iran by "
+          "2022 (the official rial rate) and about a third larger for Turkey and a fifth for Indonesia in most years.", "",
+          "## Oil exposure: the conversion", "",
+          "Net oil exports as a share of nominal GDP (Sid, 13 October 2026), positive for net exporters:", "",
+          "    w = (oil production − oil consumption) [TWh] × 630,267 barrels per TWh × crude price [US$ of the year per barrel]",
+          "        ÷ nominal GDP [current US$, World Bank]", "",
+          "- **Quantities:** `oil_production` and `oil_consumption` (primary energy consumption from oil), both in TWh, from "
+          "the Our World in Data energy dataset (legacy release, commit f8de88a; Energy Institute Statistical Review 2025, "
+          "and The Shift Data Portal for production of economies the Energy Institute does not list).",
+          "- **Barrels:** the Energy Institute's factors, 1 tonne of oil equivalent = 11.63 MWh = 7.33 barrels, so 1 TWh = "
+          "1,000,000 ÷ 11.63 × 7.33 = 630,266.6 ≈ 630,267 barrels. The common alternative, 5.8 million Btu per barrel, gives 588,300 "
+          "barrels per TWh, 6.7% fewer; it would scale every oil weight by 0.933 and change no sign or ranking.",
+          f"- **Price:** EIA Brent (`oil_brent`, dollars of the day) from 1987, the first year it covers. Before 1987 no Brent "
+          f"series is pinned, so the BP series (`oil_bp`: Arabian Light posted at Ras Tanura to 1983, Brent dated 1984–86, in "
+          f"2015 dollars) is converted back to dollars of the year with the US consumer price index (Global Macro Database). "
+          f"Check: over 1987–2015 the converted BP series differs from EIA Brent by {100 * chk:.2f}% on average. The edge table "
+          f"records the source of each year's price (`oil_price_source`). Prices: 1970 ${price[1970]:.2f}, 1974 ${price[1974]:.2f}, "
+          f"1980 ${price[1980]:.2f}, 1986 ${price[1986]:.2f}, 1987 ${price[1987]:.2f}, 2022 ${price[2022]:.2f}.",
+          "- **What it approximates:** the value of net trade in crude oil and products at the crude price. It ignores stock "
+          "changes, the different energy content of crude and refined products, and refinery gains; consumption includes "
+          "bunkers and, in the Energy Institute's definition, some biofuels and coal- or gas-derived liquids.",
+          "- **Russia:** from 1985 (the Energy Institute reports the USSR before; not used, Sid). Its GDP denominator starts "
+          "in 1988, so its weight runs 1988–2022.", "",
           "## Sources, verified against data/sources.yaml (sha256)", "", "| Source | File | Pinned at | Checksum |", "|---|---|---|---|"]
     L += [f"| {a} | `{b}` | {c} | {'ok' if ok else '**FAILED**'} |" for a, b, c, ok in r['sources']]
-    obs = (G.gap == 'observed').mean(); te, be = E['trade'], E['bank']
+    obs = (G.gap == 'observed').mean(); te, be, oe = E['trade'], E['bank'], E['oil']
     L += ["", "## Coverage in one line each", "",
           f"- Node features: {100 * obs:.1f}% of economy-feature-years observed; phases complete; the largest gaps are "
           "long rates, demand contributions and budget series before the 1990s (details in the missing-data report).",
-          f"- Trade: {100 * (te.gap == 'observed').mean():.1f}% of directed pair-years observed; Russia from 1992.",
-          f"- Bank: {100 * (be.gap == 'observed').mean():.1f}% of lender-borrower-years observed, "
-          f"{100 * (be[be.year >= 1977].gap == 'observed').mean():.1f}% from 1977.",
-          "- Oil: links present, weights masked (no source).", "",
+          f"- Trade: {100 * (te.gap == 'observed').mean():.1f}% of directed pair-years observed; primary weights "
+          f"{100 * te.w_exports_share_dst_gdp.notna().mean():.1f}% (exporter's report) and {100 * te.w_mirror_share_dst_gdp.notna().mean():.1f}% "
+          "(importer's report); Russia from 1992.",
+          f"- Bank: {100 * (be.gap == 'observed').mean():.1f}% of lender-borrower-years observed ({100 * (be[be.year >= 1977].gap == 'observed').mean():.1f}% "
+          f"from 1977); primary weight {100 * be.w_claims_share_dst_gdp.notna().mean():.1f}%.",
+          f"- Oil: weight observed in {100 * oe.w_net_oil_exports_share_gdp.notna().mean():.1f}% of economy-years; masked mainly "
+          "in 2017–2022 for the 15 economies whose production series end in 2016.", "",
           "## Open for Sid", "",
-          "1. **Oil exposure source.** Net oil exports as a share of GDP needs country oil production and consumption. "
-          "Candidate: the Our World in Data energy dataset (GitHub `owid/energy-data`, pinnable by commit, oil production "
-          "and consumption by country from 1965), or the Energy Institute Statistical Review. Not added without approval.",
-          "2. **Russia before 1992.** Trade and bank links are masked. The USSR's trade (IMF, from 1955) and the BIS claims "
-          "on the USSR are in the pinned files; using them for Russia would be a substitution, not data for Russia.",
-          "3. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union "
-          "units (decided 11 October 2026); the rows are flagged.",
-          "4. **Edge weights.** Raw US dollars are stored; the normalisation (row shares, or the partner's share of GDP) is "
-          "a G3 modelling choice to be fixed before any training."]
+          "1. **Oil production after 2016.** For 15 economies (Germany, France, Japan, Spain, the Netherlands, Sweden, "
+          "Turkey, Austria, Greece, South Korea, Switzerland, Belgium, South Africa, Finland, Portugal) production ends in "
+          "2016, so their oil weights are masked in 2017–2022, including 2020. All are small producers and large net "
+          "importers. Options: keep the masks; or add a source that lists small producers after 2016 (for example the EIA "
+          "International Energy Statistics, a download pinned by checksum, from 1980), which needs your approval.",
+          "2. **The price before 1987** comes from the BP series converted to dollars of the day (Arabian Light to 1983), "
+          "because the pinned Brent series starts in 1987. Keep, or mask the oil weights before 1987 (that would drop the "
+          "1975 and 1982 recessions from the oil channel).",
+          "3. **GDP denominator.** World Bank current US dollars, masked for Brazil 1970–1988. Keep the masks, or approve a "
+          "fresh World Bank download (the API has Brazil from 1960) pinned by checksum.",
+          "4. **Trade attribute for G3.** Proposed: both reports enter as two masked attributes of one trade edge, rather "
+          "than choosing one.",
+          "5. **Belgium and South Africa before 1997–98** use the IMF's Belgium-Luxembourg and South African Customs Union "
+          "units (decided 11 October 2026); the rows are flagged."]
     return "\n".join(L) + "\n"
 
 
@@ -198,7 +269,9 @@ def main(argv=None):
     d = os.path.join(root, 'gnn', 'G0'); os.makedirs(d, exist_ok=True)
     G.to_csv(os.path.join(d, 'node_gaps.csv.gz'), index=False, compression={'method': 'gzip', 'mtime': 0})
     coverage_table(G).to_csv(os.path.join(d, 'node_coverage.csv'), index=False)
-    for k, e in E.items(): e[['year', 'src', 'dst', 'gap']].to_csv(os.path.join(d, f'edge_gaps_{k}.csv.gz'), index=False, compression={'method': 'gzip', 'mtime': 0})
+    for k, e in E.items():
+        e[['year', 'src', 'dst', 'gap'] + [c for c in e.columns if c.startswith('gap_')]].to_csv(
+            os.path.join(d, f'edge_gaps_{k}.csv.gz'), index=False, compression={'method': 'gzip', 'mtime': 0})
     open(os.path.join(root, 'gnn', 'G0_missing_data.md'), 'w').write(missing_report(r, n, E, G))
     open(os.path.join(root, 'gnn', 'G0_data_card.md'), 'w').write(data_card(r, n, E, G))
     print(f"wrote {a.out}, gnn/G0_data_card.md, gnn/G0_missing_data.md and gnn/G0/")

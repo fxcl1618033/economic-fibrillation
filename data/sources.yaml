@@ -83,6 +83,25 @@ sources:
         bytes: 716
     used_by: atlas/data.py (real oil price, later years)
 
+  - id: owid_energy
+    what: Our World in Data energy dataset, legacy release (no longer updated; built from the Energy Institute Statistical Review of World Energy 2025 and The Shift Data Portal 2019). Used - oil_production (TWh) and oil_consumption (primary energy consumption from oil, TWh) by country
+    repo: owid/energy-data
+    dir: owid_energy
+    commit: f8de88a4f6f9cab44f1cf606047cbd6c4414042c   # 2026-10-01. The repository now holds the frozen legacy release; its README says the dataset is moving to catalog.ourworldindata.org with a changed primary-energy methodology (not pinnable by commit)
+    files:
+      - path: owid-energy-data.csv
+        sha256: 266f2e2baad7975351bc9bb4aa061d22b1da9fe4c47d51d2ac6071e01e171f76
+        bytes: 9229369
+      - path: owid-energy-codebook.csv
+        sha256: 3cc9b7db0d921496e2988568ce3aee5ed41f50431dd234a0663b5f0a4b2e32bb
+        bytes: 45793
+      - path: README.md
+        sha256: d014045a2eeb06343f9f107af80c2e86959df320525faf16cfb9155f9f3007d0
+        bytes: 16149
+    coverage_S31: oil consumption 1965-2024 for all S31 economies except Russia (from 1985; the USSR before). Oil production 1965-2024 for the 16 economies the Energy Institute lists; for the other 15 it comes from the Shift Data Portal and ends in 2016, and for Korea, Switzerland, Belgium, South Africa, Finland and Portugal it starts in 1980 (recorded as zero in every listed year except South Africa)
+    used_by: GNN G0 oil edges - net oil exports as a share of GDP (approved by Sid, 13 October 2026)
+    cite: Our World in Data, Energy dataset (legacy release), github.com/owid/energy-data, commit f8de88a; Energy Institute, Statistical Review of World Energy 2025; The Shift Data Portal (2019).
+
   - id: wb_gdp_current_usd
     what: World Bank GDP in current US dollars (NY.GDP.MKTP.CD), datasets/gdp mirror. Superseded first-pass data, kept for the crisis-dating history figures
     repo: datasets/gdp
@@ -92,7 +111,7 @@ sources:
       - path: data/gdp.csv
         sha256: 8d84ef6bcaccf740c01c5ed7566aae8f7b149d0e2c20001e441efd3cb5b2fa86
         bytes: 562767
-    used_by: paper1/scripts/eraA_claude_ai/crisis_analysis.py (reads gdp.csv); prepare_data.py built paper1/data/gdp_panel_*.csv from it
+    used_by: paper1/scripts/eraA_claude_ai/crisis_analysis.py (reads gdp.csv); prepare_data.py built paper1/data/gdp_panel_*.csv from it; GNN G0 edge-weight denominators (nominal GDP in current US dollars, from 13 October 2026); its gaps for S31 in 1970-2022 are Brazil 1970-1988, Iran 1991-1992 and Russia before 1988
 
 downloads:
   # Files downloaded once from official sources on Sid's Mac (approved by Sid, 11 October 2026). Their URLs serve the
@@ -115,7 +134,7 @@ downloads:
         from_zip: WS_LBS_D_PUB_csv_col.zip
         sha256: f6f096de557fda577cf6194ed4640d747eec9fd1537aa83b0a3e8614c34e86e3
         bytes: 534063740
-    read_with: one row per series, quarters as columns. Cross-border claims of all reporting banks on all sectors - FREQ=Q, L_MEASURE=S, L_POSITION=C, L_INSTR=A, L_DENOM=TO1, L_CURR_TYPE=A, L_PARENT_CTY=5J, L_REP_BANK_TYPE=A, L_CP_SECTOR=A (B for banks only), L_POS_TYPE=N; lender = L_REP_CTY, borrower = L_CP_COUNTRY (BIS two-letter codes)
+    read_with: one row per series, quarters as columns. Cross-border claims of all reporting banks on all sectors - FREQ=Q, L_MEASURE=S, L_POSITION=C, L_INSTR=A, L_DENOM=TO1, L_CURR_TYPE=A, L_PARENT_CTY=5J, L_REP_BANK_TYPE=A, L_CP_SECTOR=A (B for banks only), L_POS_TYPE=N; lender = L_REP_CTY, borrower = L_CP_COUNTRY (BIS two-letter codes). Bilaterally the file has L_CP_SECTOR A (all sectors) and N (non-banks) only; B (banks) exists for totals such as L_CP_COUNTRY=5J (all countries), not by counterparty country
     coverage_S30: lenders reporting bilateral claims on S30 economies - 10 from 1977-Q4 (FR, BE, SE, CH, DE, DK, NL, US, GB, JP; the main edge set), then FI 1983, AU 1997, BR 2002, GR and MX 2003, KR 2005, AT and CA 2007, ZA 2009, ES 2012, IT 2014. Never lenders - CN, IN, ID, IR, NO, PT, SA, TH, TR
     used_by: GNN G0 bank-lending edges (main set fixed to the 10 lenders since 1977; the expanding set as sensitivity only - Sid, 11 October 2026)
     cite: Bank for International Settlements, Locational Banking Statistics, data.bis.org (release of June 2026).
