@@ -261,3 +261,66 @@ sample. Nothing was run with Russia under that draft or before this text.
    flag every result that changes sign or crosses p = 0.05 between them. Folders: `results/S31/`, `results/S31_strict/`,
    `results/S31_gmd_growth/`, `results/S31_minus_<ISO>/`, `results/S31_rus_from_1992/`. Config:
    `configs/runs/phase3_s31.yaml`.
+
+### Amendment 4 — edge-matched nulls for tests that lean on the last years of the data (14 October 2026, committed before anything below is run)
+
+**Why.** The G1 simulations (`gnn/G1_report.md`, open issue 25a) found that the identity's swing-size test (D11)
+leans towards rejection: under convention P the pipeline inflates the swing size in 2019–2020 and deflates it in
+2021–2022, 2020 is a recession year, and the surrogates it is compared with have no ends (they are circular, so the
+band-pass and the Hilbert transform see no edge in them). Sid (14 October 2026) asked for an edge-matched null for this
+test and for every other test whose statistic leans on years within three of the sample end, listed before anything is
+run.
+
+**1. The rule and the list.** The sample ends in 2022; within three of the end means 2019–2022. A test leans on the
+end if a recession term of its statistic uses a value from 2019–2022: 2020's crisis year, a lead or lag that reaches
+2019–2022, a trailing or pre-crisis window that ends in 2019–2022, or the years after 2020. Listed:
+
+| Registry | Test | What uses 2019–2022 | Null now | Edge-matched null |
+|---|---|---|---|---|
+| A2, A3, A4, A5 | Arc of r(t): lead-1, crisis year, after-1, after-2, convention P; the same four under W, N and E (A10–A12) | r in 2019 (lead-1), 2020, 2021, 2022 (after-2) | circular shifts | multivariate (below) |
+| E11 | Arc within and between the Fiedler blocs, lead-1 | r in 2019 | circular shifts | multivariate, blocs fixed |
+| G3 | Real-GDP channel arc (GMD panel): lead-1, crisis year, after-2 | channel r in 2019, 2020, 2022 | circular shifts | multivariate on the channel series |
+| D5, D6 | Cross term at recessions: crisis cross share; share ratio, Δcross, Δown (GDP and equal weights) | the window ending in 2020 (2011–2020) | independent surrogates | independent (below) |
+| D11 | Identity: alignment and swing size at recessions | 2020 among the recession years, 2021–2022 among the others | independent surrogates | independent |
+| E4, E6 | MST contraction (raw and detrended) and fragility before recessions | 2020's pre-crisis years 2012–2019 | independent surrogates | independent |
+| F1, F2 | Slowing down: trends of the lag-1 autocorrelation and the variance of r before recessions | 2020's pre-crisis years 2012–2019 | independent surrogates | independent |
+| F4 | Slower recovery after recessions | the years after 2020 (2020–2022) | independent surrogates | independent |
+| C1 | r with swing size, detrended — **outside the rule, included anyway**: it has no recession term, but the last years carry the largest edge distortion in both series and G1 found its shift version over-rejecting | every year | independent surrogates | independent |
+
+Not listed: A1 lead-2 and the channel lead-2 tests G1 and G2 (they pair 2020 with 2018); A13 and every past-only
+(convention C) test (under C each year's phase is computed at its own end, so the last years are not special and
+circular shifts compare like with like); A14 (2020 left out); E7 and G4 (no recession term; bounded circular means
+over all years); the robustness variants of listed tests (B rows, C2–C9, F2b, F2c, the strict and late-entry runs),
+which share the statistic and are not rerun; every descriptive row.
+
+**2. The edge-matched null.** The current surrogates randomize the phases of each economy's band-passed cycle over
+1950–2022, so they wrap around and have no ends. Edge-matched surrogates are built one step earlier and go through the
+whole pipeline: (a) each economy's growth rates, the change in log GDP per capita, 1951–2022 (72 values); (b) a long
+series of 8 × 72 = 576 values with the same periodogram: each of its frequencies takes the Fourier amplitude of the
+nearest of the 72-point frequencies (frequencies below the lowest resolved one take its amplitude), scaled by √8 so
+the variance is the same, and a random phase; the zero frequency keeps the mean growth; (c) 72 consecutive values from
+a random start, cumulated from the real 1950 level, give a surrogate log GDP per capita for 1950–2022; (d) the same
+band-pass, Hilbert transform, convention and windows as the real data. **Independent** version: phases drawn
+independently for every economy, so the economies are unrelated, as in the current surrogates. **Multivariate**
+version: at each frequency every economy gets the same random phase added to its real Fourier phase, so each pair's
+co-movement, and with it the level and persistence of r(t), is kept and only the timing against the calendar is
+random; it is the counterpart of the circular shift, with the edges in place. The window start is common to all
+economies. **Channel G3:** the same with each economy's channel series (log real GDP from the panel), the spectra and
+phases taken from the common span 1966–2022 that every channel economy covers, each surrogate cut to that economy's
+own length ending in 2022 and passed through the channel pipeline (convention P). Statistics, directions and windows
+are unchanged; only the null changes. p = (1 + surrogates at least as extreme) / (1 + 5,000), floor 0.0002 (the
+circular shifts' floor was 1/53 = 0.019). Seeds: independent 6001, multivariate 6002, channel 6003; one set of
+surrogate worlds per sample serves every test.
+
+**3. Validation, reported whatever it shows.** On the 1,000 uncoupled G1 worlds per model (κ = φ = 0, the same worlds
+as `gnn/G1/`), with the real recession dates and 199 edge-matched surrogates per world, each listed test should reject
+at p ≤ 0.05 in about 5% of worlds (its 95% interval containing 5%). The multivariate arc null is also checked on the
+1,000 trade-coupled G1 worlds per model (κ\*), real dates. A null that fails is flagged, not dropped.
+
+**4. Samples and conventions.** S31 (main), S30 (comparison), S26 (reference); convention P, and W, N and E for the arc.
+
+**5. Reporting.** `results/edge_matched/<sample>.json` and `results/EDGE_MATCHED.md`: for each listed test the
+statistic, the current p and the edge-matched p on S31, S30 and S26 side by side, with a flag wherever the
+edge-matched p falls on the other side of 0.05 from the current one; a new registry section; the proposed Methods
+edits. The current p-values stay as reported (rule 6): the edge-matched p is a second null beside the first, not a
+replacement.
