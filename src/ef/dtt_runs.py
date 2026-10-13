@@ -81,7 +81,9 @@ def reproduce():
         r2_impl = 2 * B['theory_var'][j]
         arith = (abs(31 * r2_impl - B['amplification'][j]) <= 0.006 + 31 * 1e-5 and abs(1 / r2_impl - B['n_eff'][j]) <= 0.006 + 1e-5 / r2_impl ** 2
                  and abs(r2_impl - B['mean_R2'][j]) <= 5e-5 + 1e-5)
+        mR = R.astype(float).mean(axis=1)                                 # each ensemble's mean R (for figure B1)
         rows.append({'K': round(float(K), 3), 'report_mean_R2': B['mean_R2'][j], 'mine_mean_R2': m, 'se_mine': float(se),
+                     'mine_mean_R': float(mR.mean()), 'mine_sd_R_between': float(mR.std(ddof=1)),
                      'mark': 'CLOSE' if abs(m - B['mean_R2'][j]) <= 1.96 * np.sqrt(2) * se else 'DIFFERENT',
                      'mine_theory_var': m / 2, 'mine_mc_var': mc, 'report_mc_over_theory': B['mc_var'][j] / B['theory_var'][j],
                      'report_arithmetic': 'EXACT' if arith else 'DIFFERENT'})

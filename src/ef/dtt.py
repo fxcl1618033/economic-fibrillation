@@ -110,16 +110,16 @@ def kuramoto_R(p, n, rng, burn=0.0, record_every=1, dW=None):
 def noise_scale(R, p, kind='instantaneous', rng=None, block=None):
     """g(t) (n, steps) or (n, 1) for a formulation on the same R(t) traces:
     instantaneous   sigma sqrt(rho R(t)^2 + (1 - rho) / N)      (rho = 1: the report's sigma R(t))
-    rms_trial       each trial's constant sigma sqrt(mean_t R^2)
-    rms_ensemble    sigma sqrt(mean over trials and t of R^2)
+    rms_trial       each trial's constant RMS of its instantaneous g (rho = 1: sigma sqrt(mean_t R^2))
+    rms_ensemble    the RMS of g over every trial and time
     independent     sigma / sqrt(N)
     permuted        instantaneous, with each trial's R values in a random time order (step by step)
     block_permuted  the same with blocks of `block` steps kept whole (order of the blocks permuted)"""
     R = R.astype(float); s, N, rho = p.sigma, p.N, p.rho
     inst = lambda r: s * np.sqrt(rho * r ** 2 + (1 - rho) / N)
     if kind == 'instantaneous': return inst(R)
-    if kind == 'rms_trial': return s * np.sqrt((R ** 2).mean(axis=1, keepdims=True))
-    if kind == 'rms_ensemble': return np.full((R.shape[0], 1), s * np.sqrt((R ** 2).mean()))
+    if kind == 'rms_trial': return np.sqrt((inst(R) ** 2).mean(axis=1, keepdims=True))      # each trial's RMS of its own g(t)
+    if kind == 'rms_ensemble': return np.full((R.shape[0], 1), np.sqrt((inst(R) ** 2).mean()))
     if kind == 'independent': return np.full((R.shape[0], 1), s / np.sqrt(N))
     if kind == 'permuted':
         idx = np.argsort(rng.random(R.shape), axis=1); return inst(np.take_along_axis(R, idx, axis=1))

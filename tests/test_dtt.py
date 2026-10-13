@@ -62,6 +62,8 @@ def test_controls_keep_what_they_should():
     assert np.allclose((inst ** 2).mean(axis=1), rms[:, 0] ** 2)                          # same mean square per trial
     perm = dtt.noise_scale(R, p, 'permuted', rng); blk = dtt.noise_scale(R, p, 'block_permuted', rng, block=100)
     assert np.allclose(np.sort(perm, axis=1), np.sort(inst, axis=1)) and np.allclose(np.sort(blk, axis=1), np.sort(inst, axis=1))
+    h = dtt.Params(K=1.5, T=10.0, rho=0.4)                                                   # constant RMS of the rho-weighted g
+    assert np.allclose((dtt.noise_scale(R, h) ** 2).mean(axis=1), dtt.noise_scale(R, h, 'rms_trial')[:, 0] ** 2)
     q = dtt.Params(K=1.5, T=10.0, rho=0.0)                                                   # rho = 0 is independent noise
     assert np.allclose(dtt.noise_scale(R, q), dtt.noise_scale(R, q, 'independent'))
     # uncoupled phases: E[R^2] = 1/N

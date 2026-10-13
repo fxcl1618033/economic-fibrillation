@@ -156,3 +156,207 @@ def reading(res):
             "already notes that its two K = 0 runs differ.",
             "- **Not reproducible:** section F's step from coupling K to R and V (oscillator settings not stated, and V = 1 at "
             "K = 0 is not 31 × R²); figures F1 and I4 (see above)."]
+
+
+# ------------------------------------------------------------------ D3: real data
+
+def d3(res):
+    G = ('all years', 'recession years', 'lead-1 years', 'normal years'); S = ('S31', 'S30', 'S26')
+    L = ["# D3 — the effective number of economies on real data (descriptive only)", "",
+         "Computed by `python -m ef.dtt_real` (`src/ef/dtt_real.py`) from the Paper 1 pipeline: phases and swing sizes from "
+         "the analytic signal, 1970–2022, convention P (the paper's) and C (past data only) beside it. **No p-values**: this "
+         "describes, it does not test. Years: recessions 1975, 1982, 1991, 2009, 2020; lead-1 the year before each; normal "
+         "years are neither recessions nor the downturns 1998, 2001, 2012 (Paper 1's definition).", "",
+         "## What is computed", "",
+         "- **N_eff = 1 / r²**, the report's effective number (equal swing sizes, the whole shock shared). Over a group of "
+         "years it is summarized the report's way, **1 / E[r²]**, the variance-equivalent count. The arithmetic mean of the "
+         "yearly 1/r² is not used: in years with r near 0 it explodes (it is "
+         f"{res['S31']['P']['all years']['mean_of_yearly_neff_unstable']:.0f} for S31 over all years). Medians of the yearly "
+         "values are given beside.",
+         "- **1 / R_A²**, the amplitude-weighted version Sid asked for (1 / E[R_A²] over a group).",
+         "- **mean(A²) / |Z_A|²** (E[mean A²] / E[|Z_A|²] over a group), the count the variance law implies exactly when swing "
+         "sizes differ. It equals (1 + CV_A²) / R_A², so it is 1/R_A² scaled up by the spread of swing sizes; with equal "
+         "swing sizes the three coincide.", "",
+         "**Sid's cross-check (S26, convention P):** about 2.9 on average, 2.1 in recession years, 1.9 at lead-1, 1.04 in "
+         f"2020. Computed: {res['S26']['P']['all years']['neff']:.2f}, {res['S26']['P']['recession years']['neff']:.2f}, "
+         f"{res['S26']['P']['lead-1 years']['neff']:.2f} and {res['S26']['P']['by_year']['2020' if '2020' in res['S26']['P']['by_year'] else 2020]['neff']:.3f} "
+         "— a match, with N_eff over a group taken as 1 / E[r²].", "",
+         "## N_eff = 1 / E[r²] by group (median of the yearly values in brackets)", "",
+         "| Sample | Convention | " + " | ".join(G) + " | 2020 |", "|---|---|" + "---|" * (len(G) + 1)]
+    by = lambda s, c, y: res[s][c]['by_year'][str(y)] if str(y) in res[s][c]['by_year'] else res[s][c]['by_year'][y]
+    for s in S:
+        for c in ('P', 'C'):
+            x = res[s][c]
+            L.append(f"| {s} (N = {res[s]['N']}) | {c} | " + " | ".join(f"{x[g]['neff']:.2f} ({x[g]['median_neff']:.2f})" for g in G)
+                     + f" | {by(s, c, 2020)['neff']:.2f} |")
+    L += ["", "## Amplitude-weighted: 1 / E[R_A²], and the exact count E[mean A²] / E[|Z_A|²]", "",
+          "| Sample | Convention | " + " | ".join(G) + " |", "|---|---|" + "---|" * len(G)]
+    for s in S:
+        for c in ('P', 'C'):
+            x = res[s][c]
+            L.append(f"| {s} | {c} | " + " | ".join(f"{x[g]['inv_RA2']:.2f} / {x[g]['neffA']:.2f}" for g in G) + " |")
+    L += ["", "## Each recession year (S31)", "", "| Year | N_eff, P | N_eff, C | the year before, P | the year before, C |", "|---|---|---|---|---|"]
+    for y in (1975, 1982, 1991, 2009, 2020):
+        L.append(f"| {y} | {by('S31', 'P', y)['neff']:.2f} | {by('S31', 'C', y)['neff']:.2f} | {by('S31', 'P', y - 1)['neff']:.2f} | {by('S31', 'C', y - 1)['neff']:.2f} |")
+    x = res['S31']['P']
+    L += ["", "**Reading.** On the 31 economies the world behaves, by this measure, like about "
+          f"{x['all years']['neff']:.1f} independent economies on average, {x['recession years']['neff']:.1f} in recession years "
+          f"and {x['lead-1 years']['neff']:.1f} the year before, against {x['normal years']['neff']:.1f} in normal years (convention P). "
+          "The group values are pulled down by 2009 and 2020, when N_eff is close to 1; 1975, 1982 and 1991 are not low, and "
+          "the median recession year is not below the median year. With past-only phases (C) the gap between normal years "
+          f"({res['S31']['C']['normal years']['neff']:.1f}) and recession and lead-1 years ({res['S31']['C']['recession years']['neff']:.1f}, "
+          f"{res['S31']['C']['lead-1 years']['neff']:.1f}) is wider. Like every Paper 1 result on the lead, it rests on 2009 and 2020.", "",
+          "## N_eff and the variance decomposition's co-movement share", "",
+          "**Exact, instantaneous.** With equal weights and equal swing sizes, the variance law splits world variance into an "
+          "own part 1/(2N) and the rest, so the co-movement (cross) share of world variance is exactly 1 − N_eff/N "
+          f"(checked on S31: largest error {res['S31']['decomposition']['identity_equal_swings']:.1e}). With weights wᵢ and "
+          "swing sizes Aᵢ it is 1 − Σwᵢ²Aᵢ² / |Σwᵢ Aᵢ e^{iθᵢ}|².",
+          "",
+          "**Over the decomposition's windows, close but not exact.** The decomposition (Methods 6.1) measures variance over "
+          "10-year windows in time, not over shock directions. The two coincide only when, inside a window, swing sizes and "
+          "phase gaps are fixed and the common phase turns through whole cycles. On the real windows (Phase 3 settings, "
+          "1962–2022), the variance law averaged over each window against the decomposition itself:", "",
+          "| Sample | Weights | World variance, law ÷ actual (median) | Own variance, law ÷ actual (median) | Cross share: correlation across windows; mean gap | Cross share of the recession excess: actual / law |",
+          "|---|---|---|---|---|---|"]
+    for s in S:
+        for k, v in res[s]['decomposition'].items():
+            if not isinstance(v, dict): continue
+            L.append(f"| {s} | {'GDP (window mean)' if k == 'gdp_mean' else 'equal'} | {v['tot_ratio_median']:.3f} | {v['own_ratio_median']:.3f} | "
+                     f"{v['cross_share_corr']:.3f}; {100 * v['cross_share_mean_abs_gap']:.1f} points | {100 * v['excess_from_cross']:.1f}% / {100 * v['excess_from_cross_law']:.1f}% |")
+    d = res['S31']['decomposition']['gdp_mean']
+    L += ["", f"So the decomposition's headline — the cross term supplies {100 * d['excess_from_cross']:.1f}% of the extra world "
+          f"variance in recession windows on S31 (GDP weights) — is, to within a point ({100 * d['excess_from_cross_law']:.1f}% from the law), "
+          "what the variance law gives when it is averaged over the same windows. That share is not a function of N_eff alone: "
+          "it is ΔCROSS / (ΔOWN + ΔCROSS) between recession and normal windows, and own variances (swing sizes) rise in "
+          "recessions too. What N_eff adds is the reading: a cross share of world variance of c means, with equal weights and swing sizes, the world varies like "
+          "N(1 − c) independent economies of equal size."]
+    return "\n".join(L) + "\n"
+
+
+# ------------------------------------------------------------------ D2: robustness
+
+def _ci(d, scale=100, digits=1): return f"{scale * d['diff']:+.{digits}f} [{scale * d['lo']:+.{digits}f}, {scale * d['hi']:+.{digits}f}]"
+
+
+def _r(x): return f"{100 * x['p']:.1f}"
+
+
+def _vanish(d): return d['lo'] <= 0 <= d['hi']
+
+
+def write_d2():
+    import json
+    import os
+    from ef import config
+    R = os.path.join(config.repo_root(), 'dtt', 'results'); L_ = lambda f: json.load(open(os.path.join(R, f)))
+    conv, abl, rho, sw, fd = L_('d2_convergence.json'), L_('d2_ablation.json'), L_('d2_rho.json'), L_('d2_sweeps.json'), L_('figdata_C3_F1.json')
+    A = {round(a['K'], 3): a for a in abl}; base = A[0.0]
+    mid = [r for r in sw if 0.02 < r['instantaneous']['p'] < 0.98]         # conditions where tipping is neither rare nor certain
+    tv_pos = [r for r in sw if r['inst_minus_rms']['lo'] > 0]; tv_van = [r for r in sw if _vanish(r['inst_minus_rms'])]
+    tv_neg = [r for r in sw if r['inst_minus_rms']['hi'] < 0]
+    ord_pos = [r for r in sw if r['inst_minus_block']['lo'] > 0]; ord_van = [r for r in sw if _vanish(r['inst_minus_block'])]
+    mid_van = [r for r in mid if _vanish(r['inst_minus_rms'])]
+    lab = {'D': 'D', 'omega_sd': 'ω s.d.', 'N': 'N', 'mu': 'μ', 'sigma': 'σ', 'T': 'T'}
+    cond = lambda r: f"{lab[r['param']]} = {r['value']:g}, K = {r['K']:.3g}"
+    t08, t13 = A[0.8]['timing'], A[1.333]['timing']
+
+    def lead_time(t):
+        b, c, lags = np.array(t['R_before']), np.array(t['R_alive_same_time']), np.array(t['lags'])
+        base_gap = (b - c)[lags >= 8].mean(); far = [l for l, x, y in zip(lags, b, c) if (x - y) > base_gap + 0.5 * ((b - c)[0] - base_gap)]
+        return max(far) if far else 0.0
+    L = ["# D2 — robustness of the DTT escape model (simulation only)", "",
+         "Runs the plan committed before any D2 run (`dtt/D2_plan.md`, commit a4d6e36): Sid's recommended next simulation "
+         "sequence plus a timing item. Code `src/ef/dtt_d2.py` and `src/ef/dtt.py`, seed 1310; `python -m ef.dtt_d2 run | rho | "
+         "figures | report` (about 15 minutes on this Mac with 8 processes). Every number below is read from `dtt/results/d2_*.json`. "
+         "One correction during the run: the constant-RMS control ignored ρ in the ρ sweep (it used σ√E[R²] for every ρ); "
+         "fixed to each trial's RMS of its own ρ-weighted noise and the ρ sweep rerun (`rho` step). Nothing else used ρ < 1, "
+         "and the reproduction (D0) is unchanged to every digit.", "",
+         "Base: N = 31, ω ~ Normal(0, 1), D = 0.02, μ = 0.2, σ = 0.82, T = 40, step 0.01, uniform phases at t = 0. Uncertainty: "
+         "Wilson 95% intervals for rates; paired 95% intervals for differences between noise formulations on the same R(t) "
+         "traces and Brownian increments. An effect *vanishes* where its interval contains 0.", "",
+         "## In short", "",
+         f"- **Numerically sound.** The four step sizes agree to within about a point; the report's step (0.01) is at most "
+         f"{max(abs(100 * c['by_dt']['0.01']['gap_to_finest']['instantaneous']['diff']) for c in conv):.1f} points from the finest (0.0025).",
+         f"- **Coupling, measured within the model** (K against K = 0, same noise rule): tipping rises with K in "
+         f"{sum(1 for r in sw if r['K'] > 0 and r['coupling_effect']['lo'] > 0)} of {sum(1 for r in sw if r['K'] > 0)} swept conditions. "
+         "This is the fair measure of coupling, but most of it is built in: the noise is σR(t) by assumption, R rises with K, "
+         "and escape rises with noise.",
+         f"- **The report's 4.75% against 0.325% is not a coupling effect.** At K = 0, σR(t) tips in {_r(base['instantaneous'])}% "
+         f"of paths against {100 * base['independent']['p']:.2f}% with independent noise, although the two have the same mean square noise "
+         f"(E[R²] = 1/N exactly). With each path's constant RMS it is {_r(base['rms_trial'])}%. The gap comes from R(t) "
+         f"fluctuating, and from its persistence: shuffling R in 1-unit blocks keeps most of it ({_r(base['block_permuted'])}%), "
+         f"shuffling step by step removes it ({_r(base['permuted'])}%). The ρ sweep shows it enters only through the shared "
+         f"part of the shock (K = 0: {100 * rho[0]['rows'][0]['instantaneous']['p']:.1f}% at ρ = 0 to "
+         f"{100 * rho[0]['rows'][-1]['instantaneous']['p']:.1f}% at ρ = 1, constant RMS flat).",
+         f"- **Time variation (σR(t) against each path's constant RMS) mostly survives.** Positive in {len(tv_pos)} of {len(sw)} swept "
+         f"conditions, vanishing in {len(tv_van)}, significantly negative in {len(tv_neg)}. Where tipping is neither rare nor "
+         f"certain (between 2% and 98%; {len(mid)} conditions) it vanishes in {len(mid_van)}"
+         + (": " + "; ".join(cond(r) for r in mid_van) if mid_van else "") + ". Its size: up to "
+         f"{100 * max(r['inst_minus_rms']['diff'] for r in sw):.0f} points; it shrinks to nothing as tipping saturates (K ≥ 1.87 at the "
+         "base, large σ, μ = 0.3).",
+         f"- **But 'time-varying R tips more' is not general.** Against the *ensemble* RMS (every path given the same average "
+         f"noise), σR(t) tips less at K ≥ 1.33 ({_r(A[1.333]['instantaneous'])}% against {_r(A[1.333]['rms_ensemble'])}% at K = 1.333): "
+         "spreading noise unevenly across paths helps when escape is unlikely and hurts when it is likely. The report's 32.9% "
+         "against 20% (K = 0.8) is the first regime.",
+         f"- **Order in time matters less.** σR(t) against R(t) shuffled in 1-unit blocks: positive in {len(ord_pos)} of {len(sw)} "
+         f"conditions, vanishing in {len(ord_van)}; at most {100 * max(r['inst_minus_block']['diff'] for r in sw):.0f} points.",
+         f"- **Timing.** R rises over the last few model time units before an escape: at K = 0.8 it is "
+         f"{t08['R_before'][8]:.2f} four units before, {t08['R_before'][4]:.2f} two units before and {t08['R_before'][0]:.2f} at passage, "
+         f"against {t08['R_alive_same_time'][0]:.2f} in paths not yet tipped; the rise is more than half done about "
+         f"{lead_time(t08):.1f} units before passage (K = 1.333: {lead_time(t13):.1f}), a little longer than R's autocorrelation "
+         f"time ({t08['autocorr_time']:.1f} and {t13['autocorr_time']:.1f} units). This is built in — the noise is "
+         "largest when R is — and it is in model time; whether a lead of this kind survives annual sampling and the Paper 1 "
+         "pipeline is the G1b question.", "",
+         "## 1. Convergence (common random numbers, 1,000 paths per K)", "",
+         "| K | dt | Tipping, σR(t) | Each path's RMS | Independent | Mean R | σR(t): gap to dt = 0.0025 |", "|---|---|---|---|---|---|---|"]
+    for c in conv:
+        for d, v in c['by_dt'].items():
+            gap = _ci(v['gap_to_finest']['instantaneous']) if 'gap_to_finest' in v else '—'
+            L.append(f"| {c['K']:.3g} | {d} | {_r(v['instantaneous'])}% | {_r(v['rms_trial'])}% | {_r(v['independent'])}% | {v['mean_R']:.3f} | {gap} |")
+    L += ["", "## 2. Mechanism ablation on the same R(t) traces (4,000 paths per K)", "",
+          "| K | Mean R | σR(t) | Each path's RMS | Ensemble RMS | Step-permuted | Block-permuted (1 unit) | Independent | σR(t) − path RMS | σR(t) − block-permuted |",
+          "|---|---|---|---|---|---|---|---|---|---|"]
+    for a in abl:
+        v = a['vs_instantaneous']
+        L.append(f"| {a['K']:.3g} | {a['mean_R']:.3f} | {_r(a['instantaneous'])}% | {_r(a['rms_trial'])}% | {_r(a['rms_ensemble'])}% | "
+                 f"{_r(a['permuted'])}% | {_r(a['block_permuted'])}% | {_r(a['independent'])}% | {_ci(v['rms_trial'])} | {_ci(v['block_permuted'])} |")
+    L += ["", "## 3. Shared fraction ρ (2,000 paths per K, same traces for every ρ)", "",
+          "Tipping with g = σ√(ρR(t)² + (1 − ρ)/N) / with each path's constant RMS of that g; ρ = 0 is independent noise, ρ = 1 the "
+          "report's model.", "", "| ρ | " + " | ".join(f"K = {r['K']:.3g}" for r in rho) + " |", "|---|" + "---|" * len(rho)]
+    for i, x in enumerate(rho[0]['rows']):
+        L.append(f"| {x['rho']:.1f} | " + " | ".join(f"{_r(r['rows'][i]['instantaneous'])} / {_r(r['rows'][i]['rms_trial'])}" for r in rho) + " |")
+    L += ["", "## 4. One-at-a-time sweeps (2,000 paths per condition)", "",
+          "Tipping (%) with σR(t), each path's RMS, block-permuted R and independent noise; the time-variation effect (σR(t) − path "
+          "RMS) and the coupling effect (K against K = 0 in the same condition), points with 95% intervals.", ""]
+    for prm in dict.fromkeys(r['param'] for r in sw):
+        L += [f"**{lab[prm]}**", "", "| Value | K | Mean R | σR(t) | Path RMS | Block-perm. | Independent | Time variation | Coupling |", "|---|---|---|---|---|---|---|---|---|"]
+        for r in [r for r in sw if r['param'] == prm]:
+            L.append(f"| {r['value']:g} | {r['K']:.3g} | {r['mean_R']:.2f} | {_r(r['instantaneous'])} | {_r(r['rms_trial'])} | {_r(r['block_permuted'])} | "
+                     f"{100 * r['independent']['p']:.2f} | {_ci(r['inst_minus_rms'])} | {_ci(r['coupling_effect'])} |")
+        L.append("")
+    L += ["## 5. Timing: R before first passage", "",
+          "| Time before passage | " + " | ".join(f"K = {a['K']:.3g}: tipping paths / not yet tipped" for a in abl if 'timing' in a) + " |", "|---|---|---|"]
+    for i, lag in enumerate(t08['lags']):
+        if i % 2: continue
+        L.append(f"| {lag:g} | " + " | ".join(f"{a['timing']['R_before'][i]:.3f} / {a['timing']['R_alive_same_time'][i]:.3f}" for a in abl if 'timing' in a) + " |")
+    L += ["", f"Paths: {t08['n_tippers']} (K = 0.8) and {t13['n_tippers']} (K = 1.333), at most 500 sampled. At K = 1.333 tipping paths "
+          "have higher R even 10 units before (each path draws its own frequencies, so some paths synchronize more throughout); "
+          "the rise in the last few units comes on top of that.", "",
+          "## 6. Figures", "",
+          "Regenerated from this code with the project palette in `dtt/fig/` (Inter is not installed on this Mac; matplotlib "
+          "falls back to DejaVu Sans): B1, B2, C2, C3, D1, D2, E1 and F1 — F1 now in steps, from the section F model "
+          f"(intermediate {100 * fd['F1']['intermediate (V = 10.7)']['share_by_800']:.1f}% by step 800, median "
+          f"{fd['F1']['intermediate (V = 10.7)']['median_steps']:.0f} steps; strong 100%, median {fd['F1']['strong (V = 27.2)']['median_steps']:.0f}) — and one per run "
+          "(D2a convergence, D2b ablation, D2c ρ, D2d timing, D2e and D2f sweeps). The report's own figures stay unchanged in "
+          "`dtt/legacy/figures_extracted/`.", "",
+          "## 7. What survives, plainly", "",
+          "- The variance law (section A) is exact and is the informative core; it needs no simulation.",
+          "- 'More synchrony → more tipping' survives everywhere it can, but it is built in and says little.",
+          "- The time-variation effect (section E) survives in most conditions where tipping is neither rare nor certain, and is "
+          "driven by persistent episodes of high R; it reverses against an ensemble-average control at high tipping rates.",
+          "- The section D comparison (4.75% against 0.325%) measures R fluctuating, not coupling.",
+          "- Synchrony leads escape in model time by a few units, by construction. The open question is the G1b one."]
+    p = os.path.join(config.repo_root(), 'dtt', 'D2_report.md'); open(p, 'w').write("\n".join(L) + "\n"); print('wrote dtt/D2_report.md')
+
+
+import numpy as np  # noqa: E402  (used by write_d2)
