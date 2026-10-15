@@ -31,7 +31,7 @@ cache predates Inter: delete `~/.matplotlib/fontlist-*.json` and run it again), 
 `docs/methods.md`, and `paper1-pdf` writes the editable LaTeX source `latex/paper1.tex` (with `latex/figures/`) and
 compiles it with XeLaTeX into `paper1.pdf`.
 
-**Editing in LaTeX.** `latex/` is self-contained: upload the folder to Overleaf (Menu → Compiler → XeLaTeX) or run
-`xelatex paper1.tex` twice inside it. The fonts (TeX Gyre Pagella, Inter, Latin Modern Math) are all in TeX Live and are
-loaded by file name, because XeTeX on macOS finds TeX Live's own fonts only that way. A later `make paper1-pdf` will not
+**Editing in LaTeX.** `latex/` is self-contained (`paper1_overleaf.zip` is the same folder zipped). On Overleaf choose
+New Project → Upload Project and pick the zip; the default compiler (pdfLaTeX) works, and so do XeLaTeX and LuaLaTeX.
+Locally, run `pdflatex paper1.tex` or `xelatex paper1.tex` twice inside the folder. A later `make paper1-pdf` will not
 overwrite a `paper1.tex` you have edited; it writes `paper1.generated.tex` beside it instead.

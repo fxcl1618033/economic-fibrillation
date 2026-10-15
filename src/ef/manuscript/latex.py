@@ -25,20 +25,30 @@ BODY = ['01_introduction', '02_data', '03_methods', '04_results', '05_discussion
         '08_ai_disclosure', '09_references', '10_appendix']
 
 PREAMBLE = r"""% Economic Fibrillation, Paper 1 -- editable LaTeX source.
-% Compile with XeLaTeX (twice): xelatex paper1.tex. On Overleaf set Menu -> Compiler -> XeLaTeX.
+% Compile with pdfLaTeX, XeLaTeX or LuaLaTeX (run twice). On Overleaf the default settings work.
 % Generated from paper1/manuscript/ by `python -m ef.manuscript.build pdf`; every number came from a results file
 % (paper1/manuscript/numbers.csv). Edit freely: a later build will not overwrite this file once you have changed it.
 \documentclass[11pt,a4paper]{article}
 
 % ---------------------------------------------------------------- page and fonts
+% Compiles with pdfLaTeX (Overleaf's default) and with XeLaTeX or LuaLaTeX, which use the OpenType fonts.
 \usepackage[margin=2.2cm]{geometry}
-\usepackage{fontspec}
-\usepackage{unicode-math}
-\setmainfont{texgyrepagella}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold,
-  ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
-\setsansfont{Inter}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-Bold,
-  ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic]
-\setmathfont{latinmodern-math.otf}
+\usepackage{amsmath}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{tgpagella}             % TeX Gyre Pagella
+  \usepackage{newpxmath}             % Palatino-style maths to match
+  \usepackage{newunicodechar}        % the few symbols typed directly in the text
+__UNICODE__
+\else
+  \usepackage{fontspec}
+  \usepackage{unicode-math}
+  \setmainfont{texgyrepagella}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold,
+    ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
+  \setmathfont{latinmodern-math.otf}
+\fi
 \usepackage{microtype}
 \setlength{\emergencystretch}{3em}
 \setcounter{secnumdepth}{0}          % sections carry their numbers in their titles
@@ -88,10 +98,28 @@ __ABSTRACT__
 """
 
 
+UNICODE = {'−': r'\ensuremath{-}', '→': r'\ensuremath{\rightarrow}', '×': r'\ensuremath{\times}', '≤': r'\ensuremath{\le}',
+           '≥': r'\ensuremath{\ge}', '≈': r'\ensuremath{\approx}', '±': r'\ensuremath{\pm}', '√': r'\ensuremath{\surd}',
+           'κ': r'\ensuremath{\kappa}', 'Δ': r'\ensuremath{\Delta}', 'λ': r'\ensuremath{\lambda}', 'τ': r'\ensuremath{\tau}',
+           'μ': r'\ensuremath{\mu}', 'φ': r'\ensuremath{\varphi}', 'ρ': r'\ensuremath{\rho}', 'σ': r'\ensuremath{\sigma}',
+           'θ': r'\ensuremath{\theta}', 'ψ': r'\ensuremath{\psi}', 'Ā': r'\={A}', '…': r'\ldots{}', '·': r'\textperiodcentered{}',
+           '§': r'\S{}', 'à': r'\`{a}', '–': r'\textendash{}', '—': r'\textemdash{}', '’': "'", '‘': '`', '“': '``', '”': "''"}
+
+
 def _pandoc(md, shift=0):
-    cmd = ['pandoc', '-f', 'markdown', '-t', 'latex', '--wrap=preserve']
+    """Markdown to LaTeX: one line per paragraph (the editor wraps), real dashes instead of -- and ---."""
+    cmd = ['pandoc', '-f', 'markdown', '-t', 'latex', '--wrap=none']
     if shift: cmd.append(f'--shift-heading-level-by={shift}')
-    return subprocess.run(cmd, input=md, capture_output=True, text=True, check=True).stdout
+    tex = subprocess.run(cmd, input=md, capture_output=True, text=True, check=True).stdout
+    return tex.replace('---', '—').replace('--', '–')
+
+
+def unicode_block(tex):
+    """pdfLaTeX definitions for every non-ASCII character the text uses (XeLaTeX and LuaLaTeX need none)."""
+    chars = sorted({c for c in tex if ord(c) > 127})
+    unknown = [c for c in chars if c not in UNICODE]
+    if unknown: raise SystemExit(f"no pdfLaTeX definition for: {' '.join(unknown)} (add them to ef.manuscript.latex.UNICODE)")
+    return "\n".join(f"  \\newunicodechar{{{c}}}{{{UNICODE[c]}}}" for c in chars)
 
 
 def front(md):
@@ -137,6 +165,7 @@ def write_tex():
     tex = (PREAMBLE.replace('__TITLE__', lit(title)).replace('__PLAINTITLE__', title).replace('__AUTHOR__', author)
            .replace('__DATE__', lit(date)).replace('__ABSTRACT__', lit(abstract)).replace('__KEYWORDS__', lit(keywords)))
     tex += boxed(_pandoc(md, shift=-1)) + "\n\\end{document}\n"
+    tex = tex.replace('__UNICODE__', unicode_block(tex[tex.index('\\begin{document}'):] + title))
     target = os.path.join(OUT, 'paper1.tex')
     if os.path.exists(target) and os.path.exists(STAMP):
         if hashlib.sha256(open(target, 'rb').read()).hexdigest() != open(STAMP).read().strip():

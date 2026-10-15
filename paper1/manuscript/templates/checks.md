@@ -53,8 +53,9 @@ surrogate p in the main text; the main text has six figures, each with its catal
 
 `latex/paper1.tex` is the editable LaTeX version: a classic article (title, author and date centred, a standard
 `abstract`), our own short preamble and the text converted by pandoc, with the six main figures as vector PDFs in
-`latex/figures/`. It compiles with XeLaTeX here or on Overleaf (TeX Gyre Pagella, Inter and Latin Modern Math, all in TeX
-Live, loaded by file name). `paper1.pdf` is built from it by `make paper1-pdf`; the log has no missing characters, and
+`latex/figures/`. It compiles with pdfLaTeX (Overleaf's default), XeLaTeX or LuaLaTeX: the preamble picks TeX Gyre Pagella with
+matching maths for pdfLaTeX and the OpenType Pagella and Latin Modern Math for the other two. Each paragraph is one
+line in the source, so the editor wraps it. `paper1.pdf` is built from it by `make paper1-pdf`; the log has no missing characters, and
 the few slightly over-wide lines are all in the wide appendix tables. Once `latex/paper1.tex` is edited by hand, a later
 build writes `latex/paper1.generated.tex` instead of overwriting it. `docs/FIGURES.md` and the figure books are not
 rebuilt: the redrawn figures are listed in `tools/figure_catalog.py` (`REDRAWN_S31`) but not yet merged into its

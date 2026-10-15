@@ -2,7 +2,7 @@
 
 **Siddhant Shinde**
 
-*Draft for review, 15 October 2026. Paper 1 is locked: no new tests.*
+*Draft for review, 15 October 2026*
 
 **Abstract.** When the business cycles of many economies line up, a shock common to all of them stops cancelling in
 world output. We measure that alignment for 31 economies over 1970–2022, treating each economy's 2–9 year cycle in real
