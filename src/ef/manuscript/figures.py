@@ -166,7 +166,7 @@ def f25(plt, d):
             y = s['corr']; ax.text(x[k] + off, y + (0.015 if y >= 0 else -0.015), f"p {_p(s['p'])}", ha='center', va='bottom' if y >= 0 else 'top', fontsize=6.8,
                                    fontweight='bold' if s['p'] <= 0.05 else 'normal')
     ax.axhline(0, color='black', lw=0.6); ax.set_xticks(x, names); ax.set_ylabel('corr(r, recession indicator)')
-    ax.set_title(MAIN['F2.5'][2], loc='left'); ax.legend(loc='lower left', fontsize=7.5); ax.set_ylim(None, max(s['corr'] for s in P + C) + 0.08)
+    ax.set_title(MAIN['F2.5'][2], loc='left'); ax.legend(loc='lower left', fontsize=7.5); ax.set_ylim(min(s['corr'] for s in P + C) - 0.07, max(s['corr'] for s in P + C) + 0.08)
     _foot(fig, 'One-sided p against 53 circular shifts of the recession years (floor 0.019); leads and the crisis year tested upward, '
                'after-lags downward; bold: p ≤ 0.05. Past-only phases use data up to each year only.')
     _save(fig, 'F2.5')

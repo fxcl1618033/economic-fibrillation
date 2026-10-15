@@ -52,9 +52,14 @@ def write_sources():
 
 # ------------------------------------------------------------------ rendering
 
+def _widen_first_column(md):
+    """Pandoc sizes wrapped table columns by the dashes under the header: give the label column three times the room."""
+    return re.sub(r'^\|---\|', '|------------|', md, flags=re.M)
+
+
 def _tables(text, where):
     def rep(m):
-        md, src = tables.TABLES[m.group(1)]()
+        md, src = tables.TABLES[m.group(1)](); md = _widen_first_column(md)
         values.USED.append((where, f"table:{m.group(1)}", '', '(table)', ';'.join(dict.fromkeys(s for s in src if s))))
         return md
     return re.sub(r'\{\{table:(\w+)\}\}', rep, text)
@@ -199,8 +204,8 @@ def build_pdf():
         raise SystemExit("cannot build the PDF: missing " + ", ".join(missing) + ". See paper1/manuscript/BUILD_PDF.md for the install commands.")
     fonts = subprocess.run(['fc-list'], capture_output=True, text=True).stdout if shutil.which('fc-list') else ''
     if 'Inter' not in fonts: raise SystemExit("cannot build the PDF: the Inter font is not installed. See paper1/manuscript/BUILD_PDF.md.")
-    cmd = ['pandoc', 'paper1.md', '-o', 'paper1.pdf', '--pdf-engine=xelatex', '-V', 'mainfont=TeX Gyre Pagella', '-V', 'sansfont=Inter',
-           '-V', 'mathfont=Latin Modern Math', '-V', 'geometry:margin=2.5cm', '-V', 'fontsize=11pt', '--resource-path=.:../..']
+    cmd = ['pandoc', 'paper1.md', '-o', 'paper1.pdf', '--pdf-engine=xelatex', '--include-in-header=header.tex',
+           '-V', 'geometry:margin=2.2cm', '-V', 'fontsize=11pt', '-V', 'colorlinks=true', '--resource-path=.:../..']
     subprocess.run(cmd, cwd=MS, check=True)
 
 

@@ -116,8 +116,7 @@ rerun with a rescaled bracket before anything was reported (decision log). The p
   source) between the Methods and the Limitations; see `CHECKS.md`.
 - **The number trace is automatic, with limits.** Placeholders cover every result; the remaining digits are classified
   by rule (years as dates, settings from the config files, small counts). Read `TRACE.md` to see each one.
-- **Figures** use DejaVu Sans, because Inter is not installed; redraw them after installing Inter. `docs/FIGURES.md`
-  and the figure books are not rebuilt (that needs poppler and LaTeX). The supplementary figures other than F4.5 and
-  F5.4 still show the 26 economies or convention W.
-- **The PDF is not built**: LaTeX, pandoc, poppler and Inter are missing (`BUILD_PDF.md`).
+- **Figures** are redrawn in Inter. `docs/FIGURES.md` and the figure books are not rebuilt yet. The supplementary
+  figures other than F4.5 and F5.4 still show the 26 economies or convention W.
+- **The PDF** is `paper1.pdf` (`make paper1-pdf`); the wide appendix tables are tight on the page.
 - **The title is a draft**, and so is every sentence: you are the author.

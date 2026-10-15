@@ -49,8 +49,10 @@ Limitations; the lead stated past-only first with $n \approx 2$ in the same sent
 ({{@g1b_verdict:network,primary,verdict|raw}}) everywhere it appears; the floors quoted with every circular-shift and
 surrogate p in the main text; the main text has six figures, each with its catalogue ID.
 
-## 3. What could not be done
+## 3. The PDF
 
-- The PDF (`BUILD_PDF.md`): LaTeX, pandoc, poppler and Inter are not installed.
-- `docs/FIGURES.md` and the figure books: their builder needs poppler and LaTeX; the redrawn figures are listed in
-  `tools/figure_catalog.py` (`REDRAWN_S31`) and in Appendix "Supplementary figures".
+`paper1.pdf` is built by `make paper1-pdf` (pandoc and xelatex; TeX Gyre Pagella, Inter, Latin Modern Math, loaded by
+file name in `header.tex` because XeTeX on macOS finds TeX Live's own fonts only that way). The LaTeX log has no
+missing characters; ten lines are slightly too wide, all in the wide appendix tables. The figures are drawn in Inter.
+`docs/FIGURES.md` and the figure books are not rebuilt: the redrawn figures are listed in `tools/figure_catalog.py`
+(`REDRAWN_S31`) but not yet merged into its entries.

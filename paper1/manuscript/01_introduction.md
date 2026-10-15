@@ -1,7 +1,7 @@
 ## 1 Introduction
 
-Global recessions arrive everywhere at once. In 2009 25 of the 31 economies studied
-here contracted, and in 2020 28; in the recessions of 1982 and 1991 the number was
+Global recessions arrive everywhere at once. In 2009, 25 of the 31 economies studied
+here contracted, and in 2020, 28; in the recessions of 1982 and 1991 the number was
 9 and 9. A standard argument says this should
 be rare. If disturbances to economies are independent, they cancel in the aggregate, and world output should vary
 far less than any one economy; the argument is usually traced to Lucas (1977), and it implies that aggregate

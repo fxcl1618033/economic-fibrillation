@@ -142,7 +142,7 @@ interval lies above the correct rate. Real dates: 1975, 1982, 1991, 2009, 2020. 
 lowest growth in world GDP per capita, at least five years apart.
 
 | Test | Correct rate | Kuramoto, real dates | Stuart–Landau, real dates | Kuramoto, own dates | Stuart–Landau, own dates |
-|---|---|---|---|---|---|
+|------------|---|---|---|---|---|
 | Arc, lead-2 | 3.8% | 3.3% | 3.6% | **5.2%** | **5.3%** |
 | Arc, lead-1 | 3.8% | 2.9% | 4.4% | **8.5%** | **8.6%** |
 | Arc, crisis year | 3.8% | 4.4% | 3.3% | **8.9%** | **8.2%** |
@@ -390,7 +390,7 @@ no future data, so a lead that survives it is not an artifact of the two-sided f
 the 30). Correlation, one-sided $p$ in brackets (circular shifts, floor 0.019).
 
 | Convention | Lead-2 | Lead-1 | Lag $-2$ | $r$–$\bar A$, detrended | S30 lead-1 |
-|---|---|---|---|---|---|
+|------------|---|---|---|---|---|
 | P | +0.235 (0.038) | +0.231 (0.019) | −0.258 (0.057) | +0.646 (0.019) | +0.217 (0.019) |
 | W | +0.216 (0.057) | +0.204 (0.019) | −0.165 (0.113) | +0.566 (0.019) | +0.184 (0.057) |
 | N | +0.216 (0.038) | +0.192 (0.057) | −0.190 (0.094) | +0.547 (0.019) | +0.173 (0.094) |

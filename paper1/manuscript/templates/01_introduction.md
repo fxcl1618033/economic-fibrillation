@@ -1,8 +1,8 @@
 <!-- Introduction: the funnel of docs/paper_plan.md, positioned against Lucas (1977), Gabaix (2011), Acemoglu et al. (2012) and Ashwin et al. (2012). -->
 ## 1 Introduction
 
-Global recessions arrive everywhere at once. In 2009 {{S31/P/channels#contracting/2009|int}} of the 31 economies studied
-here contracted, and in 2020 {{S31/P/channels#contracting/2020|int}}; in the recessions of 1982 and 1991 the number was
+Global recessions arrive everywhere at once. In 2009, {{S31/P/channels#contracting/2009|int}} of the 31 economies studied
+here contracted, and in 2020, {{S31/P/channels#contracting/2020|int}}; in the recessions of 1982 and 1991 the number was
 {{S31/P/channels#contracting/1982|int}} and {{S31/P/channels#contracting/1991|int}}. A standard argument says this should
 be rare. If disturbances to economies are independent, they cancel in the aggregate, and world output should vary
 far less than any one economy; the argument is usually traced to Lucas (1977), and it implies that aggregate

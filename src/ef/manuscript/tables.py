@@ -69,7 +69,7 @@ def _a1_cell(sample, row):
         if row == 'after2': a = R('arc'); return cp(a['arc']['after2']['corr'], a['arc']['after2']['p']), src
         if row == 'amp':
             a = R('amplitude'); s = f"{fmt(a['corr_detrended'], 'c3')} ({fmt(a['p_shift'], 'p')}"
-            return s + (f"; surr. {fmt(a['p_surrogate'], 'p')})" if 'p_surrogate' in a else ")"), src
+            return s + (f"; surr. {fmt(a['p_surrogate'], 'p')})" if a.get('p_surrogate') is not None else ")"), src
         if row in ('d1', 'd3'): a = R('diversification'); return fmt(a['gdp_mean' if row == 'd1' else 'equal']['cross_fraction_of_excess'], 'pct1'), src
         if row == 'd7':
             a = R('cross_split')['gdp_mean']; return " / ".join(fmt(a[k], 'pct0').rstrip('%') for k in ('from_correlation', 'from_swing_size', 'interaction')) + "%", src

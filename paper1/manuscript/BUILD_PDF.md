@@ -1,8 +1,7 @@
 # Building the PDF
 
-The PDF step stopped on 15 October 2026 because these tools are missing on this Mac: **Homebrew, MacTeX (xelatex),
-pandoc, poppler and the Inter font**. Nothing was worked around. Install them, in a terminal, in this order (the first
-asks for your password):
+Built on 15 October 2026, after Sid installed Homebrew, MacTeX, pandoc, poppler and Inter. On a new Mac, install them
+in a terminal window (not the chat box; the first two ask for your password), in this order:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -32,3 +31,6 @@ Sans; if the figures still come out in DejaVu Sans, matplotlib's font cache pred
 `~/.matplotlib/fontlist-*.json` and run it again), `paper1-text` regenerates the text and `docs/methods.md`, and `paper1-pdf` runs pandoc with xelatex on
 `paper1/manuscript/paper1.md` (TeX Gyre Pagella for text, Inter for sans, Latin Modern Math). The same install lets
 `tools/build_figure_docs.py` rebuild `docs/FIGURES.md` and the figure books with the redrawn figures.
+
+The fonts are loaded by file name in `header.tex`: XeTeX on macOS finds only system fonts by family name, and TeX Gyre
+Pagella and Latin Modern Math live inside TeX Live, not in the system font folders.

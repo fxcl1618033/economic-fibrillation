@@ -22,8 +22,8 @@ points
 
 ## 1 Introduction
 
-Global recessions arrive everywhere at once. In 2009 25 of the 31 economies studied
-here contracted, and in 2020 28; in the recessions of 1982 and 1991 the number was
+Global recessions arrive everywhere at once. In 2009, 25 of the 31 economies studied
+here contracted, and in 2020, 28; in the recessions of 1982 and 1991 the number was
 9 and 9. A standard argument says this should
 be rare. If disturbances to economies are independent, they cancel in the aggregate, and world output should vary
 far less than any one economy; the argument is usually traced to Lucas (1977), and it implies that aggregate
@@ -214,7 +214,7 @@ interval lies above the correct rate. Real dates: 1975, 1982, 1991, 2009, 2020. 
 lowest growth in world GDP per capita, at least five years apart.
 
 | Test | Correct rate | Kuramoto, real dates | Stuart–Landau, real dates | Kuramoto, own dates | Stuart–Landau, own dates |
-|---|---|---|---|---|---|
+|------------|---|---|---|---|---|
 | Arc, lead-2 | 3.8% | 3.3% | 3.6% | **5.2%** | **5.3%** |
 | Arc, lead-1 | 3.8% | 2.9% | 4.4% | **8.5%** | **8.6%** |
 | Arc, crisis year | 3.8% | 4.4% | 3.3% | **8.9%** | **8.2%** |
@@ -462,7 +462,7 @@ no future data, so a lead that survives it is not an artifact of the two-sided f
 the 30). Correlation, one-sided $p$ in brackets (circular shifts, floor 0.019).
 
 | Convention | Lead-2 | Lead-1 | Lag $-2$ | $r$–$\bar A$, detrended | S30 lead-1 |
-|---|---|---|---|---|---|
+|------------|---|---|---|---|---|
 | P | +0.235 (0.038) | +0.231 (0.019) | −0.258 (0.057) | +0.646 (0.019) | +0.217 (0.019) |
 | W | +0.216 (0.057) | +0.204 (0.019) | −0.165 (0.113) | +0.566 (0.019) | +0.184 (0.057) |
 | N | +0.216 (0.038) | +0.192 (0.057) | −0.190 (0.094) | +0.547 (0.019) | +0.173 (0.094) |
@@ -1078,12 +1078,12 @@ The original 26 economies, the 30 (without Russia), the 31, the 31 without each 
 pre-registered for the swing-size tests only, the one with Russia from 1992 for the circular-shift tests only).
 
 | Quantity | S26 | S30 | S31 | S31 without China | without Brazil | without Saudi Arabia | without Iran | without Russia (= S30) | Russia from 1992 | without Iran and Saudi Arabia |
-|---|---|---|---|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|---|---|---|---|
 | Arc, lead-2 | +0.230 (0.038) | +0.226 (0.038) | +0.235 (0.038) | +0.226 (0.057) | +0.225 (0.038) | +0.252 (0.019) | +0.244 (0.038) | +0.226 (0.038) | +0.229 (0.038) | — |
 | Arc, lead-1 | +0.216 (0.019) | +0.217 (0.019) | +0.231 (0.019) | +0.231 (0.019) | +0.224 (0.019) | +0.229 (0.038) | +0.241 (0.019) | +0.217 (0.019) | +0.224 (0.019) | — |
 | Lead-1, past-only phases | +0.374 (0.038) | +0.369 (0.038) | +0.379 (0.038) | +0.357 (0.057) | +0.391 (0.038) | +0.403 (0.038) | +0.373 (0.038) | +0.369 (0.038) | — | — |
 | Arc, after-2 (lower tail) | −0.277 (0.019) | −0.236 (0.057) | −0.258 (0.057) | −0.262 (0.038) | −0.274 (0.019) | −0.260 (0.038) | −0.274 (0.019) | −0.236 (0.057) | −0.254 (0.038) | — |
-| r with swing size, detrended | +0.608 (0.019; surr. 0.0002) | +0.641 (0.019; surr. 0.0002) | +0.646 (0.019; surr. 0.0002) | +0.656 (0.019; surr. 0.0002) | +0.628 (0.019; surr. 0.0002) | +0.625 (0.019; surr. 0.0002) | +0.650 (0.019; surr. 0.0002) | +0.641 (0.019; surr. 0.0002) | +0.655 (0.019; surr. —) | +0.625 (0.019; surr. 0.0002) |
+| r with swing size, detrended | +0.608 (0.019; surr. 0.0002) | +0.641 (0.019; surr. 0.0002) | +0.646 (0.019; surr. 0.0002) | +0.656 (0.019; surr. 0.0002) | +0.628 (0.019; surr. 0.0002) | +0.625 (0.019; surr. 0.0002) | +0.650 (0.019; surr. 0.0002) | +0.641 (0.019; surr. 0.0002) | +0.655 (0.019) | +0.625 (0.019; surr. 0.0002) |
 | Cross share of the recession excess, GDP weights | 80.2% | 83.3% | 84.3% | 83.1% | 83.4% | 83.8% | 84.0% | 83.3% | — | 83.5% |
 | Same, equal weights | 96.5% | 96.8% | 97.0% | 96.9% | 96.8% | 97.3% | 96.7% | 96.8% | — | 97.0% |
 | Cross-term rise: correlation / swing size / interaction | 33 / 53 / 14% | 44 / 41 / 15% | 46 / 40 / 14% | 41 / 45 / 14% | 45 / 42 / 14% | 45 / 41 / 14% | 44 / 42 / 14% | 44 / 41 / 15% | — | 43 / 43 / 14% |
@@ -1103,7 +1103,7 @@ unless stated.
 *The 31 economies.*
 
 | Check | Lead-2 | Lead-1 | Crisis year | After-2 (lower tail) |
-|---|---|---|---|---|
+|------------|---|---|---|---|
 | Baseline | +0.24 (0.038) | +0.23 (0.019) | +0.16 (0.189) | −0.26 (0.057) |
 | Band 2–8 years | +0.23 (0.057) | +0.19 (0.094) | +0.12 (0.226) | −0.27 (0.019) |
 | Band 3–10 years | +0.26 (0.038) | +0.25 (0.019) | +0.16 (0.132) | +0.00 (0.509) |
@@ -1123,7 +1123,7 @@ unless stated.
 *The 30 economies (without Russia).*
 
 | Check | Lead-2 | Lead-1 | Crisis year | After-2 (lower tail) |
-|---|---|---|---|---|
+|------------|---|---|---|---|
 | Baseline | +0.23 (0.038) | +0.22 (0.019) | +0.16 (0.189) | −0.24 (0.057) |
 | Band 2–8 years | +0.22 (0.038) | +0.18 (0.113) | +0.12 (0.226) | −0.26 (0.038) |
 | Band 3–10 years | +0.26 (0.038) | +0.24 (0.019) | +0.16 (0.113) | +0.02 (0.566) |
@@ -1143,7 +1143,7 @@ unless stated.
 *The original 26 economies.*
 
 | Check | Lead-2 | Lead-1 | Crisis year | After-2 (lower tail) |
-|---|---|---|---|---|
+|------------|---|---|---|---|
 | Baseline | +0.23 (0.038) | +0.22 (0.019) | +0.15 (0.189) | −0.28 (0.019) |
 | Band 2–8 years | +0.22 (0.038) | +0.19 (0.057) | +0.12 (0.245) | −0.31 (0.019) |
 | Band 3–10 years | +0.26 (0.019) | +0.23 (0.038) | +0.16 (0.094) | −0.02 (0.453) |
@@ -1163,7 +1163,7 @@ unless stated.
 ### Table A3. Leave one economy out (31 economies)
 
 | Left out | Lead-2 | Lead-1 | Crisis year | After-2 (lower tail) |
-|---|---|---|---|---|
+|------------|---|---|---|---|
 | United States | +0.228 (0.038) | +0.221 (0.019) | +0.153 (0.189) | −0.250 (0.057) |
 | United Kingdom | +0.231 (0.038) | +0.229 (0.019) | +0.156 (0.170) | −0.258 (0.038) |
 | Germany | +0.237 (0.038) | +0.242 (0.019) | +0.165 (0.189) | −0.274 (0.019) |
@@ -1203,7 +1203,7 @@ arrow, against 5,000 surrogates with ends (§3.4.4). **Bold**: the two fall on o
 surrogates for the arcs, independent ones otherwise.
 
 | Test | S31 | S30 | S26 |
-|---|---|---|---|
+|------------|---|---|---|
 | Arc, lead-1, convention P | +0.231 (0.019 → 0.033) | +0.217 (0.019 → 0.043) | +0.216 (0.019 → 0.042) |
 | Arc, crisis year, convention P | +0.159 (0.189 → 0.116) | +0.161 (0.189 → 0.108) | +0.149 (0.189 → 0.123) |
 | Arc, after-1, convention P | +0.099 (0.717 → 0.760) | +0.111 (0.755 → 0.786) | +0.078 (0.679 → 0.707) |
@@ -1248,7 +1248,7 @@ surrogates for the arcs, independent ones otherwise.
 Raw one-sided $p$, Bonferroni-adjusted $p$ and Benjamini–Hochberg $q$ over the five lags of the arc.
 
 | Lag | S31 raw p | S31 Bonferroni | S31 BH q | S30 raw p | S30 Bonferroni | S30 BH q | S26 raw p | S26 Bonferroni | S26 BH q |
-|---|---|---|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|---|---|---|
 | Lead-2 | 0.038 | 0.189 | 0.094 | 0.038 | 0.189 | 0.094 | 0.038 | 0.189 | 0.063 |
 | Lead-1 | 0.019 | 0.094 | 0.094 | 0.019 | 0.094 | 0.094 | 0.019 | 0.094 | 0.047 |
 | Crisis year | 0.189 | 0.943 | 0.236 | 0.189 | 0.943 | 0.236 | 0.189 | 0.943 | 0.236 |
@@ -1267,7 +1267,7 @@ Mean $r$ with 95% bootstrap intervals (10,000 draws), and the superposed epoch: 
 years after the five recessions. Descriptive.
 
 | Sample | Recession years | Downturn years (1998, 2001, 2012) | Other years | Epoch mean r, t−4 … t+4 |
-|---|---|---|---|---|
+|------------|---|---|---|---|
 | S31 | 0.60 [0.39, 0.83] | 0.30 [0.13, 0.55] | 0.48 [0.42, 0.55] | 0.49, 0.55, 0.64, 0.65, 0.60, 0.56, 0.31, 0.29, 0.35 |
 | S30 | 0.61 [0.39, 0.84] | 0.30 [0.12, 0.55] | 0.49 [0.42, 0.56] | 0.50, 0.56, 0.64, 0.65, 0.61, 0.57, 0.33, 0.31, 0.37 |
 | S26 | 0.65 [0.45, 0.86] | 0.37 [0.23, 0.62] | 0.54 [0.47, 0.61] | 0.57, 0.62, 0.70, 0.70, 0.65, 0.60, 0.35, 0.35, 0.40 |
@@ -1278,7 +1278,7 @@ $N_{\mathrm{eff}} = 1/E[r^2]$ over each group of years (Box 1), with two-sided (
 before means the years before the five recessions. Descriptive.
 
 | Sample, phases | All years | Recession years | Year before | Normal years | 2009 | 2020 |
-|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|
 | S31, two-sided (P) | 3.46 | 2.36 | 2.06 | 3.50 | 1.37 | 1.11 |
 | S31, past-only (C) | 5.97 | 2.18 | 2.59 | 7.17 | 1.38 | 1.15 |
 | S30, two-sided (P) | 3.39 | 2.30 | 2.07 | 3.44 | 1.38 | 1.07 |
@@ -1289,7 +1289,7 @@ before means the years before the five recessions. Descriptive.
 *By recession year, 31 economies:*
 
 | Phases | 1975 | 1982 | 1991 | 2009 | 2020 |
-|---|---|---|---|---|---|
+|------------|---|---|---|---|---|
 | two-sided (P) | 5.09 | 5.41 | 9.83 | 1.37 | 1.11 |
 | past-only (C) | 2.72 | 6.48 | 5.71 | 1.38 | 1.15 |
 
@@ -1299,7 +1299,7 @@ The early-warning trends of §3.5.7 with each recession alone, left out, or in p
 seed as the pre-registered test). Not pre-registered; asked for after the main run.
 
 | Recessions used | Variance trend τ (p) | Autocorrelation trend τ (p) |
-|---|---|---|
+|------------|---|---|
 | 1982, 1991, 2009, 2020 | +0.438 (0.031) | −0.152 (0.789) |
 | 1982 | +0.393 (0.205) | +0.250 (0.317) |
 | 1991 | −0.357 (0.668) | −0.643 (0.888) |
@@ -1315,7 +1315,7 @@ seed as the pre-registered test). Not pre-registered; asked for after the main r
 ### Table A9. Rolling windows kept inside 1970–2022
 
 | Rolling statistic, windows kept inside 1970–2022 | S31 | S30 | S26 |
-|---|---|---|---|
+|------------|---|---|---|
 | Cross share of the recession excess, GDP / equal weights | 86.8% / 96.9% | 85.9% / 96.7% | 82.4% / 96.9% |
 | MST contraction before recessions, raw; detrended | +0.095 (0.654); +0.333 (0.910) | +0.119 (0.692); +0.381 (0.936) | +0.000 (0.504); +0.167 (0.740) |
 | Autocorrelation trend | −0.107 (0.644) | −0.036 (0.550) | −0.071 (0.595) |
@@ -1329,7 +1329,7 @@ from 1965), with two-sided phases and with phases from past data only. Descripti
 past-only phases except real GDP's lead-1.
 
 | Channel | Economies | Lead-2 | Lead-1 | Crisis year | After-2 | Past-only lead-2 | Past-only lead-1 |
-|---|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|---|
 | Real GDP (Global Macro Database) | 30 | +0.225 (0.057) | +0.254 (0.019) | +0.208 (0.094) | −0.320 (0.019) | −0.082 (0.679) | +0.319 (0.038) |
 | Investment | 28 | +0.270 (0.038) | +0.262 (0.057) | +0.197 (0.132) | −0.203 (0.094) | −0.110 (0.717) | +0.178 (0.170) |
 | Short-term interest rate | 19 | +0.273 (0.019) | +0.130 (0.113) | −0.021 (0.623) | −0.069 (0.226) | +0.165 (0.151) | −0.003 (0.472) |
@@ -1339,7 +1339,7 @@ past-only phases except real GDP's lead-1.
 Past-only lead-1 on 1,000 simulated worlds per row (§5.4). Differences in percentage points, paired by world.
 
 | Worlds | Layer | Past-only lead-1 rejects (95% interval) | Minus constant noise, points (95% interval) | Minus shuffled synchrony, points (95% interval) | Worlds at p ≤ 0.038 | Verdict |
-|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|
 | trade-coupled (κ\*) | primary | 6.3% (5.0%–8.0%) | +3.5 (+1.9 to +5.1) | +3.4 (+1.7 to +5.1) | 6.3% | partly |
 | trade-coupled (κ\*) | one state per economy | 3.8% (2.8%–5.2%) | +0.1 (−1.5 to +1.7) | +0.6 (−1.0 to +2.2) | 3.8% | not reproduced |
 | trade-coupled (κ\*) | noise from Ā·R_A | 7.1% (5.7%–8.9%) | +4.3 (+2.6 to +6.0) | +3.8 (+2.0 to +5.6) | 7.1% | partly |
@@ -1357,7 +1357,7 @@ Past-only lead-1 on 1,000 simulated worlds per row (§5.4). Differences in perce
 Every lag, three samples (Table 2 gives the summary for the 31).
 
 | Sample | Convention | Lead-2 | Lead-1 | Crisis year | After-1 | After-2 | r–Ā detrended |
-|---|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|---|
 | S31 | P | +0.235 (0.038) | +0.231 (0.019) | +0.159 (0.189) | +0.099 (0.717) | −0.258 (0.057) | +0.646 (0.019) |
 | S31 | W | +0.216 (0.057) | +0.204 (0.019) | +0.134 (0.189) | +0.109 (0.774) | −0.165 (0.113) | +0.566 (0.019) |
 | S31 | N | +0.216 (0.038) | +0.192 (0.057) | +0.135 (0.208) | +0.105 (0.755) | −0.190 (0.094) | +0.547 (0.019) |
@@ -1385,7 +1385,7 @@ Stuart–Landau) and coupling (none, common forcing $\varphi^*$, trade links at 
 *Real recession dates.*
 
 | Test | K none | K forcing | K κ*/2 | K κ* | SL none | SL forcing | SL κ*/2 | SL κ* |
-|---|---|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|---|---|
 | Arc, lead-2 | 3.3% | 4.2% | 3.6% | 2.3% | 3.6% | 3.7% | 4.7% | 4.5% |
 | Arc, lead-1 | 2.9% | 3.8% | 4.4% | 3.6% | 4.4% | **5.2%** | **5.3%** | 4.0% |
 | Arc, crisis year | 4.4% | 3.7% | 3.1% | 3.0% | 3.3% | 3.3% | 3.0% | 3.3% |
@@ -1412,7 +1412,7 @@ Stuart–Landau) and coupling (none, common forcing $\varphi^*$, trade links at 
 *Each world's own recession dates.*
 
 | Test | K none | K forcing | K κ*/2 | K κ* | SL none | SL forcing | SL κ*/2 | SL κ* |
-|---|---|---|---|---|---|---|---|---|
+|------------|---|---|---|---|---|---|---|---|
 | Arc, lead-2 | **5.2%** | **7.4%** | 3.0% | 3.3% | **5.3%** | **8.9%** | 3.6% | 3.7% |
 | Arc, lead-1 | **8.5%** | **32.5%** | **10.8%** | **15.0%** | **8.6%** | **41.9%** | **16.3%** | **20.6%** |
 | Arc, crisis year | **8.9%** | **29.6%** | **13.5%** | **16.8%** | **8.2%** | **38.1%** | **19.1%** | **25.1%** |
