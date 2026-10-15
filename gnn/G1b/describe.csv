@@ -1,0 +1,100 @@
+setting,variant,kind,measure,recession,year_before,other
+network,primary,layer,true r,0.529951,0.493326,0.426585
+network,primary,layer,pipeline r (P),0.565892,0.549769,0.469775
+network,primary,layer,pipeline r (C),0.386765,0.369964,0.343944
+network,primary,constant,true r,0.443571,0.440015,0.443635
+network,primary,constant,pipeline r (P),0.487669,0.486802,0.487
+network,primary,constant,pipeline r (C),0.349749,0.347754,0.35117
+network,primary,shuffled,true r,0.446207,0.442296,0.443043
+network,primary,shuffled,pipeline r (P),0.491808,0.489799,0.486142
+network,primary,shuffled,pipeline r (C),0.352301,0.349736,0.350623
+network,per_economy,layer,true r,0.492499,0.472625,0.434474
+network,per_economy,layer,pipeline r (P),0.533016,0.527146,0.477414
+network,per_economy,layer,pipeline r (C),0.378984,0.356167,0.346905
+network,per_economy,constant,true r,0.446166,0.442862,0.442992
+network,per_economy,constant,pipeline r (P),0.491198,0.493822,0.485791
+network,per_economy,constant,pipeline r (C),0.359199,0.350682,0.349713
+network,per_economy,shuffled,true r,0.446218,0.443747,0.442903
+network,per_economy,shuffled,pipeline r (P),0.491687,0.492638,0.485921
+network,per_economy,shuffled,pipeline r (C),0.355574,0.346976,0.350565
+network,weighted,layer,true r,0.530791,0.494113,0.426345
+network,weighted,layer,pipeline r (P),0.566674,0.550434,0.469554
+network,weighted,layer,pipeline r (C),0.388032,0.37034,0.343727
+network,weighted,constant,true r,0.443571,0.440015,0.443635
+network,weighted,constant,pipeline r (P),0.487669,0.486802,0.487
+network,weighted,constant,pipeline r (C),0.349749,0.347754,0.35117
+network,weighted,shuffled,true r,0.448093,0.444239,0.442575
+network,weighted,shuffled,pipeline r (P),0.492092,0.490078,0.486063
+network,weighted,shuffled,pipeline r (C),0.349243,0.354052,0.350479
+network,mu0.1,layer,true r,0.539148,0.499006,0.424631
+network,mu0.1,layer,pipeline r (P),0.574777,0.557001,0.467665
+network,mu0.1,layer,pipeline r (C),0.392684,0.373482,0.342734
+network,mu0.1,constant,true r,0.443245,0.440554,0.443615
+network,mu0.1,constant,pipeline r (P),0.488309,0.487355,0.486853
+network,mu0.1,constant,pipeline r (C),0.350216,0.345838,0.351351
+network,mu0.1,shuffled,true r,0.447507,0.444078,0.44267
+network,mu0.1,shuffled,pipeline r (P),0.491948,0.491087,0.485966
+network,mu0.1,shuffled,pipeline r (C),0.35276,0.353319,0.350139
+network,mu0.3,layer,true r,0.513284,0.483058,0.430035
+network,mu0.3,layer,pipeline r (P),0.550334,0.53745,0.473343
+network,mu0.3,layer,pipeline r (C),0.376136,0.368762,0.345458
+network,mu0.3,constant,true r,0.445388,0.439792,0.443437
+network,mu0.3,constant,pipeline r (P),0.488009,0.487755,0.486849
+network,mu0.3,constant,pipeline r (C),0.349547,0.3506,0.350852
+network,mu0.3,shuffled,true r,0.446016,0.441724,0.443135
+network,mu0.3,shuffled,pipeline r (P),0.492895,0.489432,0.486064
+network,mu0.3,shuffled,pipeline r (C),0.349934,0.348436,0.351061
+network,refractory0,layer,true r,0.545919,0.516015,0.423671
+network,refractory0,layer,pipeline r (P),0.583166,0.572627,0.466887
+network,refractory0,layer,pipeline r (C),0.401484,0.386145,0.341079
+network,refractory0,constant,true r,0.446748,0.441634,0.443101
+network,refractory0,constant,pipeline r (P),0.489595,0.489569,0.486568
+network,refractory0,constant,pipeline r (C),0.351466,0.3475,0.351032
+network,refractory0,shuffled,true r,0.450009,0.443298,0.442588
+network,refractory0,shuffled,pipeline r (P),0.494311,0.491225,0.48581
+network,refractory0,shuffled,pipeline r (C),0.350425,0.350261,0.350849
+network,refractory4,layer,true r,0.519889,0.477515,0.430327
+network,refractory4,layer,pipeline r (P),0.553551,0.533507,0.473868
+network,refractory4,layer,pipeline r (C),0.377243,0.359258,0.346596
+network,refractory4,constant,true r,0.441306,0.439396,0.443972
+network,refractory4,constant,pipeline r (P),0.484875,0.484841,0.487565
+network,refractory4,constant,pipeline r (C),0.348421,0.347879,0.351306
+network,refractory4,shuffled,true r,0.443435,0.442003,0.443411
+network,refractory4,shuffled,pipeline r (P),0.488635,0.490052,0.486507
+network,refractory4,shuffled,pipeline r (C),0.350518,0.354309,0.350306
+network,tau0.5,layer,true r,0.543039,0.505107,0.423273
+network,tau0.5,layer,pipeline r (P),0.580333,0.562885,0.46612
+network,tau0.5,layer,pipeline r (C),0.396508,0.37714,0.341755
+network,tau0.5,constant,true r,0.443253,0.440806,0.44358
+network,tau0.5,constant,pipeline r (P),0.488226,0.486412,0.486978
+network,tau0.5,constant,pipeline r (C),0.351548,0.345791,0.351186
+network,tau0.5,shuffled,true r,0.446388,0.443158,0.442915
+network,tau0.5,shuffled,pipeline r (P),0.489987,0.489491,0.486393
+network,tau0.5,shuffled,pipeline r (C),0.350266,0.351908,0.350611
+network,tau2,layer,true r,0.520954,0.481637,0.429173
+network,tau2,layer,pipeline r (P),0.555764,0.537791,0.472542
+network,tau2,layer,pipeline r (C),0.378151,0.362925,0.345877
+network,tau2,constant,true r,0.446508,0.439625,0.443323
+network,tau2,constant,pipeline r (P),0.4888,0.487095,0.48683
+network,tau2,constant,pipeline r (C),0.3495,0.349865,0.350945
+network,tau2,shuffled,true r,0.446546,0.44104,0.443151
+network,tau2,shuffled,pipeline r (P),0.491494,0.488603,0.486323
+network,tau2,shuffled,pipeline r (C),0.350696,0.349519,0.350843
+null,primary,layer,true r,0.199055,0.166006,0.154636
+null,primary,layer,pipeline r (P),0.184203,0.172083,0.154481
+null,primary,layer,pipeline r (C),0.155584,0.153095,0.149895
+null,primary,constant,true r,0.158205,0.159226,0.159865
+null,primary,constant,pipeline r (P),0.158462,0.158367,0.158794
+null,primary,constant,pipeline r (C),0.152105,0.150477,0.150562
+null,primary,shuffled,true r,0.159609,0.16149,0.159462
+null,primary,shuffled,pipeline r (P),0.159183,0.161186,0.158402
+null,primary,shuffled,pipeline r (C),0.152151,0.150222,0.150581
+forcing,primary,layer,true r,0.526956,0.499066,0.480626
+forcing,primary,layer,pipeline r (P),0.518636,0.507341,0.482037
+forcing,primary,layer,pipeline r (C),0.387571,0.38015,0.383425
+forcing,primary,constant,true r,0.487821,0.486514,0.486977
+forcing,primary,constant,pipeline r (P),0.490649,0.49207,0.487357
+forcing,primary,constant,pipeline r (C),0.380717,0.381488,0.384096
+forcing,primary,shuffled,true r,0.488241,0.488183,0.486734
+forcing,primary,shuffled,pipeline r (P),0.490726,0.494979,0.487017
+forcing,primary,shuffled,pipeline r (C),0.383955,0.380838,0.38378

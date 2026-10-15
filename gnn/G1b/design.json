@@ -1,0 +1,61 @@
+{
+ "design": {
+  "n_worlds": 1000,
+  "n_calib": 500,
+  "chunk": 250,
+  "target": 5.0,
+  "share": 0.5,
+  "sigma_bracket": [
+   0.02,
+   20.0
+  ],
+  "bisection_steps": 16,
+  "alpha": 0.05,
+  "seed_worlds": 2001,
+  "seed_calib_worlds": 5001,
+  "seed_calib_noise": 5002,
+  "seed_noise": 6001,
+  "seed_shuffle": 6101,
+  "seed_shuffle_calib": 6102
+ },
+ "primary": {
+  "layer": "world",
+  "measure": "r",
+  "mu": 0.2,
+  "refractory": 2,
+  "tau": 1.0
+ },
+ "variants": {
+  "primary": {},
+  "per_economy": {
+   "layer": "economy"
+  },
+  "weighted": {
+   "measure": "ZA"
+  },
+  "mu0.1": {
+   "mu": 0.1
+  },
+  "mu0.3": {
+   "mu": 0.3
+  },
+  "refractory0": {
+   "refractory": 0
+  },
+  "refractory4": {
+   "refractory": 4
+  },
+  "tau0.5": {
+   "tau": 0.5
+  },
+  "tau2": {
+   "tau": 2.0
+  }
+ },
+ "settings": {
+  "network": 3,
+  "null": 0,
+  "forcing": 1
+ },
+ "code_version": "77cfb7116a874670d7de52657ffff64e1888af87+uncommitted"
+}

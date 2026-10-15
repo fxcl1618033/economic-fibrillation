@@ -1,0 +1,17 @@
+{
+ "network": {
+  "g1_cell": "network",
+  "worlds": 1000,
+  "rule_b_dates_identical": 1000
+ },
+ "null": {
+  "g1_cell": "null",
+  "worlds": 1000,
+  "rule_b_dates_identical": 1000
+ },
+ "forcing": {
+  "g1_cell": "forcing",
+  "worlds": 1000,
+  "rule_b_dates_identical": 1000
+ }
+}

@@ -1,0 +1,244 @@
+[
+ {
+  "setting": "network",
+  "variant": "primary",
+  "rate": 0.063,
+  "lo": 0.049549444227037005,
+  "hi": 0.07979526513746835,
+  "a": true,
+  "diff_constant": [
+   0.035,
+   0.018856113693875784,
+   0.05114388630612422
+  ],
+  "diff_shuffled": [
+   0.034,
+   0.017035079755008606,
+   0.0509649202449914
+  ],
+  "b": true,
+  "share_at_real_p": 0.063,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "network",
+  "variant": "per_economy",
+  "rate": 0.038,
+  "lo": 0.027808845539615407,
+  "hi": 0.05172720875420944,
+  "a": false,
+  "diff_constant": [
+   0.001,
+   -0.015289011335568845,
+   0.017289011335568847
+  ],
+  "diff_shuffled": [
+   0.006,
+   -0.010166380369589669,
+   0.02216638036958967
+  ],
+  "b": false,
+  "share_at_real_p": 0.038,
+  "c": false,
+  "verdict": "not reproduced"
+ },
+ {
+  "setting": "network",
+  "variant": "weighted",
+  "rate": 0.071,
+  "lo": 0.05666945999361375,
+  "hi": 0.08861401899350932,
+  "a": true,
+  "diff_constant": [
+   0.043,
+   0.02600032145390182,
+   0.059999678546098174
+  ],
+  "diff_shuffled": [
+   0.038,
+   0.020182463857362484,
+   0.055817536142637514
+  ],
+  "b": true,
+  "share_at_real_p": 0.071,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "network",
+  "variant": "mu0.1",
+  "rate": 0.067,
+  "lo": 0.05310169229975138,
+  "hi": 0.08421240187606284,
+  "a": true,
+  "diff_constant": [
+   0.037,
+   0.019946118198941203,
+   0.054053881801058794
+  ],
+  "diff_shuffled": [
+   0.031,
+   0.013023142939051054,
+   0.048976857060948946
+  ],
+  "b": true,
+  "share_at_real_p": 0.067,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "network",
+  "variant": "mu0.3",
+  "rate": 0.058,
+  "lo": 0.045133070071593756,
+  "hi": 0.07424990827877548,
+  "a": true,
+  "diff_constant": [
+   0.019,
+   0.0016102908481946052,
+   0.036389709151805394
+  ],
+  "diff_shuffled": [
+   0.018,
+   0.00027768067655358636,
+   0.03572231932344641
+  ],
+  "b": true,
+  "share_at_real_p": 0.058,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "network",
+  "variant": "refractory0",
+  "rate": 0.088,
+  "lo": 0.07198073098543067,
+  "hi": 0.10717263344975514,
+  "a": true,
+  "diff_constant": [
+   0.05,
+   0.03144825163583316,
+   0.06855174836416685
+  ],
+  "diff_shuffled": [
+   0.054,
+   0.035700361446980126,
+   0.07229963855301988
+  ],
+  "b": true,
+  "share_at_real_p": 0.088,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "network",
+  "variant": "refractory4",
+  "rate": 0.042,
+  "lo": 0.031220715828023885,
+  "hi": 0.05628472327710986,
+  "a": false,
+  "diff_constant": [
+   0.006,
+   -0.009683433057608033,
+   0.02168343305760803
+  ],
+  "diff_shuffled": [
+   0.01,
+   -0.006158766838646622,
+   0.026158766838646624
+  ],
+  "b": false,
+  "share_at_real_p": 0.042,
+  "c": false,
+  "verdict": "not reproduced"
+ },
+ {
+  "setting": "network",
+  "variant": "tau0.5",
+  "rate": 0.071,
+  "lo": 0.05666945999361375,
+  "hi": 0.08861401899350932,
+  "a": true,
+  "diff_constant": [
+   0.044,
+   0.0260204692517873,
+   0.06197953074821269
+  ],
+  "diff_shuffled": [
+   0.033,
+   0.014200033608106209,
+   0.0517999663918938
+  ],
+  "b": true,
+  "share_at_real_p": 0.071,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "network",
+  "variant": "tau2",
+  "rate": 0.058,
+  "lo": 0.045133070071593756,
+  "hi": 0.07424990827877548,
+  "a": true,
+  "diff_constant": [
+   0.017,
+   0.00027857112015292756,
+   0.033721428879847075
+  ],
+  "diff_shuffled": [
+   0.023,
+   0.0065381536276763325,
+   0.03946184637232367
+  ],
+  "b": true,
+  "share_at_real_p": 0.058,
+  "c": false,
+  "verdict": "partly"
+ },
+ {
+  "setting": "null",
+  "variant": "primary",
+  "rate": 0.04,
+  "lo": 0.02951080927390945,
+  "hi": 0.05400993742556984,
+  "a": false,
+  "diff_constant": [
+   -0.005,
+   -0.02128617817658887,
+   0.01128617817658887
+  ],
+  "diff_shuffled": [
+   0.0,
+   -0.016406741942908143,
+   0.016406741942908143
+  ],
+  "b": false,
+  "share_at_real_p": 0.04,
+  "c": false,
+  "verdict": "not reproduced"
+ },
+ {
+  "setting": "forcing",
+  "variant": "primary",
+  "rate": 0.032,
+  "lo": 0.02275696612786701,
+  "hi": 0.04482501094899452,
+  "a": false,
+  "diff_constant": [
+   -0.009,
+   -0.023794556745955903,
+   0.005794556745955902
+  ],
+  "diff_shuffled": [
+   -0.009,
+   -0.023794556745955903,
+   0.005794556745955902
+  ],
+  "b": false,
+  "share_at_real_p": 0.032,
+  "c": false,
+  "verdict": "not reproduced"
+ }
+]

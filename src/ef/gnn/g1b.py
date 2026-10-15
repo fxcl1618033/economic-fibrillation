@@ -163,11 +163,21 @@ def layer_recessions(sp, kind, sigma, data, seed):
     return recessions(esc, sp['refractory'])
 
 
+def bracket(sp, kind):
+    """The sigma bracket. Abar R_A is in units of log GDP (Abar, the mean of the fixed swing sizes, is about 0.02), so
+    for that measure the bracket is divided by Abar: the same model with sigma in other units. Added on 15 October 2026
+    after the first run of that sensitivity stopped at the top of the unscaled bracket (docs/decisions.md)."""
+    lo, hi = DESIGN['sigma_bracket']
+    if sp['measure'] == 'ZA' and kind != 'constant' and sp['layer'] == 'world':
+        a = float(S.targets()['A'].mean()); return lo / a, hi / a
+    return lo, hi
+
+
 def calibrate(sp, kind, data, seed):
     """sigma whose mean number of recession years in 1970-2022 is the target, by log-scale bisection with common random
     numbers (g1._bisect). Uses only how many recession years there are, never which."""
     f = lambda s: float(layer_recessions(sp, kind, s, data, seed).sum(axis=1).mean())
-    s, fs, ok = g1._bisect(f, DESIGN['target'], *DESIGN['sigma_bracket'], DESIGN['bisection_steps'])
+    s, fs, ok = g1._bisect(f, DESIGN['target'], *bracket(sp, kind), DESIGN['bisection_steps'])
     return {'sigma': float(s), 'mean_recessions': fs, 'bracketed': bool(ok)}
 
 
@@ -200,7 +210,7 @@ def _simulate(args):
 def g1_identity():
     """Check that the G1b test worlds are the G1 worlds: each world's own recession dates (G1 rule B, from its simulated
     world GDP) must equal those G1 stored for the same world. Writes gnn/G1b/g1_identity.json."""
-    T = S.targets(); B = pd.read_csv(os.path.join(g1.OUT, 'rule_b_recessions.csv.gz')); out = {}
+    T = S.targets(); B = pd.read_csv(os.path.join(g1.OUT, 'rule_b_recessions.csv.gz'), keep_default_na=False, na_values=['']); out = {}
     for s, ci in SETTINGS.items():
         sig = np.load(os.path.join(CACHE, f'{s}_test.npz'))['sig']; cell = g1.CELLS[ci][0]
         ref = B[(B.model == 'kuramoto') & (B.cell == cell)].set_index('world').rule_B_recessions
@@ -245,8 +255,9 @@ def _arcs(args):
 def run(processes=None):
     os.makedirs(OUT, exist_ok=True); os.makedirs(CACHE, exist_ok=True); warnings.filterwarnings('ignore')
     procs = processes or max(1, (os.cpu_count() or 2) - 1)
-    with Pool(min(procs, 6)) as pool:                                     # 1. worlds
-        pool.map(_simulate, [(s, w) for s in SETTINGS for w in ('test', 'calib')], chunksize=1)
+    todo = [(s, w) for s in SETTINGS for w in ('test', 'calib') if not os.path.exists(os.path.join(CACHE, f'{s}_{w}.npz'))]
+    with Pool(min(procs, 6)) as pool:                                     # 1. worlds (deterministic; cached in build/)
+        pool.map(_simulate, todo, chunksize=1)
     print('worlds simulated', flush=True)
     g1_identity()
     sig = {s: np.load(os.path.join(CACHE, f'{s}_test.npz'))['sig'] for s in SETTINGS}   # 2. pipeline r once per world
@@ -291,10 +302,42 @@ def real_values():
     return {'C': {l: {'corr': c[l]['corr'], 'p': c[l]['p']} for l in ARC}, 'P': {l: {'corr': a[l]['corr'], 'p': a[l]['p']} for l in ARC}}
 
 
+def _read(f, na_values=('',)):
+    """CSV with the setting called 'null' kept as a string (pandas would read it as missing)."""
+    return pd.read_csv(f, keep_default_na=False, na_values=list(na_values))
+
+
+def rerun(variant, processes=None):
+    """Rerun one variant's jobs (all kinds) on the cached worlds and replace its rows in calibration.csv,
+    recessions.csv.gz and pvalues.csv.gz; every other row is left as run. Then summarize()."""
+    warnings.filterwarnings('ignore'); procs = processes or max(1, (os.cpu_count() or 2) - 1)
+    todo = [j for j in jobs() if j[1] == variant]
+    with Pool(min(procs, len(todo))) as pool: res = pool.map(_job, todo, chunksize=1)
+    pr = np.load(os.path.join(OUT, 'pipeline_r.npz'))
+    args = [(s, v, k, np.arange(i, min(i + 100, len(rec))), rec[i:i + 100], pr[f'{s}_P'][i:i + 100], pr[f'{s}_C'][i:i + 100])
+            for s, v, k, _, rec in res for i in range(0, len(rec), 100)]
+    with Pool(procs) as pool: rows = [r for part in pool.imap(_arcs, args, chunksize=2) for r in part]
+    keep = lambda D: D[D.variant != variant]
+    C = keep(_read(os.path.join(OUT, 'calibration.csv')))
+    C = pd.concat([C, pd.DataFrame([dict(setting=s, variant=v, kind=k, **c) for s, v, k, c, _ in res])])
+    order_ = {j: i for i, j in enumerate(jobs())}; C = C.iloc[np.argsort([order_[(a, b, c)] for a, b, c in zip(C.setting, C.variant, C.kind)], kind='stable')]
+    C.to_csv(os.path.join(OUT, 'calibration.csv'), index=False, float_format='%.6g')
+    R = keep(_read(os.path.join(OUT, 'recessions.csv.gz'), na_values=[]))
+    R = pd.concat([R, pd.DataFrame([(s, v, k, w, ' '.join(map(str, WYEARS[rec[w]]))) for s, v, k, _, rec in res for w in range(len(rec))],
+                                   columns=R.columns)])
+    R.iloc[np.argsort([order_[(a, b, c)] * 10 ** 4 + w for a, b, c, w in zip(R.setting, R.variant, R.kind, R.world)], kind='stable')].to_csv(
+        os.path.join(OUT, 'recessions.csv.gz'), index=False, compression={'method': 'gzip', 'mtime': 0})
+    P = keep(_read(os.path.join(OUT, 'pvalues.csv.gz')))
+    P = pd.concat([P, pd.DataFrame(rows, columns=P.columns)])
+    P = P.iloc[np.argsort([order_[(a, b, c)] * 10 ** 4 + w for a, b, c, w in zip(P.setting, P.variant, P.kind, P.world)], kind='stable')]
+    P.to_csv(os.path.join(OUT, 'pvalues.csv.gz'), index=False, float_format='%.6g', compression={'method': 'gzip', 'mtime': 0})
+    summarize()
+
+
 def summarize():
     """gnn/G1b/rejections.csv (every setting, variant, kind, convention and lag), verdicts.json (the pre-registered
     verdict for every setting and variant), p_distribution.csv, counts.csv and describe.csv."""
-    P = pd.read_csv(os.path.join(OUT, 'pvalues.csv.gz')); real = real_values(); eps = 1e-9
+    P = _read(os.path.join(OUT, 'pvalues.csv.gz')); real = real_values(); eps = 1e-9
     P['reject'] = P.p <= DESIGN['alpha'] + eps; P['at_real_p'] = P.p <= P_REAL + eps
     rows = []
     for (s, v, k, c, l), g in P.groupby(['setting', 'variant', 'kind', 'convention', 'lag'], sort=False):
@@ -318,7 +361,7 @@ def summarize():
     d = P[(P.convention == 'C') & (P.lag == 'lead1')]                          # the full p distribution, past-only lead-1
     D = d.assign(k=np.round(d.p * 53).astype(int)).groupby(['setting', 'variant', 'kind', 'k']).size().rename('worlds').reset_index()
     D['p'] = D.k / 53; D.to_csv(os.path.join(OUT, 'p_distribution.csv'), index=False, float_format='%.6g')
-    rec = pd.read_csv(os.path.join(OUT, 'recessions.csv.gz'), keep_default_na=False)
+    rec = _read(os.path.join(OUT, 'recessions.csv.gz'), na_values=[])
     rec['n'] = rec.recessions.map(lambda x: len(x.split()) if x else 0)
     rec.groupby(['setting', 'variant', 'kind', 'n']).size().rename('worlds').reset_index().to_csv(os.path.join(OUT, 'counts.csv'), index=False)
     pr = np.load(os.path.join(OUT, 'pipeline_r.npz')); tr = np.load(os.path.join(OUT, 'true_r_annual.npz')); rows = []
@@ -333,9 +376,10 @@ def summarize():
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(); ap.add_argument('step', choices=['run', 'summarize', 'report']); ap.add_argument('--processes', type=int)
-    a = ap.parse_args(argv)
+    ap = argparse.ArgumentParser(); ap.add_argument('step', choices=['run', 'rerun', 'summarize', 'report']); ap.add_argument('--processes', type=int)
+    ap.add_argument('--variant'); a = ap.parse_args(argv)
     if a.step == 'run': run(a.processes)
+    elif a.step == 'rerun': rerun(a.variant, a.processes)
     elif a.step == 'summarize': summarize()
     else:
         from ef.gnn import g1b_report; g1b_report.main()
