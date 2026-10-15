@@ -1,13 +1,49 @@
-# Open issues — Paper 1 (as of 11 October 2026)
+# Issues — Paper 1 (closed 15 October 2026)
 
-Ordered by how much they could change what the paper says. Each has the evidence, what to do and who decides.
-"Sid decides" means: prepare the numbers, explain the trade-off in plain words, and wait. Figure file names such as
-`mst_network.pdf` are the original files in `figures/_sources/analysis/`; their IDs (F5.1 and so on) and category
-copies are listed in `docs/FIGURES.md`.
+**Every issue is closed.** Each is FIXED (with the commit), moved to LIMITATIONS (it is in the manuscript's
+Limitations, `paper1/manuscript/06_limitations.md`) or moved to FUTURE WORK (`paper1/manuscript/07_future_work.md`).
+Paper 1 is locked after G1b (`docs/decisions.md`): no new tests; anything new is Paper 2. The text recorded before
+closing is kept under each item. Commit 62109da is the manuscript, the generated Methods and the redrawn figures.
+
+| # | Issue | Status |
+|---|---|---|
+| 1 | The crisis arc depends on where the Hilbert transform is applied | FIXED + LIMITATIONS |
+| 2 | The end of the sample is edge-affected in every convention | LIMITATIONS |
+| 3 | "+0.51 vs +0.608" for the amplitude link | FIXED |
+| 4 | Diversification weights: Methods and script differ | FIXED |
+| 5 | "Correlation events, not volatility events" is wrong | FIXED + FUTURE WORK |
+| 6 | The diversification surrogate p = 0.0002 on figures is not a test of the claim | FIXED |
+| 7 | Network figure annotations | FIXED |
+| 8 | Phase-lag p stored as the upper tail | FIXED |
+| 9 | `robustness.py` saves only the baseline | FIXED |
+| 10 | The restoring-time indicator was lost | FIXED |
+| 11 | Lay companion book is internally inconsistent | FUTURE WORK |
+| 12 | Imports and budget-spending channels predate the data repairs | FIXED |
+| 13 | Maddison growth for Norway, Switzerland and South Africa | FIXED |
+| 14 | The two-year rate lead needs past-only phases | FIXED + LIMITATIONS |
+| 15 | Citations to fix | FIXED |
+| 16 | Banking-crisis history not re-verified | FUTURE WORK |
+| 17 | Sample definition | FIXED |
+| 18 | The Methods diagnostics figure does not exist in our files | FIXED |
+| 19 | Two different "real GDP" r(t) series | FIXED |
+| 20 | Bonferroni value in Methods 7.4 is rounded twice | FIXED |
+| 21 | MST decade means in Methods 6.5 and 7.7 | FIXED |
+| 22 | The restoring-time indicator needs a definition that adds information | FIXED |
+| 23 | The detrended pre-crisis MST trend does not reproduce | FIXED |
+| 24 | Russia is not in the sample, and no reason is recorded | FIXED |
+| 25 | What the G1 simulations say about four Paper 1 tests | FIXED + LIMITATIONS |
+
+Figure file names such as `mst_network.pdf` are the original files in `figures/_sources/analysis/`; their IDs (F5.1 and
+so on) and category copies are listed in `docs/FIGURES.md`.
 
 ---
 
-## 1. The crisis arc depends on where the Hilbert transform is applied — DECIDED 11 October 2026: P primary with W, N, E and C reported; the claim is the rise one year before recessions, which survives past-only phases; the post-crisis fall goes to Limitations (edits B1, L1, L3)
+## 1. The crisis arc depends on where the Hilbert transform is applied — **FIXED + LIMITATIONS**
+
+**Resolution (15 October 2026).** FIXED: every test computed under P with W, N, E and C reported (Phase 3, 0617bf6; S31, b741410); the convention table is Methods §7.2 / manuscript Table 2 and Appendix Table A12 (62109da). The post-crisis fall and lead-1's failure under N go to LIMITATIONS ("The fall after recessions", "Phase conventions").
+
+*As recorded before closing:*
+
 
 **Evidence** (`tools/check_runin_conventions.py`, `paper1/results/runin_convention_check.json`). Same data, filter and
 permutation test; correlation of r(t) with the recession indicator, one-sided p in brackets:
@@ -38,7 +74,13 @@ Methods §7.2. (b) Add an edge-robust variant (for example mirror-padding the cy
 causal phase estimate) and report it too. (c) Fix the convention before running anything on the 30 economies, and
 write that decision down first (`docs/decisions.md`). **Sid decides** the wording; the numbers are not in doubt.
 
-## 2. The end of the sample is edge-affected in every convention — HIGH; Phase 3 reported without 2020 under P and E (registry A12, A14); Limitations text drafted (edit L3)
+
+## 2. The end of the sample is edge-affected in every convention — **LIMITATIONS**
+
+**Resolution (15 October 2026).** LIMITATIONS ("The end of the sample"). Reported without 2020 (registry A14); edge-matched nulls run (amendment 4, 864317a / 83a86b4). Extending the data to 2023–2025 is FUTURE WORK.
+
+*As recorded before closing:*
+
 
 2020 sits two years from the last observation (2022), and the after-2 test for 2020 uses r(2022), the very last
 point. Both the forward–backward filter and the Hilbert transform are least reliable there, and leave-one-crisis-out
@@ -47,20 +89,38 @@ shows the lead rests on 2009 and 2020. **What to do:** report the arc with 2020 
 in Limitations that the most recent event is the least well measured. When data for 2023–2025 are available, extend
 the series and re-test: that is the cleanest fix.
 
-## 3. "+0.51 vs +0.608" for the amplitude link — RESOLVED; text drafted (edit B2)
+
+## 3. "+0.51 vs +0.608" for the amplitude link — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: the convention is known (W); Methods §8 now says so (62109da).
+
+*As recorded before closing:*
+
 
 `amplitude_test.py` applies the Hilbert transform to 1970–2022 only (convention W), which gives +0.509. The paper's
 convention P gives +0.608; N gives +0.531. Methods §8 says "we were unable to recover the exact amplitude convention
 behind the earlier figures": it can now say which convention it was. Every "+0.51" in drafts, the companion book
 (figure A8) and `amplitude.pdf` (F4.1) is the W value.
 
-## 4. Diversification weights: Methods and script differ — LOW
+
+## 4. Diversification weights: Methods and script differ — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: the rerun uses the Methods' within-window mean GDP weights (6ecf40c); 82.4% is reproduced by S26 with windows inside 1970–2022 (registry D14), and the paper quotes the S31 value 84.3% (62109da); F4.4 redrawn without the 82.6% label (62109da).
+
+*As recorded before closing:*
+
 
 Methods §6.1 says GDP weights are the within-window mean of real GDP and reports 82.4% (cross shares 0.723 and 0.669);
 that reproduces exactly. `diversification.py` weights each window by its last year and gives 82.6% (0.724 and 0.668).
 **What to do:** make the code match the Methods text; quote 82.4%.
 
-## 5. "Correlation events, not volatility events" is wrong — MEDIUM (wording); edit B3 drafted with S30 values (correlation 44%, swing size 41%)
+
+## 5. "Correlation events, not volatility events" is wrong — **FIXED + FUTURE WORK**
+
+**Resolution (15 October 2026).** FIXED: Methods and Results say "co-movement and larger swings contribute about equally" and "amplification transmitted by alignment" (62109da); F4.4 and F4.5 redrawn without the slogan (62109da). The companion-book versions (F4.6, F4.7) are FUTURE WORK with issue 11.
+
+*As recorded before closing:*
+
 
 The cross term supplies 82–97% of the excess crisis variance, but inside the cross term's rise, bigger swings
 contribute 46–50%, higher correlation 35–41% and their interaction 13–14% (`printed/crossterm_split_output.txt`). The
@@ -72,33 +132,69 @@ cancelling one another out", and any abstract draft that says crises are "correl
 Methods §6.1 itself does not use the slogan but should add the split so readers do not take "cross term" to mean
 "correlation".
 
-## 6. The diversification surrogate p = 0.0002 on figures is not a test of the claim — MEDIUM
+
+## 6. The diversification surrogate p = 0.0002 on figures is not a test of the claim — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: F4.4 and F4.5 redrawn with no p-value (62109da); §7.6 says the share has no proper null.
+
+*As recorded before closing:*
+
 
 It compares the crisis cross share with phase-randomized (uncorrelated) economies, so it only shows the economies are
 correlated at all. Methods §6.1 and §7.6 already say the share statistic has no proper null. Remove the p from the
 figures when they are redrawn.
 
-## 7. Network figure annotations — LOW
+
+## 7. Network figure annotations — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: F5.1 redrawn on S31 with decade means (1.6×) and no "p = 0.47" (62109da).
+
+*As recorded before closing:*
+
 
 `mst_network.pdf` (F5.1) prints "~3× tighter" (single-year endpoints; decade means give 1.9×) and "p = 0.47" for
 pre-crisis contraction (not reproducible; stored τ = −0.171, p = 0.167 raw; τ = −0.086, p = 0.316 detrended). Redraw.
 
-## 8. Phase-lag p stored as the upper tail — LOW
+
+## 8. Phase-lag p stored as the upper tail — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: the lower tail is stored (`p_spread_lower`, 6ecf40c); the Methods diagnostics figure F5.4 shows it (62109da).
+
+*As recorded before closing:*
+
 
 `phase_lags.py` stores p_spread = 1.0 (upper tail). The intended lower-tail p is 0.0002 (observed 0.403 years, every
 one of 5,000 surrogates larger). Fix the script; the Methods already reports the right value.
 
-## 9. `robustness.py` saves only the baseline — LOW
+
+## 9. `robustness.py` saves only the baseline — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: every robustness check is saved (`results/*/P/robustness.json`, 6ecf40c and 0617bf6); Appendix Tables A2–A3 (62109da).
+
+*As recorded before closing:*
+
 
 Band, detrending, leave-one-economy-out, split-sample and leave-one-crisis-out results exist only as printed text
 (`paper1/results/printed/robustness_output.txt`). Save them as JSON in the rerun.
 
-## 10. The restoring-time indicator was lost — CLOSED 11 October 2026 (see issue 22: dropped)
+
+## 10. The restoring-time indicator was lost — **FIXED**
+
+**Resolution (15 October 2026).** FIXED (dropped, issue 22): Sid's decision of 11 October 2026 (4872c0b); Methods §6.7 says why (62109da).
+
+*As recorded before closing:*
+
 
 `csd_fast.py` (the third critical-slowing-down indicator) and its figure were lost with the September workspace;
 Methods §6.7 reports it as null. Rebuild it in the rerun so all three indicators come from code in the repository.
 
-## 11. Lay companion book is internally inconsistent — MEDIUM (it is in people's hands)
+
+## 11. Lay companion book is internally inconsistent — **FUTURE WORK**
+
+**Resolution (15 October 2026).** FUTURE WORK: the companion book is outside the paper. Redrawing A4–A8 under convention P and fixing the diversification sentence waits for Sid's decision on whether to send a corrected copy.
+
+*As recorded before closing:*
+
 
 Its arc figure (A7, F2.9) was drawn with convention W and shows no bar below p = 0.05, while its text says the rise
 and collapse are significant. Figures A5, A6 and A8 are also convention W, and figure A4 (F1.4, "far more
@@ -106,26 +202,50 @@ synchronized than chance") draws an r(t) that matches no stored series. **What t
 convention P (and say in one plain sentence that the most recent crisis carries the result), fix the diversification
 sentence in issue 5, then re-export the PDF and Word file. **Sid decides** whether to send a corrected copy.
 
-## 12. Imports and budget-spending channels predate the data repairs — DONE in Phase 3: anatomy rerun on the repaired panel; the budget channels drop to 9 economies (registry G4, G5, G5b)
+
+## 12. Imports and budget-spending channels predate the data repairs — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: anatomy rerun on the repaired panel (0617bf6; S31 b741410); Appendix Table A10.
+
+*As recorded before closing:*
+
 
 `panel26.py` (the channel anatomy, F7.2) reads the raw Global Macro Database. The atlas later repaired budget
 splices, debt splices, net exports and money breaks (`atlas/meta.json`, "fixes"). Rerun the channel anatomy on the
 repaired panel, especially imports and budget spending, and report any change.
 
-## 13. Maddison growth for Norway, Switzerland and South Africa — DONE in Phase 3: no conclusion changes (registry B18)
+
+## 13. Maddison growth for Norway, Switzerland and South Africa — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: GMD growth swap run, no conclusion changes (0617bf6; S31 b741410); Methods §7.8, Appendix Table A2.
+
+*As recorded before closing:*
+
 
 For 1991–2011, the atlas comparison found Maddison's per-capita growth for these three running 2–3 percentage
 points above national-accounts growth.
 Robustness run: swap in GMD (national accounts) real GDP per capita for these three and rerun the arc, the amplitude
 link and the decomposition.
 
-## 14. The two-year rate lead needs past-only phases — DONE 11 October 2026: it fails (S30 +0.165, p 0.15); dropped as a lead claim, channel order kept as description only (Sid)
+
+## 14. The two-year rate lead needs past-only phases — **FIXED + LIMITATIONS**
+
+**Resolution (15 October 2026).** FIXED: re-tested with past-only phases; it fails and is dropped as a lead claim (f60ed64). The dropped rate lead is in LIMITATIONS.
+
+*As recorded before closing:*
+
 
 The band-pass and Hilbert transform both use future data, so a lead found with them can partly come from the future.
 Re-test G1 (short rates lead recessions by two years, p = 0.019) with phases built only from data available at each
 date (a one-sided filter, or re-estimating phases on an expanding window). Report both.
 
-## 15. Citations to fix
+
+## 15. Citations to fix — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: the manuscript cites Ikeda, Aoyama and Yoshikawa (2013) as RIETI DP 13-E-089, Kose, Sugawara and Terrones (2020) and Kose and Terrones (2015), and Methods §8 cites the Maddison commit and checksum (62109da). Every reference was checked; the unverified details are marked in the reference list.
+
+*As recorded before closing:*
+
 
 - Ikeda, Aoyama and Yoshikawa on international synchronization is RIETI Discussion Paper 13-E-089; arXiv 1110.6679
   is Ikeda et al. (2011) on Japanese industrial sectors.
@@ -135,12 +255,24 @@ date (a one-sided filter, or re-estimating phases on an expanding window). Repor
 - Methods §8: cite the Maddison commit and file checksum from `data/sources.yaml`, not only the package version
   (1.1.0 then, 1.1.1 now; the data file is unchanged). Drafted as edit B4.
 
-## 16. Banking-crisis history not re-verified — LOW
+
+## 16. Banking-crisis history not re-verified — **FUTURE WORK**
+
+**Resolution (15 October 2026).** FUTURE WORK ("Banking-crisis dating"): no claim depends on it.
+
+*As recorded before closing:*
+
 
 `crisis_dating_test.py` needs `jst.xlsx`, which was never pinned. GMD carries `data/clean/aggregators/JST/JST.dta`
 (pinned) as a likely replacement. History only; no paper claim depends on it.
 
-## 17. Sample definition — DECIDED 11 October 2026
+
+## 17. Sample definition — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: S31 is the main sample (f8f32e2); every leave-out run (0617bf6, b741410); Appendix Table A1.
+
+*As recorded before closing:*
+
 
 **Decision (Sid):** S30 is the main sample for Paper 1 and the GNN; no S31 run, because the UAE's 1991–92 gap breaks the
 filter. The inclusion rule below is now enforced in code (`src/ef/data/maddison.py`) and reported per economy in
@@ -160,24 +292,48 @@ cycles, so report the S30 results with each added economy left out in turn. The 
 for Saudi Arabia before 1970 and the UAE before 1975; Maddison's early Gulf figures are estimates too. Sid has not yet
 answered the comment in the literature-review doc. **Sid decides.**
 
-## 18. The Methods diagnostics figure does not exist in our files — LOW
+
+## 18. The Methods diagnostics figure does not exist in our files — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: drawn as F5.4 from the S31 results (62109da).
+
+*As recorded before closing:*
+
 
 `docs/methods.md` ends with a caption for a three-panel diagnostics figure (MST decade means, phase-lag null,
 corrected p-values). It was described in Claude Science and never saved here. Draw it in the rerun.
 
-## 19. Two different "real GDP" r(t) series — NOTE
+
+## 19. Two different "real GDP" r(t) series — **FIXED**
+
+**Resolution (15 October 2026).** FIXED in the text: the paper's claims use Maddison GDP per capita; the Global Macro Database appears only in the channel table (Appendix Table A10) and in the count of contracting economies, both labelled (62109da).
+
+*As recorded before closing:*
+
 
 The paper's r(t) uses Maddison GDP per capita. The atlas `sync.json` uses Global Macro Database real GDP (total). They
 differ year by year (1970: 0.28 against 0.34). Keep them apart in the text; quote the Maddison series for Paper 1
 claims and the GMD series only for the channel comparison.
 
-## 20. Bonferroni value in Methods 7.4 is rounded twice — DECIDED 11 October 2026: use 0.094 (edit A1 in `docs/methods_proposed_edits.md`)
+
+## 20. Bonferroni value in Methods 7.4 is rounded twice — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: Methods §7.4 says 0.094 (decided 4872c0b; applied 62109da).
+
+*As recorded before closing:*
+
 
 Found in Phase 2. Bonferroni over the five lags for lead-1 and after-2 is 5 × 1/53 = 0.0943, so "0.094"; Methods 7.4 and
 registry A8 print 0.095 (5 × the rounded 0.019). Benjamini–Hochberg (0.047, 0.063) is right. **What to do:** propose the
 corrected text in the Phase 3 text-changes file; Sid decides.
 
-## 21. MST decade means in Methods 6.5 and 7.7 — DECIDED 11 October 2026: decade means 1979–89 vs 2013–22, 0.677 vs 0.379 (1.8×), the same under either window rule; rolling windows may start in 1962, never earlier, with inside 1970–2022 as sensitivity; 0.706, 0.652 and 0.771 dropped (edits A2, A3). 0.652 turned out to be L(1979) alone
+
+## 21. MST decade means in Methods 6.5 and 7.7 — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: decade means 1979–89 vs 2013–22 on S31 (0.687 vs 0.424, 1.6×) in Methods §6.5 and §7.7 (decided 4872c0b; applied 62109da).
+
+*As recorded before closing:*
+
 
 Found in Phase 2 (`src/ef/network.py`; the stored `mst_results.json` reproduces exactly). The Methods' 0.706 (1970s)
 reproduces only if the 10-year windows may reach back into the 1950–69 run-in, so that 1970 counts (mean of 1970–79,
@@ -187,7 +343,13 @@ endpoint 0.771 in 6.5 disagrees with the stored 0.781 (registry E2). 2013–2022
 unaffected in substance. **What to do:** fix one stated window convention in Phase 3, recompute all three numbers from
 code, and propose the text; Sid decides.
 
-## 22. The restoring-time indicator needs a definition that adds information — DECIDED 11 October 2026: dropped; two indicators plus the coupling test (edit A4)
+
+## 22. The restoring-time indicator needs a definition that adds information — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: dropped (decided 4872c0b); Methods §6.7 says why (62109da).
+
+*As recorded before closing:*
+
 
 Phase 2 reconstructs it as 1/(−ln φ), the inverse of the recovery rate used in the bifurcation test. That is a
 monotone function of the lag-1 autocorrelation φ, so its rank-based pre-crisis trend is the same as the autocorrelation's
@@ -196,14 +358,26 @@ indicator. **What to do:** before Phase 3, choose a definition that measures som
 time of r after its own deviations, fitted on levels, or the e-folding time of the windowed autocorrelation function
 beyond lag 1), pre-register it, and report it beside the other two; Sid decides.
 
-## 23. The detrended pre-crisis MST trend does not reproduce — LOW; Phase 3 value with σ = 8 in edit B5 (S30 +0.057, p 0.66; S26 −0.057, p 0.36)
+
+## 23. The detrended pre-crisis MST trend does not reproduce — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: the pre-registered σ = 8 value is in Methods §6.5 (62109da); the irreproducible first-run value stays in the registry and is not quoted.
+
+*As recorded before closing:*
+
 
 Methods 6.5 and registry E4 give τ = −0.086, p = 0.316 for Gaussian-detrended L. Detrending with σ = 5, 8 or 10 years
 on the as-run windows (from 1962, seed 303) gives τ between −0.043 and −0.057 and p between 0.36 and 0.42; the
 original script is not in the repository. The conclusion (null) is the same. **What to do:** the pre-registration fixes
 σ = 8 and the new windows; Phase 3 reports that value and edit B5 rewrites the sentence.
 
-## 24. Russia is not in the sample, and no reason is recorded — DECIDED 13 October 2026: Russia added; S31 = S30 + Russia is the main sample (amendment 3); results in `results/S31*`
+
+## 24. Russia is not in the sample, and no reason is recorded — **FIXED**
+
+**Resolution (15 October 2026).** FIXED: Russia added, S31 main (f8f32e2, c842019); results b741410.
+
+*As recorded before closing:*
+
 
 By mean real GDP over 1970–2022, the largest economies missing from the 26 are China (8.06 trillion 2011 PPP dollars),
 Russia (2.18), Brazil (1.74), Iran (0.71), Saudi Arabia (0.65) and Poland (0.54); in 2022 Russia (3.73) is still larger
@@ -214,7 +388,13 @@ are the largest economies missing from the 26" is therefore not true as written.
 for leaving Russia out (it goes into §1), rewords the sentence ("with Russia, the five largest"), or adds Russia as a
 sensitivity run after a pre-registration amendment. Nothing is run until he decides.
 
-## 25. What the G1 simulations say about four Paper 1 tests — DECIDED 14 October 2026: (a) rerun with surrogates with ends (amendment 4; the swing-size result stands at the floor); (b) and (c) are Limitations L8 and L9; (d) after-2 stays in Limitations with its new p
+
+## 25. What the G1 simulations say about four Paper 1 tests — **FIXED + LIMITATIONS**
+
+**Resolution (15 October 2026).** FIXED: (a) edge-matched nulls pre-registered and run (864317a, fc63e87, 83a86b4); the κ = 0 table is Methods §5.3 (62109da). (b) and (c) are LIMITATIONS ("How global recessions are dated", "What the cross-term test shows"); (d) after-2 is in LIMITATIONS ("The fall after recessions").
+
+*As recorded before closing:*
+
 
 From `gnn/G1_report.md` (8,000 simulated worlds, pre-registered in `docs/preregistration_G1.md`). **(a) The identity's
 swing-size test** rejects in 14–19% of uncoupled worlds on the real calendar, where it should reject in 5%. The cause

@@ -141,3 +141,7 @@ Applied with the fifth-draft edits when `docs/methods.md` became generated from 
 | §8 | Data citation | MaddisonData v1.1.0 | pinned repository commit and file checksum | B4 (issue 15) |
 | §8 | Early-draft amplitude coefficient | not reproduced | +0.51 under convention W | B2 (issue 3) |
 | Caption | Diagnostics figure | ~3×, 1.9×, 0.403 yr | 1.6×, 0.546 yr | Figure redrawn on S31 (F5.4, issue 18) |
+
+| Date | Decision | Why | Rejected alternative |
+|---|---|---|---|
+| 15 Oct 2026 | **Paper 1 locked after G1b. No new tests. Anything new is Paper 2.** Every item in `docs/open_issues.md` is closed (FIXED with its commit, LIMITATIONS or FUTURE WORK) | Sid's decision of 15 October 2026: a complete manuscript ready for review | Further tests on Paper 1 |
