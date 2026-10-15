@@ -1,0 +1,413 @@
+section,placeholder,value,printed,source
+00_front,S31/P/amplitude#corr_detrended|c3,0.6460467261261413,+0.646,results/S31/P/amplitude.json
+00_front,S31/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.8427512398801741,84.3%,results/S31/P/diversification.json
+00_front,dtt/results/d3_neff.json#S31/P/all years/neff|f1,3.455167167128832,3.5,dtt/results/d3_neff.json
+00_front,@mst_ratio:S31|x1,1.6209149839034576,1.6×,results/S31/P/mst.json
+00_front,S31/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S31/P/conventions.json
+01_introduction,S31/P/channels#contracting/2009|int,25,25,results/S31/P/channels.json
+01_introduction,S31/P/channels#contracting/2020|int,28,28,results/S31/P/channels.json
+01_introduction,S31/P/channels#contracting/1982|int,9,9,results/S31/P/channels.json
+01_introduction,S31/P/channels#contracting/1991|int,9,9,results/S31/P/channels.json
+01_introduction,paper1/manuscript/sources/world_share.json#S31/mean_1970_2022|pct0,0.8143320755150885,81%,paper1/manuscript/sources/world_share.json
+01_introduction,S31/P/amplitude#corr_detrended|c3,0.6460467261261413,+0.646,results/S31/P/amplitude.json
+01_introduction,S31/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.8427512398801741,84.3%,results/S31/P/diversification.json
+01_introduction,dtt/results/d3_neff.json#S31/P/all years/neff|f1,3.455167167128832,3.5,dtt/results/d3_neff.json
+01_introduction,dtt/results/d3_neff.json#S31/P/by_year/2020/neff|f1,1.107507602289763,1.1,dtt/results/d3_neff.json
+01_introduction,@mst_ratio:S31|x1,1.6209149839034576,1.6×,results/S31/P/mst.json
+01_introduction,S31/P/conventions#C/arc/lead1/corr|c3,0.3792741776688093,+0.379,results/S31/P/conventions.json
+01_introduction,S31/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S31/P/conventions.json
+02_data,paper1/manuscript/sources/world_share.json#S26/1970|pct0,0.6706458908688143,67%,paper1/manuscript/sources/world_share.json
+02_data,paper1/manuscript/sources/world_share.json#S26/2022|pct0,0.5143771377163691,51%,paper1/manuscript/sources/world_share.json
+02_data,paper1/manuscript/sources/world_share.json#S31/1970|pct0,0.8105667907788222,81%,paper1/manuscript/sources/world_share.json
+02_data,paper1/manuscript/sources/world_share.json#S31/2022|pct0,0.8001622562295568,80%,paper1/manuscript/sources/world_share.json
+02_data,paper1/manuscript/sources/world_share.json#S31_without_RUS/1970|pct0,0.7555206581303073,76%,paper1/manuscript/sources/world_share.json
+02_data,paper1/manuscript/sources/world_share.json#S31_without_RUS/2022|pct0,0.7715581080411354,77%,paper1/manuscript/sources/world_share.json
+02_data,@diff:S31/P/amplitude#corr_detrended;S31/N/amplitude#corr_detrended|f1,0.09910012628456666,0.1,results/S31/P/amplitude.json;results/S31/N/amplitude.json
+03_methods,table:kappa0,,(table),gnn/G1/rejections.csv
+03_methods,table:conventions,,(table),results/S31/P/conventions.json;results/S30/P/conventions.json
+03_methods,lit:0.5|the Nyquist frequency of annual data,0.5,0.5,the Nyquist frequency of annual data
+03_methods,@rms_random:S31|f2,0.1796053020267749,0.18,results/S31/P/arc.json
+03_methods,@mean_random:S31|f2,0.15917105461020273,0.16,results/S31/P/arc.json
+03_methods,@g1_n_tests|int,20,20,gnn/G1/rejections.csv
+03_methods,@g1_size_ok:kuramoto|int,17,17,gnn/G1/rejections.csv
+03_methods,@g1_size_ok:stuart_landau|int,17,17,gnn/G1/rejections.csv
+03_methods,"@g1_lo:null,A,structure.p_swing|pct1",0.138,13.8%,gnn/G1/rejections.csv
+03_methods,"@g1_hi:null,A,structure.p_swing|pct1",0.189,18.9%,gnn/G1/rejections.csv
+03_methods,"@g1_lo:null,A,amplitude.p_shift|pct1",0.057,5.7%,gnn/G1/rejections.csv
+03_methods,"@g1_hi:null,A,amplitude.p_shift|pct1",0.062,6.2%,gnn/G1/rejections.csv
+03_methods,"@g1_rate:kuramoto,null,A,arc.after2|pct1",0.062,6.2%,gnn/G1/rejections.csv
+03_methods,"@g1_rate:stuart_landau,null,A,structure.p_align|pct1",0.065,6.5%,gnn/G1/rejections.csv
+03_methods,"@g1_lo:null,A,family.arc_any|pct1",0.173,17.3%,gnn/G1/rejections.csv
+03_methods,"@g1_hi:null,A,family.arc_any|pct1",0.184,18.4%,gnn/G1/rejections.csv
+03_methods,"@g1_lo:null,B,arc.crisis|pct1",0.082,8.2%,gnn/G1/rejections.csv
+03_methods,"@g1_hi:null,B,arc.crisis|pct1",0.089,8.9%,gnn/G1/rejections.csv
+03_methods,"@g1_lo:null,B,arc.lead1|pct1",0.085,8.5%,gnn/G1/rejections.csv
+03_methods,"@g1_hi:null,B,arc.lead1|pct1",0.086,8.6%,gnn/G1/rejections.csv
+03_methods,"@edge_rate:kuramoto,null,D11.swing|pct1",0.015,1.5%,results/edge_matched/validation.csv.gz
+03_methods,"@edge_rate:stuart_landau,null,D11.swing|pct1",0.048,4.8%,results/edge_matched/validation.csv.gz
+03_methods,results/edge_matched/S31.json#tests/D11.swing/p_edge|p,0.0001999600079984003,0.0002,results/edge_matched/S31.json
+03_methods,results/edge_matched/S31.json#tests/F2/p_edge|p,0.028794241151769647,0.029,results/edge_matched/S31.json
+03_methods,results/edge_matched/S31.json#tests/arc.P.lead1/p_current|p,0.018867924528301886,0.019,results/edge_matched/S31.json
+03_methods,results/edge_matched/S31.json#tests/arc.P.lead1/p_edge|p,0.033193361327734455,0.033,results/edge_matched/S31.json
+03_methods,results/edge_matched/S30.json#tests/arc.P.lead1/p_edge|p,0.04319136172765447,0.043,results/edge_matched/S30.json
+03_methods,results/edge_matched/S26.json#tests/arc.P.lead1/p_edge|p,0.042191561687662464,0.042,results/edge_matched/S26.json
+03_methods,@edge_crossings|int,6,6,results/edge_matched/S31.json;results/edge_matched/S30.json;results/edge_matched/S26.json
+03_methods,results/edge_matched/S31.json#tests/arc.P.after2/p_current|p,0.05660377358490566,0.057,results/edge_matched/S31.json
+03_methods,results/edge_matched/S31.json#tests/arc.P.after2/p_edge|p,0.03939212157568486,0.039,results/edge_matched/S31.json
+03_methods,"@fd:rbar,min|f2",0.07582559262956656,0.08,paper1/manuscript/figdata/figdata_s31.json
+03_methods,"@fd:rbar,max|f2",0.7733152883777344,0.77,paper1/manuscript/figdata/figdata_s31.json
+03_methods,@eq_share:min|f2,0.6946348359577813,0.69,paper1/manuscript/figdata/figdata_s31.json;results/S31/P/arc.json
+03_methods,@eq_share:max|f2,0.9586767615586741,0.96,paper1/manuscript/figdata/figdata_s31.json;results/S31/P/arc.json
+03_methods,"@fd:share,min|f2",0.19188379998992935,0.19,paper1/manuscript/figdata/figdata_s31.json
+03_methods,"@fd:share,max|f2",0.9524905848955676,0.95,paper1/manuscript/figdata/figdata_s31.json
+03_methods,lit:0.40|a cut-off chosen for this description,0.40,0.40,a cut-off chosen for this description
+03_methods,"@fd:share,below40,1985,1996|int",9,9,paper1/manuscript/figdata/figdata_s31.json
+03_methods,"@fd:share,n,1985,1996|int",12,12,paper1/manuscript/figdata/figdata_s31.json
+03_methods,"@fd:own_IRN,min,1985,1996|pct0",0.1915839059309625,19%,paper1/manuscript/figdata/figdata_s31.json
+03_methods,"@fd:own_IRN,max,1985,1996|pct0",0.4194958915782034,42%,paper1/manuscript/figdata/figdata_s31.json
+03_methods,S31/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.8427512398801741,84.3%,results/S31/P/diversification.json
+03_methods,S31/P/diversification#equal/cross_fraction_of_excess|pct1,0.9699757620307106,97.0%,results/S31/P/diversification.json
+03_methods,S30/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.833473589684298,83.3%,results/S30/P/diversification.json
+03_methods,S30/P/diversification#equal/cross_fraction_of_excess|pct1,0.9678094308198967,96.8%,results/S30/P/diversification.json
+03_methods,S31/P/diversification#gdp_mean/cross_share_crisis|f3,0.7060955156871213,0.706,results/S31/P/diversification.json
+03_methods,S31/P/diversification#gdp_mean/cross_share_normal|f3,0.6202264347421601,0.620,results/S31/P/diversification.json
+03_methods,S31/P/diversification#equal/cross_share_crisis|f3,0.7830698639097695,0.783,results/S31/P/diversification.json
+03_methods,S31/P/diversification#equal/cross_share_normal|f3,0.6914124647240171,0.691,results/S31/P/diversification.json
+03_methods,@diff:S31/P/diversification#gdp_mean/cross_share_crisis;S31/P/diversification#gdp_mean/cross_share_normal|pct0,0.08586908094496115,9%,results/S31/P/diversification.json
+03_methods,S31/P/cross_split#gdp_mean/corr_normal|f3,0.2906839765586133,0.291,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#gdp_mean/corr_crisis|f3,0.385017691528199,0.385,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#gdp_mean/from_correlation|pct0,0.455198511739668,46%,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#equal/from_correlation|pct0,0.4994888625170207,50%,results/S31/P/cross_split.json
+03_methods,@ratio:S31/P/cross_split#gdp_mean/sd_crisis;S31/P/cross_split#gdp_mean/sd_normal|f2,1.0986141336393547,1.10,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#gdp_mean/from_swing_size|pct0,0.4042180597737746,40%,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#equal/from_swing_size|pct0,0.36975923126684823,37%,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#gdp_mean/interaction|pct0,0.14058342848655733,14%,results/S31/P/cross_split.json
+03_methods,S31/P/cross_split#equal/interaction|pct0,0.1307519062161311,13%,results/S31/P/cross_split.json
+03_methods,S30/P/cross_split#gdp_mean/from_correlation|pct0,0.4356389322567964,44%,results/S30/P/cross_split.json
+03_methods,S30/P/cross_split#gdp_mean/from_swing_size|pct0,0.4137950756778207,41%,results/S30/P/cross_split.json
+03_methods,S30/P/cross_split#gdp_mean/interaction|pct0,0.1505659920653829,15%,results/S30/P/cross_split.json
+03_methods,S26/P/cross_split#gdp_mean/from_swing_size|pct0,0.525221451531192,53%,results/S26/P/cross_split.json
+03_methods,S26/P/cross_split#gdp_mean/from_correlation|pct0,0.3334848968541083,33%,results/S26/P/cross_split.json
+03_methods,S31/P/amplitude#corr_raw/0|c3,0.47172781090968985,+0.472,results/S31/P/amplitude.json
+03_methods,S31/P/amplitude#corr_detrended|c3,0.6460467261261413,+0.646,results/S31/P/amplitude.json
+03_methods,S31/P/amplitude#p_shift|p,0.018867924528301886,0.019,results/S31/P/amplitude.json
+03_methods,S30/P/amplitude#corr_raw/0|c3,0.45767069564244556,+0.458,results/S30/P/amplitude.json
+03_methods,S30/P/amplitude#corr_detrended|c3,0.6414885585538959,+0.641,results/S30/P/amplitude.json
+03_methods,S31/P/amplitude#p_surrogate|p,0.0001999600079984003,0.0002,results/S31/P/amplitude.json
+03_methods,S31/P/mst#L_decade_means/1979-1989|f3,0.6866094461733556,0.687,results/S31/P/mst.json
+03_methods,S31/P/mst#L_decade_means/2013-2022|f3,0.4235937436520424,0.424,results/S31/P/mst.json
+03_methods,@mst_ratio:S31|x1,1.6209149839034576,1.6×,results/S31/P/mst.json
+03_methods,S30/P/mst#L_decade_means/1979-1989|f3,0.6799570040194088,0.680,results/S30/P/mst.json
+03_methods,S30/P/mst#L_decade_means/2013-2022|f3,0.4207044806674277,0.421,results/S30/P/mst.json
+03_methods,@mst_ratio:S30|x1,1.616234281462107,1.6×,results/S30/P/mst.json
+03_methods,S31/P/mst#tau_L|c3,-0.15714285714285708,−0.157,results/S31/P/mst.json
+03_methods,S31/P/mst#p_contraction|p,0.20635872825434912,0.206,results/S31/P/mst.json
+03_methods,S31/P/mst#tau_L_detrended|c3,0.014285714285714301,+0.014,results/S31/P/mst.json
+03_methods,S31/P/mst#p_contraction_detrended|p,0.5610877824435113,0.561,results/S31/P/mst.json
+03_methods,S30/P/mst#tau_L|c3,-0.14285714285714285,−0.143,results/S30/P/mst.json
+03_methods,S30/P/mst#p_contraction|p,0.21855628874225155,0.219,results/S30/P/mst.json
+03_methods,S30/P/mst#tau_L_detrended|c3,0.05714285714285716,+0.057,results/S30/P/mst.json
+03_methods,S30/P/mst#p_contraction_detrended|p,0.6588682263547291,0.659,results/S30/P/mst.json
+03_methods,S31/P/phase_lags#period_years|f2,5.932179168237618,5.93,results/S31/P/phase_lags.json
+03_methods,S31/P/phase_lags#sd|f3,0.5455843766255922,0.546,results/S31/P/phase_lags.json
+03_methods,S31/P/phase_lags#sd|f3,0.5455843766255922,0.546,results/S31/P/phase_lags.json
+03_methods,S31/P/phase_lags#null_mean|f3,0.9923492496075748,0.992,results/S31/P/phase_lags.json
+03_methods,S31/P/phase_lags#null_min|f3,0.5539109077462346,0.554,results/S31/P/phase_lags.json
+03_methods,S31/P/phase_lags#p_spread_lower|p,0.0001999600079984003,0.0002,results/S31/P/phase_lags.json
+03_methods,S30/P/phase_lags#sd|f3,0.5349485777759341,0.535,results/S30/P/phase_lags.json
+03_methods,S30/P/phase_lags#p_spread_lower|p,0.0003999200159968006,0.0004,results/S30/P/phase_lags.json
+03_methods,S31/P/csd#tau_ar1|c3,-0.1517857142857143,−0.152,results/S31/P/csd.json
+03_methods,S31/P/csd#p_ar1|p,0.7894421115776845,0.789,results/S31/P/csd.json
+03_methods,S31/P/bifurcation#stat_real|c3,0.0022611667094287746,+0.002,results/S31/P/bifurcation.json
+03_methods,S31/P/bifurcation#p_slowing_post|p,0.5018996200759848,0.502,results/S31/P/bifurcation.json
+03_methods,S31/P/csd#tau_var|c3,0.4375,+0.438,results/S31/P/csd.json
+03_methods,S31/P/csd#p_var|p,0.03099380123975205,0.031,results/S31/P/csd.json
+03_methods,S30/P/csd#tau_var|c3,0.4196428571428571,+0.420,results/S30/P/csd.json
+03_methods,S30/P/csd#p_var|p,0.03719256148770246,0.037,results/S30/P/csd.json
+03_methods,followup/S31/P/csd_by_event#sets/only_2009_2020/tau_var|c3,0.8571428571428572,+0.857,results/followup/S31/P/csd_by_event.json
+03_methods,followup/S31/P/csd_by_event#sets/only_2009_2020/p_var|p,0.0027994401119776045,0.003,results/followup/S31/P/csd_by_event.json
+03_methods,followup/S31/P/csd_by_event#sets/without_2009_2020/tau_var|c3,0.01785714285714285,+0.018,results/followup/S31/P/csd_by_event.json
+03_methods,followup/S31/P/csd_by_event#sets/without_2009_2020/p_var|p,0.5134973005398921,0.513,results/followup/S31/P/csd_by_event.json
+03_methods,followup/S31/P/csd_by_event#sets/without_2009/p_var|p,0.20595880823835233,0.206,results/followup/S31/P/csd_by_event.json
+03_methods,followup/S31/P/csd_by_event#sets/without_2020/p_var|p,0.1249750049990002,0.125,results/followup/S31/P/csd_by_event.json
+03_methods,S31/E/csd#p_var|p,0.04459108178364327,0.045,results/S31/E/csd.json
+03_methods,S31/W/csd#p_var|p,0.1347730453909218,0.135,results/S31/W/csd.json
+03_methods,S31/N/csd#p_var|p,0.07338532293541292,0.073,results/S31/N/csd.json
+03_methods,S30/E/csd#p_var|p,0.05438912217556489,0.054,results/S30/E/csd.json
+03_methods,S31/P/robustness#band 2-8 yr/lead1/0|c2,0.19473588520479232,+0.19,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 3-10 yr/lead1/0|c2,0.24638060703852008,+0.25,results/S31/P/robustness.json
+03_methods,S31/P/robustness#baseline/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 2-8 yr/lead1/1|p,0.09433962264150944,0.094,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 3-10 yr/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#baseline/after2/0|c2,-0.2577317632100702,−0.26,results/S31/P/robustness.json
+03_methods,S31/P/robustness#baseline/after2/1|p,0.05660377358490566,0.057,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 2-8 yr/after2/0|c2,-0.2707661191335065,−0.27,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 2-8 yr/after2/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 3-10 yr/after2/0|c2,0.0003420708201808398,+0.00,results/S31/P/robustness.json
+03_methods,S31/P/robustness#band 3-10 yr/after2/1|p,0.5094339622641509,0.509,results/S31/P/robustness.json
+03_methods,S31/P/robustness#HP filter (lambda=100)/lead1/0|c2,0.28589974004141483,+0.29,results/S31/P/robustness.json
+03_methods,S31/P/robustness#HP filter (lambda=100)/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#growth rates/lead2/1|p,0.05660377358490566,0.057,results/S31/P/robustness.json
+03_methods,S31/P/robustness#growth rates/after2/0|c2,0.03837483314883505,+0.04,results/S31/P/robustness.json
+03_methods,S31/P/robustness#growth rates/after2/1|p,0.6792452830188679,0.679,results/S31/P/robustness.json
+03_methods,S31/P/conventions#N/arc/lead1/p|p,0.05660377358490566,0.057,results/S31/P/conventions.json
+03_methods,S30/P/conventions#W/arc/lead1/p|p,0.05660377358490566,0.057,results/S30/P/conventions.json
+03_methods,S31/P/conventions#C/arc/crisis/corr|c3,0.41689207203409495,+0.417,results/S31/P/conventions.json
+03_methods,S31/P/conventions#C/arc/crisis/p|p,0.018867924528301886,0.019,results/S31/P/conventions.json
+03_methods,S31/P/arc#arc/crisis/p|p,0.18867924528301888,0.189,results/S31/P/arc.json
+03_methods,S31/P/conventions#N/amp_detrended/0|c3,0.5469465998415747,+0.547,results/S31/P/conventions.json
+03_methods,S31/P/conventions#C/amp_detrended/0|c3,0.7257002587332422,+0.726,results/S31/P/conventions.json
+03_methods,S31/P/robustness#without 1975/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without 1982/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without 1991/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S30/P/robustness#without 1975/lead1/1|p,0.05660377358490566,0.057,results/S30/P/robustness.json
+03_methods,S31/P/robustness#without 2009/lead1/1|p,0.22641509433962265,0.226,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without 2020/lead1/1|p,0.2830188679245283,0.283,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without 2009 AND 2020/lead1/0|c2,-0.017434251547740767,−0.02,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without 2009 AND 2020/lead1/1|p,0.49056603773584906,0.491,results/S31/P/robustness.json
+03_methods,"S31/P/robustness#1970-1995 (1975,82,91)/lead1/0|c2",0.23849122333849637,+0.24,results/S31/P/robustness.json
+03_methods,"S31/P/robustness#1970-1995 (1975,82,91)/lead1/1|p",0.15384615384615385,0.154,results/S31/P/robustness.json
+03_methods,"S31/P/robustness#1996-2022 (2009,2020)/lead1/0|c2",0.37855439374602795,+0.38,results/S31/P/robustness.json
+03_methods,"S31/P/robustness#1996-2022 (2009,2020)/lead1/1|p",0.037037037037037035,0.037,results/S31/P/robustness.json
+03_methods,S31/P/arc#bonferroni/lead1|p,0.09433962264150943,0.094,results/S31/P/arc.json
+03_methods,S31/P/arc#bonferroni/lead2|p,0.18867924528301885,0.189,results/S31/P/arc.json
+03_methods,S31/P/arc#bonferroni/after2|p,0.2830188679245283,0.283,results/S31/P/arc.json
+03_methods,S31/P/arc#benjamini_hochberg/lead1|p,0.09433962264150943,0.094,results/S31/P/arc.json
+03_methods,S26/P/arc#benjamini_hochberg/lead1|p,0.04716981132075471,0.047,results/S26/P/arc.json
+03_methods,S31_minus_CHN/P/conventions#C/arc/lead1/p|p,0.05660377358490566,0.057,results/S31_minus_CHN/P/conventions.json
+03_methods,"@loo_range:S31,lead1,corr,min|c2",0.2172612513887129,+0.22,results/S31/P/robustness.json
+03_methods,"@loo_range:S31,lead1,corr,max|c2",0.24698004182864042,+0.25,results/S31/P/robustness.json
+03_methods,"@loo_range:S31,lead1,p,max|p",0.03773584905660377,0.038,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without USA/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without DEU/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/robustness#without JPN/lead1/1|p,0.018867924528301886,0.019,results/S31/P/robustness.json
+03_methods,S31/P/diversification#equal/d6/n_ratio_at_least_observed|int,2390,"2,390",results/S31/P/diversification.json
+03_methods,S31/P/diversification#gdp_mean/d6/n_ratio_at_least_observed|int,1581,"1,581",results/S31/P/diversification.json
+03_methods,S31/P/diversification#equal/d6/p_ratio_nominal|p2,0.47810437912417514,0.48,results/S31/P/diversification.json
+03_methods,S31/P/diversification#gdp_mean/d6/p_ratio_nominal|p2,0.3163367326534693,0.32,results/S31/P/diversification.json
+03_methods,S31/P/diversification#gdp_mean/d6/p_excess_cross|p,0.0001999600079984003,0.0002,results/S31/P/diversification.json
+03_methods,@nexceed:S31/P/diversification#gdp_mean/d6/p_excess_own|int,191,191,results/S31/P/diversification.json
+03_methods,S31/P/diversification#gdp_mean/d6/p_excess_own|p,0.03839232153569286,0.038,results/S31/P/diversification.json
+03_methods,S31_strict/P/mst#tau_L|c3,0.09523809523809527,+0.095,results/S31_strict/P/mst.json
+03_methods,S31_strict/P/mst#p_contraction|p,0.6544691061787642,0.654,results/S31_strict/P/mst.json
+03_methods,S31_strict/P/mst#tau_L_detrended|c3,0.3333333333333333,+0.333,results/S31_strict/P/mst.json
+03_methods,S31_strict/P/mst#p_contraction_detrended|p,0.9098180363927214,0.910,results/S31_strict/P/mst.json
+03_methods,S31_strict/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.8678293243725049,86.8%,results/S31_strict/P/diversification.json
+03_methods,S31_strict/P/diversification#equal/cross_fraction_of_excess|pct1,0.9694273114985924,96.9%,results/S31_strict/P/diversification.json
+03_methods,S31_strict/P/csd#tau_ar1|c3,-0.10714285714285714,−0.107,results/S31_strict/P/csd.json
+03_methods,S31_strict/P/csd#p_ar1|p,0.643871225754849,0.644,results/S31_strict/P/csd.json
+03_methods,S31_strict/P/bifurcation#stat_real|c3,0.06544389360155811,+0.065,results/S31_strict/P/bifurcation.json
+03_methods,S31_strict/P/bifurcation#p_slowing_post|p,0.5200959808038392,0.520,results/S31_strict/P/bifurcation.json
+03_methods,S31_strict/P/csd#tau_var|c3,0.8571428571428572,+0.857,results/S31_strict/P/csd.json
+03_methods,S31_strict/P/csd#p_var|p,0.0027994401119776045,0.003,results/S31_strict/P/csd.json
+03_methods,S30/P/arc#arc/lead1/corr|c3,0.2172612513887129,+0.217,results/S30/P/arc.json
+03_methods,S30/P/arc#arc/lead1/p|p,0.018867924528301886,0.019,results/S30/P/arc.json
+03_methods,S30/P/amplitude#corr_detrended|c3,0.6414885585538959,+0.641,results/S30/P/amplitude.json
+03_methods,@mst_ratio:S30|x1,1.616234281462107,1.6×,results/S30/P/mst.json
+03_methods,S31_rus_from_1992/P/arc#arc/lead1/corr|c3,0.22404610144440035,+0.224,results/S31_rus_from_1992/P/arc.json
+03_methods,S31_rus_from_1992/P/arc#arc/lead1/p|p,0.018867924528301886,0.019,results/S31_rus_from_1992/P/arc.json
+03_methods,S31_rus_from_1992/P/amplitude#corr_detrended|c3,0.6547201807188221,+0.655,results/S31_rus_from_1992/P/amplitude.json
+03_methods,S26/P/arc#arc/lead1/corr|c3,0.21554584338930058,+0.216,results/S26/P/arc.json
+03_methods,S26/P/arc#arc/lead1/p|p,0.018867924528301886,0.019,results/S26/P/arc.json
+03_methods,S26/P/conventions#C/arc/lead1/corr|c3,0.3735249972978737,+0.374,results/S26/P/conventions.json
+03_methods,S26/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S26/P/conventions.json
+03_methods,S26/P/arc#benjamini_hochberg/lead1|p,0.04716981132075471,0.047,results/S26/P/arc.json
+03_methods,@mst_ratio:S26|x1,1.7874376142613695,1.8×,results/S26/P/mst.json
+03_methods,S26/P/cross_split#gdp_mean/from_swing_size|pct0,0.525221451531192,53%,results/S26/P/cross_split.json
+03_methods,S26/P/cross_split#gdp_mean/from_correlation|pct0,0.3334848968541083,33%,results/S26/P/cross_split.json
+03_methods,S31_minus_CHN/P/arc#arc/lead2/p|p,0.05660377358490566,0.057,results/S31_minus_CHN/P/arc.json
+03_methods,S31/P/arc#arc/after2/p|p,0.05660377358490566,0.057,results/S31/P/arc.json
+03_methods,"@loo_count_below:S31,after2|int",20,20,results/S31/P/robustness.json
+03_methods,S26/P/structure#align_share|pct0,0.39278971984271843,39%,results/S26/P/structure.json
+03_methods,S30/P/structure#align_share|pct0,0.1893551126583641,19%,results/S30/P/structure.json
+03_methods,S30_minus_IRN/P/structure#align_share|pct0,0.33037568939282996,33%,results/S30_minus_IRN/P/structure.json
+03_methods,S31/P/structure#align_share|pct0,0.2845406211106746,28%,results/S31/P/structure.json
+03_methods,S31_gmd_growth/P/arc#arc/lead2/p|p,0.05660377358490566,0.057,results/S31_gmd_growth/P/arc.json
+03_methods,S31_gmd_growth/P/arc#arc/after2/p|p,0.03773584905660377,0.038,results/S31_gmd_growth/P/arc.json
+03_methods,S26/W/amplitude#corr_detrended|c2,0.5086312250099114,+0.51,results/S26/W/amplitude.json
+03_methods,S26/P/diversification#equal/corr_rbar_r|c2,0.501823940980143,+0.50,results/S26/P/diversification.json
+03_methods,S31/P/diversification#equal/corr_rbar_r|c2,0.5092046622809372,+0.51,results/S31/P/diversification.json
+03_methods,S31/P/mst#L_decade_means/1979-1989|f3,0.6866094461733556,0.687,results/S31/P/mst.json
+03_methods,S31/P/mst#L_decade_means/2013-2022|f3,0.4235937436520424,0.424,results/S31/P/mst.json
+03_methods,@mst_ratio:S31|x1,1.6209149839034576,1.6×,results/S31/P/mst.json
+03_methods,S31/P/phase_lags#sd|f3,0.5455843766255922,0.546,results/S31/P/phase_lags.json
+03_methods,S31/P/phase_lags#p_spread_lower|p,0.0001999600079984003,0.0002,results/S31/P/phase_lags.json
+04_results,"@min_r:S31,min|f2",0.00987517720425176,0.01,results/S31/P/arc.json
+04_results,"@argmin_r:S31,min|yr",1985,1985,results/S31/P/arc.json
+04_results,"@min_r:S31,max|f2",0.952130005886945,0.95,results/S31/P/arc.json
+04_results,"@argmin_r:S31,max|yr",2019,2019,results/S31/P/arc.json
+04_results,S31/P/arc#mean_ci/recession/0|f2,0.5993745893934549,0.60,results/S31/P/arc.json
+04_results,S31/P/arc#mean_ci/normal/0|f2,0.48395833096184454,0.48,results/S31/P/arc.json
+04_results,S31/P/arc#mean_ci/downturn/0|f2,0.30059721080374463,0.30,results/S31/P/arc.json
+04_results,S31/P/channels#contracting/2009|int,25,25,results/S31/P/channels.json
+04_results,S31/P/channels#contracting/2020|int,28,28,results/S31/P/channels.json
+04_results,S31/P/channels#contracting/1982|int,9,9,results/S31/P/channels.json
+04_results,S31/P/channels#contracting/1991|int,9,9,results/S31/P/channels.json
+04_results,S31/P/amplitude#corr_detrended|c3,0.6460467261261413,+0.646,results/S31/P/amplitude.json
+04_results,S31/P/amplitude#p_shift|p,0.018867924528301886,0.019,results/S31/P/amplitude.json
+04_results,S31/P/amplitude#p_surrogate|p,0.0001999600079984003,0.0002,results/S31/P/amplitude.json
+04_results,S30/P/amplitude#corr_detrended|c3,0.6414885585538959,+0.641,results/S30/P/amplitude.json
+04_results,S26/P/amplitude#corr_detrended|c3,0.6078884059189149,+0.608,results/S26/P/amplitude.json
+04_results,S31_minus_IRN_SAU/P/amplitude#corr_detrended|c3,0.6245115625625356,+0.625,results/S31_minus_IRN_SAU/P/amplitude.json
+04_results,S31/P/conventions#C/amp_detrended/0|c3,0.7257002587332422,+0.726,results/S31/P/conventions.json
+04_results,S31/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.8427512398801741,84.3%,results/S31/P/diversification.json
+04_results,S31/P/diversification#equal/cross_fraction_of_excess|pct1,0.9699757620307106,97.0%,results/S31/P/diversification.json
+04_results,S30/P/diversification#gdp_mean/cross_fraction_of_excess|pct1,0.833473589684298,83.3%,results/S30/P/diversification.json
+04_results,S30/P/diversification#equal/cross_fraction_of_excess|pct1,0.9678094308198967,96.8%,results/S30/P/diversification.json
+04_results,S31/P/diversification#gdp_mean/cross_share_crisis|f3,0.7060955156871213,0.706,results/S31/P/diversification.json
+04_results,S31/P/diversification#gdp_mean/cross_share_normal|f3,0.6202264347421601,0.620,results/S31/P/diversification.json
+04_results,S31/P/cross_split#gdp_mean/from_correlation|pct0,0.455198511739668,46%,results/S31/P/cross_split.json
+04_results,S31/P/cross_split#gdp_mean/from_swing_size|pct0,0.4042180597737746,40%,results/S31/P/cross_split.json
+04_results,S31/P/cross_split#gdp_mean/interaction|pct0,0.14058342848655733,14%,results/S31/P/cross_split.json
+04_results,S26/P/cross_split#gdp_mean/from_swing_size|pct0,0.525221451531192,53%,results/S26/P/cross_split.json
+04_results,S26/P/cross_split#gdp_mean/from_correlation|pct0,0.3334848968541083,33%,results/S26/P/cross_split.json
+04_results,dtt/results/d3_neff.json#S31/P/all years/neff|f1,3.455167167128832,3.5,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/recession years/neff|f1,2.3626089857199455,2.4,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/lead-1 years/neff|f1,2.0556201025923166,2.1,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/by_year/2020/neff|f1,1.107507602289763,1.1,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/by_year/2009/neff|f2,1.369006367912871,1.37,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/by_year/2020/neff|f2,1.107507602289763,1.11,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/by_year/1975/neff|f1,5.088892226013848,5.1,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/by_year/1982/neff|f1,5.41399672120121,5.4,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/P/by_year/1991/neff|f1,9.832212654310084,9.8,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/decomposition/gdp_mean/excess_from_cross_law|pct1,0.8413708053145905,84.1%,dtt/results/d3_neff.json
+04_results,dtt/results/d3_neff.json#S31/decomposition/gdp_mean/excess_from_cross|pct1,0.8427512398801741,84.3%,dtt/results/d3_neff.json
+04_results,S31/P/mst#L_decade_means/1979-1989|f3,0.6866094461733556,0.687,results/S31/P/mst.json
+04_results,S31/P/mst#L_decade_means/2013-2022|f3,0.4235937436520424,0.424,results/S31/P/mst.json
+04_results,@mst_ratio:S31|x1,1.6209149839034576,1.6×,results/S31/P/mst.json
+04_results,@mst_ratio:S30|x1,1.616234281462107,1.6×,results/S30/P/mst.json
+04_results,@mst_ratio:S26|x1,1.7874376142613695,1.8×,results/S26/P/mst.json
+04_results,S31/P/mst#tau_L|c3,-0.15714285714285708,−0.157,results/S31/P/mst.json
+04_results,S31/P/mst#p_contraction|p,0.20635872825434912,0.206,results/S31/P/mst.json
+04_results,S31/P/phase_lags#sd|f3,0.5455843766255922,0.546,results/S31/P/phase_lags.json
+04_results,S31/P/phase_lags#p_spread_lower|p,0.0001999600079984003,0.0002,results/S31/P/phase_lags.json
+04_results,S31/P/conventions#C/arc/lead1/corr|c3,0.3792741776688093,+0.379,results/S31/P/conventions.json
+04_results,S31/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S31/P/conventions.json
+04_results,S31/P/robustness#without 2009/lead1/1|p,0.22641509433962265,0.226,results/S31/P/robustness.json
+04_results,S31/P/robustness#without 2020/lead1/1|p,0.2830188679245283,0.283,results/S31/P/robustness.json
+04_results,S31/P/robustness#without 2009 AND 2020/lead1/0|c2,-0.017434251547740767,−0.02,results/S31/P/robustness.json
+04_results,S31_minus_CHN/P/conventions#C/arc/lead1/corr|c3,0.35672739195696634,+0.357,results/S31_minus_CHN/P/conventions.json
+04_results,S31_minus_CHN/P/conventions#C/arc/lead1/p|p,0.05660377358490566,0.057,results/S31_minus_CHN/P/conventions.json
+04_results,S31/P/arc#arc/lead1/corr|c3,0.2308000631507987,+0.231,results/S31/P/arc.json
+04_results,S31/P/arc#arc/lead1/p|p,0.018867924528301886,0.019,results/S31/P/arc.json
+04_results,results/edge_matched/S31.json#tests/arc.P.lead1/p_edge|p,0.033193361327734455,0.033,results/edge_matched/S31.json
+04_results,"@loo_range:S31,lead1,p,max|p",0.03773584905660377,0.038,results/S31/P/robustness.json
+04_results,S31/P/conventions#E/arc/lead1/p|p,0.018867924528301886,0.019,results/S31/P/conventions.json
+04_results,S31/P/conventions#N/arc/lead1/p|p,0.05660377358490566,0.057,results/S31/P/conventions.json
+04_results,S30/P/conventions#C/arc/lead1/corr|c3,0.3694174265978512,+0.369,results/S30/P/conventions.json
+04_results,S30/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S30/P/conventions.json
+04_results,S26/P/conventions#C/arc/lead1/corr|c3,0.3735249972978737,+0.374,results/S26/P/conventions.json
+04_results,S26/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S26/P/conventions.json
+04_results,S31/P/arc#arc/lead2/corr|c3,0.23532909637712562,+0.235,results/S31/P/arc.json
+04_results,S31/P/arc#arc/lead2/p|p,0.03773584905660377,0.038,results/S31/P/arc.json
+04_results,S31/P/conventions#C/arc/lead2/corr|c3,-0.044393707617549606,−0.044,results/S31/P/conventions.json
+04_results,S31/P/conventions#C/arc/lead2/p|p,0.5849056603773585,0.585,results/S31/P/conventions.json
+04_results,S31/P/arc#arc/crisis/p|p,0.18867924528301888,0.189,results/S31/P/arc.json
+04_results,S31/P/conventions#C/arc/crisis/corr|c3,0.41689207203409495,+0.417,results/S31/P/conventions.json
+04_results,S31/P/conventions#C/arc/crisis/p|p,0.018867924528301886,0.019,results/S31/P/conventions.json
+04_results,S31/P/arc#arc/after2/corr|c3,-0.2577317632100702,−0.258,results/S31/P/arc.json
+04_results,S31/P/arc#arc/after2/p|p,0.05660377358490566,0.057,results/S31/P/arc.json
+04_results,S31/P/csd#tau_var|c3,0.4375,+0.438,results/S31/P/csd.json
+04_results,S31/P/csd#p_var|p,0.03099380123975205,0.031,results/S31/P/csd.json
+04_results,results/edge_matched/S31.json#tests/F2/p_edge|p,0.028794241151769647,0.029,results/edge_matched/S31.json
+04_results,S31/P/csd#tau_ar1|c3,-0.1517857142857143,−0.152,results/S31/P/csd.json
+04_results,S31/P/csd#p_ar1|p,0.7894421115776845,0.789,results/S31/P/csd.json
+04_results,S31/P/bifurcation#p_slowing_post|p,0.5018996200759848,0.502,results/S31/P/bifurcation.json
+04_results,followup/S31/P/csd_by_event#sets/only_2009_2020/tau_var|c3,0.8571428571428572,+0.857,results/followup/S31/P/csd_by_event.json
+04_results,followup/S31/P/csd_by_event#sets/only_2009_2020/p_var|p,0.0027994401119776045,0.003,results/followup/S31/P/csd_by_event.json
+04_results,followup/S31/P/csd_by_event#sets/without_2009_2020/tau_var|c3,0.01785714285714285,+0.018,results/followup/S31/P/csd_by_event.json
+04_results,followup/S31/P/csd_by_event#sets/without_2009_2020/p_var|p,0.5134973005398921,0.513,results/followup/S31/P/csd_by_event.json
+05_discussion,dtt/results/d3_neff.json#S31/P/all years/neff|f1,3.455167167128832,3.5,dtt/results/d3_neff.json
+05_discussion,dtt/results/d3_neff.json#S31/P/recession years/neff|f1,2.3626089857199455,2.4,dtt/results/d3_neff.json
+05_discussion,dtt/results/d3_neff.json#S31/P/lead-1 years/neff|f1,2.0556201025923166,2.1,dtt/results/d3_neff.json
+05_discussion,dtt/results/d3_neff.json#S31/P/by_year/2020/neff|f1,1.107507602289763,1.1,dtt/results/d3_neff.json
+05_discussion,dtt/results/d3_neff.json#S31/decomposition/gdp_mean/excess_from_cross_law|pct1,0.8413708053145905,84.1%,dtt/results/d3_neff.json
+05_discussion,dtt/results/d3_neff.json#S31/decomposition/gdp_mean/excess_from_cross|pct1,0.8427512398801741,84.3%,dtt/results/d3_neff.json
+05_discussion,"@g1_lo:null,B,arc.crisis|pct1",0.082,8.2%,gnn/G1/rejections.csv
+05_discussion,"@g1_hi:null,B,arc.crisis|pct1",0.089,8.9%,gnn/G1/rejections.csv
+05_discussion,"@g1_lo:null,B,arc.lead1|pct1",0.085,8.5%,gnn/G1/rejections.csv
+05_discussion,"@g1_hi:null,B,arc.lead1|pct1",0.086,8.6%,gnn/G1/rejections.csv
+05_discussion,"@g1_lo:null,B,arc_C.lead1|pct1",0.023,2.3%,gnn/G1/rejections.csv
+05_discussion,"@g1_hi:null,B,arc_C.lead1|pct1",0.029,2.9%,gnn/G1/rejections.csv
+05_discussion,"@g1_rate:kuramoto,network,B,arc_C.lead1|pct1",0.017,1.7%,gnn/G1/rejections.csv
+05_discussion,"@g1_rate:kuramoto,null,B,arc_C.lead1|pct1",0.029,2.9%,gnn/G1/rejections.csv
+05_discussion,"@g1_rate:kuramoto,forcing,B,arc_C.lead1|pct1",0.025,2.5%,gnn/G1/rejections.csv
+05_discussion,S31/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S31/P/conventions.json
+05_discussion,"@g1b_verdict:network,primary,verdict|raw",partly,partly,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:network,primary,rate|pct1",0.063,6.3%,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:network,primary,lo|pct1",0.049549444227037005,5.0%,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:network,primary,hi|pct1",0.07979526513746835,8.0%,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:network,primary,diff_constant.0|pts1",0.035,3.5 percentage points,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:network,primary,diff_shuffled.0|pts1",0.034,3.4 percentage points,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:network,primary,share_at_real_p|pct1",0.063,6.3%,gnn/G1b/verdicts.json
+05_discussion,"@g1b_rate:network,primary,layer,C,lead1,corr_at_least_real|pct1",0.013,1.3%,gnn/G1b/rejections.csv
+05_discussion,S31/P/conventions#C/arc/lead1/corr|c3,0.3792741776688093,+0.379,results/S31/P/conventions.json
+05_discussion,"@g1b_verdict:null,primary,rate|pct1",0.04,4.0%,gnn/G1b/verdicts.json
+05_discussion,"@g1b_verdict:forcing,primary,rate|pct1",0.032,3.2%,gnn/G1b/verdicts.json
+05_discussion,@g1b_count:partly|int,6,6,gnn/G1b/verdicts.json
+05_discussion,@g1b_count:not reproduced|int,2,2,gnn/G1b/verdicts.json
+05_discussion,@g1b_names:not reproduced|raw,one state per economy; refractory 4 years,one state per economy; refractory 4 years,gnn/G1b/verdicts.json
+05_discussion,"lit:24|Pangallo (2025), abstract",24,24,"Pangallo (2025), abstract"
+06_limitations,S31/P/robustness#without 2009/lead1/1|p,0.22641509433962265,0.226,results/S31/P/robustness.json
+06_limitations,S31/P/robustness#without 2020/lead1/1|p,0.2830188679245283,0.283,results/S31/P/robustness.json
+06_limitations,"S31/P/robustness#1970-1995 (1975,82,91)/lead1/0|c2",0.23849122333849637,+0.24,results/S31/P/robustness.json
+06_limitations,"S31/P/robustness#1970-1995 (1975,82,91)/lead1/1|p",0.15384615384615385,0.154,results/S31/P/robustness.json
+06_limitations,"@g1_lo:null,B,arc.crisis|pct1",0.082,8.2%,gnn/G1/rejections.csv
+06_limitations,"@g1_hi:null,B,arc.crisis|pct1",0.089,8.9%,gnn/G1/rejections.csv
+06_limitations,"@g1_lo:null,B,arc.lead1|pct1",0.085,8.5%,gnn/G1/rejections.csv
+06_limitations,"@g1_hi:null,B,arc.lead1|pct1",0.086,8.6%,gnn/G1/rejections.csv
+06_limitations,"@g1_lo:null,B,arc_C.lead1|pct1",0.023,2.3%,gnn/G1/rejections.csv
+06_limitations,"@g1_hi:null,B,arc_C.lead1|pct1",0.029,2.9%,gnn/G1/rejections.csv
+06_limitations,S31/P/conventions#C/arc/lead1/corr|c3,0.3792741776688093,+0.379,results/S31/P/conventions.json
+06_limitations,S31/P/conventions#C/arc/lead1/p|p,0.03773584905660377,0.038,results/S31/P/conventions.json
+06_limitations,"@g1_lo:network,A,diversification.gdp_mean|pct1",0.971,97.1%,gnn/G1/rejections.csv
+06_limitations,"@g1_hi:network,A,diversification.gdp_mean|pct1",0.993,99.3%,gnn/G1/rejections.csv
+06_limitations,S31/P/diversification#gdp_mean/cross_share_crisis|f3,0.7060955156871213,0.706,results/S31/P/diversification.json
+06_limitations,S31/P/diversification#gdp_mean/cross_share_normal|f3,0.6202264347421601,0.620,results/S31/P/diversification.json
+06_limitations,S31/P/robustness#without 2020/lead1/0|c2,0.1117367939081316,+0.11,results/S31/P/robustness.json
+06_limitations,S31/P/robustness#without 2020/lead1/1|p,0.2830188679245283,0.283,results/S31/P/robustness.json
+06_limitations,results/edge_matched/S31.json#tests/arc.P.lead1/p_current|p,0.018867924528301886,0.019,results/edge_matched/S31.json
+06_limitations,results/edge_matched/S31.json#tests/arc.P.lead1/p_edge|p,0.033193361327734455,0.033,results/edge_matched/S31.json
+06_limitations,S31/P/arc#arc/after2/corr|c3,-0.2577317632100702,−0.258,results/S31/P/arc.json
+06_limitations,S31/P/arc#arc/after2/p|p,0.05660377358490566,0.057,results/S31/P/arc.json
+06_limitations,S30/P/arc#arc/after2/corr|c3,-0.2360751185686773,−0.236,results/S30/P/arc.json
+06_limitations,S30/P/arc#arc/after2/p|p,0.05660377358490566,0.057,results/S30/P/arc.json
+06_limitations,S26/P/arc#arc/after2/corr|c3,-0.2769841676304028,−0.277,results/S26/P/arc.json
+06_limitations,S26/P/arc#arc/after2/p|p,0.018867924528301886,0.019,results/S26/P/arc.json
+06_limitations,S31/P/robustness#without 2020/after2/0|c2,-0.18258766332404483,−0.18,results/S31/P/robustness.json
+06_limitations,S31/P/robustness#without 2020/after2/1|p,0.1509433962264151,0.151,results/S31/P/robustness.json
+06_limitations,"@loo_count_below:S31,after2|int",20,20,results/S31/P/robustness.json
+06_limitations,results/edge_matched/S31.json#tests/arc.P.after2/p_edge|p,0.03939212157568486,0.039,results/edge_matched/S31.json
+06_limitations,results/edge_matched/S30.json#tests/arc.P.after2/p_edge|p,0.05418916216756649,0.054,results/edge_matched/S30.json
+06_limitations,"@edge_rate:kuramoto,network,arc.P.after2|pct1",0.065,6.5%,results/edge_matched/validation.csv.gz
+06_limitations,S31/P/conventions#N/arc/lead1/p|p,0.05660377358490566,0.057,results/S31/P/conventions.json
+06_limitations,S30/P/conventions#W/arc/lead1/p|p,0.05660377358490566,0.057,results/S30/P/conventions.json
+06_limitations,S31/P/conventions#N/amp_detrended/0|c3,0.5469465998415747,+0.547,results/S31/P/conventions.json
+06_limitations,S31/P/conventions#C/amp_detrended/0|c3,0.7257002587332422,+0.726,results/S31/P/conventions.json
+06_limitations,S31/P/channels#sync/strate/tests/lead2/0|c3,0.2725155631880476,+0.273,results/S31/P/channels.json
+06_limitations,S31/P/channels#sync/strate/tests/lead2/1|p,0.018867924528301886,0.019,results/S31/P/channels.json
+06_limitations,S31/P/channels#sync/strate/n|int,19,19,results/S31/P/channels.json
+06_limitations,S31/C/channels#sync/strate/tests/lead2/0|c3,0.16527252211907947,+0.165,results/S31/C/channels.json
+06_limitations,S31/C/channels#sync/strate/tests/lead2/1|p,0.1509433962264151,0.151,results/S31/C/channels.json
+06_limitations,S31/P/structure#align_share|pct0,0.2845406211106746,28%,results/S31/P/structure.json
+06_limitations,S30/P/structure#align_share|pct0,0.1893551126583641,19%,results/S30/P/structure.json
+06_limitations,S30_minus_IRN/P/structure#align_share|pct0,0.33037568939282996,33%,results/S30_minus_IRN/P/structure.json
+06_limitations,S26/P/structure#align_share|pct0,0.39278971984271843,39%,results/S26/P/structure.json
+06_limitations,S31/P/structure#p_swing|p,0.0001999600079984003,0.0002,results/S31/P/structure.json
+06_limitations,S31/P/structure#p_align|p,0.23895220955808838,0.239,results/S31/P/structure.json
+10_appendix,table:A1,,(table),results/S26/P/amplitude.json;results/S26/P/arc.json;results/S26/P/bifurcation.json;results/S26/P/channels.json;results/S26/P/conventions.json;results/S26/P/cross_split.json;results/S26/P/csd.json;results/S26/P/diversification.json;results/S26/P/mst.json;results/S26/P/phase_lags.json;results/S26/P/structure.json;results/S30/P/amplitude.json;results/S30/P/arc.json;results/S30/P/bifurcation.json;results/S30/P/channels.json;results/S30/P/conventions.json;results/S30/P/cross_split.json;results/S30/P/csd.json;results/S30/P/diversification.json;results/S30/P/mst.json;results/S30/P/phase_lags.json;results/S30/P/structure.json;results/S31/P/amplitude.json;results/S31/P/arc.json;results/S31/P/bifurcation.json;results/S31/P/channels.json;results/S31/P/conventions.json;results/S31/P/cross_split.json;results/S31/P/csd.json;results/S31/P/diversification.json;results/S31/P/mst.json;results/S31/P/phase_lags.json;results/S31/P/structure.json;results/S31_minus_BRA/P/amplitude.json;results/S31_minus_BRA/P/arc.json;results/S31_minus_BRA/P/bifurcation.json;results/S31_minus_BRA/P/channels.json;results/S31_minus_BRA/P/conventions.json;results/S31_minus_BRA/P/cross_split.json;results/S31_minus_BRA/P/csd.json;results/S31_minus_BRA/P/diversification.json;results/S31_minus_BRA/P/mst.json;results/S31_minus_BRA/P/phase_lags.json;results/S31_minus_BRA/P/structure.json;results/S31_minus_CHN/P/amplitude.json;results/S31_minus_CHN/P/arc.json;results/S31_minus_CHN/P/bifurcation.json;results/S31_minus_CHN/P/channels.json;results/S31_minus_CHN/P/conventions.json;results/S31_minus_CHN/P/cross_split.json;results/S31_minus_CHN/P/csd.json;results/S31_minus_CHN/P/diversification.json;results/S31_minus_CHN/P/mst.json;results/S31_minus_CHN/P/phase_lags.json;results/S31_minus_CHN/P/structure.json;results/S31_minus_IRN/P/amplitude.json;results/S31_minus_IRN/P/arc.json;results/S31_minus_IRN/P/bifurcation.json;results/S31_minus_IRN/P/channels.json;results/S31_minus_IRN/P/conventions.json;results/S31_minus_IRN/P/cross_split.json;results/S31_minus_IRN/P/csd.json;results/S31_minus_IRN/P/diversification.json;results/S31_minus_IRN/P/mst.json;results/S31_minus_IRN/P/phase_lags.json;results/S31_minus_IRN/P/structure.json;results/S31_minus_IRN_SAU/P/amplitude.json;results/S31_minus_IRN_SAU/P/cross_split.json;results/S31_minus_IRN_SAU/P/diversification.json;results/S31_minus_IRN_SAU/P/structure.json;results/S31_minus_RUS/P/amplitude.json;results/S31_minus_RUS/P/arc.json;results/S31_minus_RUS/P/bifurcation.json;results/S31_minus_RUS/P/channels.json;results/S31_minus_RUS/P/conventions.json;results/S31_minus_RUS/P/cross_split.json;results/S31_minus_RUS/P/csd.json;results/S31_minus_RUS/P/diversification.json;results/S31_minus_RUS/P/mst.json;results/S31_minus_RUS/P/phase_lags.json;results/S31_minus_RUS/P/structure.json;results/S31_minus_SAU/P/amplitude.json;results/S31_minus_SAU/P/arc.json;results/S31_minus_SAU/P/bifurcation.json;results/S31_minus_SAU/P/channels.json;results/S31_minus_SAU/P/conventions.json;results/S31_minus_SAU/P/cross_split.json;results/S31_minus_SAU/P/csd.json;results/S31_minus_SAU/P/diversification.json;results/S31_minus_SAU/P/mst.json;results/S31_minus_SAU/P/phase_lags.json;results/S31_minus_SAU/P/structure.json;results/S31_rus_from_1992/P/amplitude.json;results/S31_rus_from_1992/P/arc.json
+10_appendix,table:robust_S31,,(table),results/S31/P/robustness.json;results/S31_gmd_growth/P/arc.json
+10_appendix,table:robust_S30,,(table),results/S30/P/robustness.json;results/S30_gmd_growth/P/arc.json
+10_appendix,table:robust_S26,,(table),results/S26/P/robustness.json;results/S26_gmd_growth/P/arc.json
+10_appendix,table:loo_S31,,(table),results/S31/P/robustness.json
+10_appendix,table:edge,,(table),results/edge_matched/S31.json;results/edge_matched/S30.json;results/edge_matched/S26.json
+10_appendix,table:multiplicity,,(table),results/S31/P/arc.json;results/S30/P/arc.json;results/S26/P/arc.json
+10_appendix,table:meanr,,(table),results/S31/P/arc.json;results/S30/P/arc.json;results/S26/P/arc.json
+10_appendix,table:neff,,(table),dtt/results/d3_neff.json
+10_appendix,table:neff_recessions,,(table),dtt/results/d3_neff.json
+10_appendix,table:csd_by_event,,(table),results/followup/S31/P/csd_by_event.json
+10_appendix,table:strict,,(table),results/S31_strict/P/diversification.json;results/S31_strict/P/mst.json;results/S31_strict/P/csd.json;results/S31_strict/P/bifurcation.json;results/S30_strict/P/diversification.json;results/S30_strict/P/mst.json;results/S30_strict/P/csd.json;results/S30_strict/P/bifurcation.json;results/S26_strict/P/diversification.json;results/S26_strict/P/mst.json;results/S26_strict/P/csd.json;results/S26_strict/P/bifurcation.json
+10_appendix,table:channels,,(table),results/S31/P/channels.json;results/S31/C/channels.json
+10_appendix,table:g1b,,(table),gnn/G1b/verdicts.json
+10_appendix,table:conv_full,,(table),results/S31/P/conventions.json;results/S30/P/conventions.json;results/S26/P/conventions.json
+10_appendix,table:g1_full,,(table),gnn/G1/rejections.csv

@@ -420,3 +420,20 @@ for i,(nm,ti,cap,num) in enumerate([
 # ---------------------------------------------------------------- 8 COUNTRY ATLAS
 ATLAS_ORDER = ["USA","CAN","MEX","DEU","FRA","GBR","ITA","NLD","BEL","AUT","CHE","SWE","NOR","DNK","FIN","ESP","PRT","GRC",
                "TUR","JPN","KOR","AUS","IND","IDN","THA","ZAF","CHN","BRA","SAU","ARE","IRN"]
+
+
+# ---------------------------------------------------------------- redrawn on S31 for the manuscript (15 October 2026)
+# Drawn by `python -m ef.manuscript.build figures` (src/ef/manuscript/figures.py) from the S31 results under convention P,
+# with corrected labels (open issues 4-7, 18). Each keeps its ID; the new file sits next to the earlier one, which is
+# not overwritten. Not yet merged into the entries above: rebuilding docs/FIGURES.md and the figure books with
+# tools/build_figure_docs.py needs pdftoppm (poppler) and xelatex, which are not installed (paper1/manuscript/BUILD_PDF.md).
+REDRAWN_S31 = {
+    "F1.3": "figures/01_method/F1-03_order_parameter_s31.png",
+    "F2.5": "figures/02_crisis_arc/F2-05_arc_tested_s31.png",
+    "F4.1": "figures/04_amplitude_diversification/F4-01_amplitude_s31.png",
+    "F4.4": "figures/04_amplitude_diversification/F4-04_diversification_s31.png",
+    "F4.5": "figures/04_amplitude_diversification/F4-05_diversification_weightings_s31.png",
+    "F5.1": "figures/05_network_phase/F5-01_mst_s31.png",
+    "F5.4": "figures/05_network_phase/F5-04_methods_diagnostics_s31.png",   # new ID: the Methods diagnostics figure (issue 18)
+    "F6.1": "figures/06_tipping_nulls/F6-01_early_warning_s31.png",
+}
