@@ -68,9 +68,11 @@ def stats(z):
             'mean_r': order.r(z).mean(axis=-1)}
 
 
-def simulate(model, Wy, omega, kappa, phi, sigma, rng, n_worlds, mu=0.0, omega_w=None, years=range(SPAN[0], SPAN[1] + 1)):
+def simulate(model, Wy, omega, kappa, phi, sigma, rng, n_worlds, mu=0.0, omega_w=None, years=range(SPAN[0], SPAN[1] + 1), hook=None):
     """Annual means of the cycle signal for n_worlds worlds: complex array (worlds, economies, years); for Kuramoto
-    exp(i theta), for Stuart-Landau z. Wy: the network of each year in `years` (W[y, i, j], i pulled by j)."""
+    exp(i theta), for Stuart-Landau z. Wy: the network of each year in `years` (W[y, i, j], i pulled by j).
+    hook(year, theta), Kuramoto only: called with the true phases at the start of every Euler step (G1b reads them);
+    it draws nothing from rng, so the worlds are the same with or without it."""
     years = list(years); N = len(omega); spy = int(round(1 / DT)); omega_w = float(np.mean(omega)) if omega_w is None else omega_w
     steps = [(BURN_FROM + k, Wy[0]) for k in range(years[0] - BURN_FROM)] + [(y, Wy[k]) for k, y in enumerate(years)]
     sq = sigma * np.sqrt(DT); out = np.empty((n_worlds, N, len(years)), dtype=complex)
@@ -83,6 +85,7 @@ def simulate(model, Wy, omega, kappa, phi, sigma, rng, n_worlds, mu=0.0, omega_w
         Wk = kappa * W; rs = Wk.sum(axis=1); acc = np.zeros((n_worlds, N), dtype=complex)
         for _ in range(spy):
             if model == 'kuramoto':
+                if hook is not None: hook(y, th)
                 u = np.exp(1j * th)
                 drift = omega + np.imag(np.conj(u) * (u @ Wk.T)) + phi * np.sin(thw[:, None] - th)
                 th = th + drift * DT + sq * rng.standard_normal((n_worlds, N))
