@@ -187,6 +187,10 @@ def diff(a, b):
     va, sa = resolve_value(a); vb, sb = resolve_value(b); return va - vb, sa + sb
 
 
+def mul(k, a):
+    v, s = resolve_value(a); return float(k) * v, s
+
+
 def sub1(a):
     v, s = resolve_value(a); return 1 - v, s
 
@@ -240,7 +244,7 @@ def nexceed(ref, n=5000):
 
 
 DERIVED = {f.__name__: f for f in (loo_range, loo_count_below, n_economies, mst_ratio, neff_year, min_r, argmin_r, g1_rate, g1_lo, g1_hi,
-                                   g1_size_ok, g1_n_tests, g1b_verdict, g1b_rate, g1b_count, ratio, diff, sub1, fd, eq_share, rms_random, mean_random, edge_rate, edge_crossings, nexceed, g1b_names)}
+                                   g1_size_ok, g1_n_tests, g1b_verdict, g1b_rate, g1b_count, ratio, diff, sub1, fd, eq_share, rms_random, mean_random, edge_rate, edge_crossings, nexceed, g1b_names, mul)}
 
 
 def _args(s):
@@ -256,7 +260,7 @@ def resolve_value(ref):
     ref = ref.strip()
     if ref.startswith('@'):
         name, _, args = ref[1:].partition(':')
-        if name in ('ratio', 'diff'):
+        if name in ('ratio', 'diff', 'mul'):
             a, b = args.split(';'); return DERIVED[name](a, b)
         if name in ('sub1', 'nexceed'): return DERIVED[name](args)
         return DERIVED[name](*_args(args)) if args else DERIVED[name]()

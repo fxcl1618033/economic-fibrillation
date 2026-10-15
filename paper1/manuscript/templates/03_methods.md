@@ -39,7 +39,8 @@ time and against matched surrogates (§5).
 Crisis years are taken exogenously from the Kose–Terrones definition of a **global recession** (Kose and Terrones
 2015; Kose, Sugawara and Terrones 2020), which identifies contractions in world real GDP per capita accompanied by
 broad-based declines in other measures of global activity. This yields five dates in our window: **1975, 1982, 1991,
-2009 and 2020**. These dates are fixed before any statistic is computed and are never adjusted, re-weighted, or
+2009 and 2020**. The first four are those of Kose, Sugawara and Terrones (2020), written before the pandemic; 2020 is
+dated as a global recession under the same definition by the World Bank (2020). These dates are fixed before any statistic is computed and are never adjusted, re-weighted, or
 selected on the basis of the synchronization series. We use only the crisis *onset* years; no crisis is assigned a
 duration.
 

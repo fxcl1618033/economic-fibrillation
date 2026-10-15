@@ -8,7 +8,7 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null dtt gnn-g0 gnn-g1 gnn-g1b golden figures atlas-figs atlas-pdf clean
+.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null dtt gnn-g0 gnn-g1 gnn-g1b paper1-figures paper1-text paper1-pdf golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
 
@@ -74,6 +74,15 @@ gnn-g1: gnn-g0                 ## GNN stage G1: calibrate the simulator, run eve
 gnn-g1b: $(STAMP)               ## G1b: escape layer on the G1 worlds (needs gnn-g1's calibration; about 10 minutes)
 	$(PY) -m ef.gnn.g1b run
 	$(PY) -m ef.gnn.g1b report
+
+paper1-figures: $(STAMP)       ## Paper 1: redraw the main and supplementary figures on S31 (figures/*/*_s31.*)
+	$(PY) -m ef.manuscript.build figures
+
+paper1-text: $(STAMP)          ## Paper 1: render the manuscript, docs/methods.md, numbers.csv and TRACE.md from the templates
+	$(PY) -m ef.manuscript.build text
+
+paper1-pdf: $(STAMP)           ## Paper 1: paper1/manuscript/paper1.pdf (needs pandoc, xelatex and Inter; paper1/manuscript/BUILD_PDF.md)
+	$(PY) -m ef.manuscript.build pdf
 
 followup: build-data           ## follow-up checks Sid asked for after Phase 3 (not pre-registered) -> results/FOLLOWUP.md
 	$(PY) -m ef.followup

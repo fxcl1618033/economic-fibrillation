@@ -20,8 +20,8 @@ and before global recessions, and whether recessions look like the approach to a
 We treat each economy's 2–9 year cycle in real GDP per capita as a phase oscillator and measure how aligned the 31
 economies are each year with the Kuramoto order parameter $r(t)$ (Kuramoto 1984; Pikovsky, Rosenblum and Kurths
 2001). The economies produce about 81% of world
-output over 1970–2022. Global recessions are the five dated by Kose and co-authors from world output: 1975, 1982, 1991,
-2009 and 2020 (Kose and Terrones 2015; Kose, Sugawara and Terrones 2020). The question differs from that of the world
+output over 1970–2022. Global recessions are the five dated from world output by Kose and co-authors and the World Bank: 1975,
+1982, 1991, 2009 and 2020 (Kose and Terrones 2015; Kose, Sugawara and Terrones 2020; World Bank 2020). The question differs from that of the world
 business-cycle factor (Kose, Otrok and Whiteman 2003), which measures how much economies move together on average;
 we ask when they do. To ask whether recessions are tipping points we use the taxonomy of Ashwin et al. (2012):
 bifurcation-induced tipping announces itself through critical slowing down (Scheffer et al. 2009), while noise-induced
