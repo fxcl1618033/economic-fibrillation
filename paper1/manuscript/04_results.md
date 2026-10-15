@@ -10,8 +10,8 @@ intervals in Appendix Table A6). In the two most recent recessions nearly every 
 Database real GDP). Five results follow; every other test, including those that came out null, is reported in the
 Methods (§3.5–§3.6) and the Appendix.
 
-![**Figure 1 (F1.3).** The Kuramoto order parameter $r(t)$ of the 31 economies, 1970–2022, convention P. Red bands: the
-five global recessions. The dotted line is the mean of $r$ under independent random phases.](../../figures/01_method/F1-03_order_parameter_s31.png)
+![**Figure 1 (F1.3).** The Kuramoto order parameter $r(t)$ of the 31 economies, 1970–2022, convention P. Grey bands:
+the five global recessions. Dotted line: the mean of $r$ under independent random phases.](../../figures/01_method/F1-03_order_parameter_s31.png)
 
 ### 4.1 Synchronization and swing size move together
 
@@ -25,8 +25,9 @@ floor). The link holds on the 30 (+0.641) and the original 26
 only (+0.726); its size depends on the convention (§3.6.2). This test uses no
 recession dates.
 
-![**Figure 2 (F4.1).** Synchronization $r(t)$ and mean swing size $\bar A(t)$, each minus a Gaussian-smoothed trend
-($\sigma = 8$ years) and standardized. Red bands: global recessions.](../../figures/04_amplitude_diversification/F4-01_amplitude_s31.png)
+![**Figure 2 (F4.1).** Synchronization and swing size. (a) $r(t)$ and the mean swing size $\bar A(t)$, each minus a
+Gaussian-smoothed trend ($\sigma = 8$ years) and standardized; grey bands: global recessions. (b) The same 53 years as
+pairs, recession years in blue, with the least-squares line.](../../figures/04_amplitude_diversification/F4-01_amplitude_s31.png)
 
 ### 4.2 Recession variance is mostly co-movement
 
@@ -65,9 +66,10 @@ gives the cross term 84.1% of the extra
 recession variance, against the 84.3% measured:
 the loss of diversification is this arithmetic, and it is an accounting of the recession excess, not a cause of it.
 
-![**Figure 3 (F4.4).** (a) World cycle variance on 10-year windows split into the own term and the cross term,
-GDP-weighted. (b) The cross term's share of world variance in normal and recession windows. No p-value is shown: the
-share has no proper null (§3.6.6).](../../figures/04_amplitude_diversification/F4-04_diversification_s31.png)
+![**Figure 3 (F4.4).** Loss of diversification. (a) Variance of the GDP-weighted world cycle on 10-year windows,
+split into the own term (grey) and the cross term (blue); grey bands: windows ending in a recession year. (b) The cross
+term's share of world variance in normal and recession windows, with GDP and with equal weights. No p-value is shown:
+the share has no proper null (§3.6.6).](../../figures/04_amplitude_diversification/F4-04_diversification_s31.png)
 
 ### 4.3 The network has tightened
 
@@ -80,8 +82,9 @@ economies move too nearly together for a leader to be identified: the spread of 
 0.546 years, below every one of 5,000 surrogates ($p =$ 0.0002,
 the floor; §3.5.6).
 
-![**Figure 4 (F5.1).** (a) Mean edge length of the minimum spanning tree of the 31 business cycles on 10-year windows,
-with the decade means for 1979–89 and 2013–22. (b) The tree for 2013–2022.](../../figures/05_network_phase/F5-01_mst_s31.png)
+![**Figure 4 (F5.1).** The network has tightened. (a) Mean edge length of the minimum spanning tree of the 31 business
+cycles on 10-year windows, with the decade means for 1979–89 and 2013–22 (orange). (b) The 465 pairwise cycle
+correlations, averaged over the windows ending in each decade; dashed lines: medians.](../../figures/05_network_phase/F5-01_mst_s31.png)
 
 ### 4.4 Synchronization rises in the year before global recessions
 
@@ -111,9 +114,9 @@ pre-registered claim and is reported, not interpreted. The fall two years after 
 (−0.258, $p =$ 0.057) is in the Limitations. This is a property of the
 tightly coupled modern economy, observed twice; it is not a fifty-year regularity and not a forecast.
 
-![**Figure 5 (F2.5).** Correlation of $r(t)$ with the recession indicator at each lag, with two-sided phases
-(convention P) and phases from past data only (convention C). One-sided $p$ against 53 circular shifts (floor 0.019);
-bold: $p \le 0.05$.](../../figures/02_crisis_arc/F2-05_arc_tested_s31.png)
+![**Figure 5 (F2.5).** The tested arc. Correlation of $r(t)$ with the recession indicator at each lag, with two-sided
+phases (P, circles) and phases from past data only (C, diamonds). Filled: one-sided $p \le 0.05$ against 53 circular
+shifts (floor 0.019); grey bars: the range of 90% of the shifted correlations.](../../figures/02_crisis_arc/F2-05_arc_tested_s31.png)
 
 ### 4.5 No critical slowing down
 
@@ -132,5 +135,6 @@ would show, where larger disturbances push the system across a threshold while i
 0.513; Appendix Table A8), and it is significant under
 conventions P and E but not W or N (§3.5.7).
 
-![**Figure 6 (F6.1).** Variance (a) and lag-1 autocorrelation (b) of the fluctuations of $r(t)$ on trailing 15-year
-windows. Yellow: the eight years before each recession, over which the trend is measured.](../../figures/06_tipping_nulls/F6-01_early_warning_s31.png)
+![**Figure 6 (F6.1).** No critical slowing down. Variance (a) and lag-1 autocorrelation (b) of the fluctuations of
+$r(t)$ on trailing 15-year windows. In colour: the eight years before each recession, over which the trend is tested;
+grey bands: recession years.](../../figures/06_tipping_nulls/F6-01_early_warning_s31.png)

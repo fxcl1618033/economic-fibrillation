@@ -49,10 +49,13 @@ Limitations; the lead stated past-only first with $n \approx 2$ in the same sent
 ({{@g1b_verdict:network,primary,verdict|raw}}) everywhere it appears; the floors quoted with every circular-shift and
 surrogate p in the main text; the main text has six figures, each with its catalogue ID.
 
-## 3. The PDF
+## 3. The LaTeX source and the PDF
 
-`paper1.pdf` is built by `make paper1-pdf` (pandoc and xelatex; TeX Gyre Pagella, Inter, Latin Modern Math, loaded by
-file name in `header.tex` because XeTeX on macOS finds TeX Live's own fonts only that way). The LaTeX log has no
-missing characters; ten lines are slightly too wide, all in the wide appendix tables. The figures are drawn in Inter.
-`docs/FIGURES.md` and the figure books are not rebuilt: the redrawn figures are listed in `tools/figure_catalog.py`
-(`REDRAWN_S31`) but not yet merged into its entries.
+`latex/paper1.tex` is the editable LaTeX version: a classic article (title, author and date centred, a standard
+`abstract`), our own short preamble and the text converted by pandoc, with the six main figures as vector PDFs in
+`latex/figures/`. It compiles with XeLaTeX here or on Overleaf (TeX Gyre Pagella, Inter and Latin Modern Math, all in TeX
+Live, loaded by file name). `paper1.pdf` is built from it by `make paper1-pdf`; the log has no missing characters, and
+the few slightly over-wide lines are all in the wide appendix tables. Once `latex/paper1.tex` is edited by hand, a later
+build writes `latex/paper1.generated.tex` instead of overwriting it. `docs/FIGURES.md` and the figure books are not
+rebuilt: the redrawn figures are listed in `tools/figure_catalog.py` (`REDRAWN_S31`) but not yet merged into its
+entries.

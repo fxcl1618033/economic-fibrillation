@@ -454,9 +454,9 @@ economies with equal weights ({{S31/P/diversification#equal/corr_rbar_r|c2}} on 
 
 ---
 
-*Figure — Methods diagnostics (F5.4, supplementary).* Panel **a**: MST mean edge length by year from 1971 (grey) with
-the decade means for 1979–89 and 2013–22 (blue), {{S31/P/mst#L_decade_means/1979-1989|f3}} against
+*Figure — Methods diagnostics (F5.4, supplementary).* Panel **a**: MST mean edge length by year from 1971 (blue) with
+the decade means for 1979–89 and 2013–22 (orange), {{S31/P/mst#L_decade_means/1979-1989|f3}} against
 {{S31/P/mst#L_decade_means/2013-2022|f3}}, a factor of {{@mst_ratio:S31|x1}}. Panel **b**: the phase-lag spread against
 its 5,000-member surrogate null — the observed {{S31/P/phase_lags#sd|f3}} yr lies below every surrogate
-($p =$ {{S31/P/phase_lags#p_spread_lower|p}}, the floor). Panel **c**: raw and Bonferroni-corrected $p$-values for the
-five lags of §6.3, against the $1/53$ permutation floor (dotted) and 0.05 (dashed).
+($p =$ {{S31/P/phase_lags#p_spread_lower|p}}, the floor). Panel **c**: raw (filled) and Bonferroni-corrected (open)
+$p$-values for the five lags of §6.3, against the $1/53$ permutation floor (dotted) and 0.05 (dashed).

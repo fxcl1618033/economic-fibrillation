@@ -197,16 +197,9 @@ def trace(final, write=True):
 # ------------------------------------------------------------------ PDF
 
 def build_pdf():
-    """paper1.md -> paper1.pdf with pandoc and xelatex (TeX Gyre Pagella, Inter, Latin Modern Math). Stops with the install
-    commands if a tool or font is missing; it does not fall back to anything else."""
-    missing = [t for t in ('pandoc', 'xelatex') if shutil.which(t) is None]
-    if missing:
-        raise SystemExit("cannot build the PDF: missing " + ", ".join(missing) + ". See paper1/manuscript/BUILD_PDF.md for the install commands.")
-    fonts = subprocess.run(['fc-list'], capture_output=True, text=True).stdout if shutil.which('fc-list') else ''
-    if 'Inter' not in fonts: raise SystemExit("cannot build the PDF: the Inter font is not installed. See paper1/manuscript/BUILD_PDF.md.")
-    cmd = ['pandoc', 'paper1.md', '-o', 'paper1.pdf', '--pdf-engine=xelatex', '--include-in-header=header.tex',
-           '-V', 'geometry:margin=2.2cm', '-V', 'fontsize=11pt', '-V', 'colorlinks=true', '--resource-path=.:../..']
-    subprocess.run(cmd, cwd=MS, check=True)
+    """The editable LaTeX source (paper1/manuscript/latex/paper1.tex) and the PDF built from it (ef.manuscript.latex)."""
+    from ef.manuscript import latex
+    return latex.build()
 
 
 def main(argv=None):

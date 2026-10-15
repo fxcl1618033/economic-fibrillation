@@ -53,3 +53,14 @@ def test_main_text_figures(rendered):
 
 def test_methods_file_stays_read_only():
     assert not os.access(os.path.join(build.ROOT, 'docs', 'methods.md'), os.W_OK) or os.geteuid() == 0
+
+
+def test_latex_title_block_and_figures():
+    """The editable LaTeX version: classic title block, a standard abstract, six vector figures that exist in latex/."""
+    from ef.manuscript import latex
+    title, author, date, abstract, keywords = latex.front(open(os.path.join(MS, '00_front.md')).read())
+    assert title and author == 'Siddhant Shinde' and abstract and keywords
+    tex = open(os.path.join(latex.OUT, 'paper1.tex')).read()
+    assert '\\maketitle' in tex and '\\begin{abstract}' in tex and '\\documentclass[11pt,a4paper]{article}' in tex
+    figs = re.findall(r'\\includegraphics\[[^\]]*\]\{([^}]+)\}', tex)
+    assert len(figs) == 6 and all(f.endswith('.pdf') and os.path.exists(os.path.join(latex.OUT, f)) for f in figs)

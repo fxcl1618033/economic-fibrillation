@@ -117,7 +117,11 @@ rerun with a rescaled bracket before anything was reported (decision log). The p
   source) between the Methods and the Limitations; see `CHECKS.md`.
 - **The number trace is automatic, with limits.** Placeholders cover every result; the remaining digits are classified
   by rule (years as dates, settings from the config files, small counts). Read `TRACE.md` to see each one.
-- **Figures** are redrawn in Inter. `docs/FIGURES.md` and the figure books are not rebuilt yet. The supplementary
-  figures other than F4.5 and F5.4 still show the 26 economies or convention W.
-- **The PDF** is `paper1.pdf` (`make paper1-pdf`); the wide appendix tables are tight on the page.
+- **Figures** were redesigned for print (vector PDF, journal style). F5.1's second panel is now the distribution of the
+  465 pairwise correlations in the two decades instead of the tree itself, which was unreadable at that size.
+  `docs/FIGURES.md` and the figure books are not rebuilt yet; the supplementary figures other than F4.5 and F5.4 still
+  show the 26 economies or convention W.
+- **The editable version** is `latex/paper1.tex` (with `latex/figures/`); `paper1.pdf` is compiled from it. If you
+  edit the `.tex` directly, the numbers are no longer regenerated from the results files: either edit the templates and
+  rebuild, or treat your edited `.tex` as the master from then on.
 - **The title is a draft**, and so is every sentence: you are the author.

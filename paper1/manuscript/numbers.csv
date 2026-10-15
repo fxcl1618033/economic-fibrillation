@@ -307,6 +307,7 @@ section,placeholder,value,printed,source
 04_results,S31/P/conventions#C/arc/crisis/p|p,0.018867924528301886,0.019,results/S31/P/conventions.json
 04_results,S31/P/arc#arc/after2/corr|c3,-0.2577317632100702,−0.258,results/S31/P/arc.json
 04_results,S31/P/arc#arc/after2/p|p,0.05660377358490566,0.057,results/S31/P/arc.json
+04_results,lit:90%|the 5th to 95th percentile band drawn by ef.manuscript.figures.f25,90%,90%,the 5th to 95th percentile band drawn by ef.manuscript.figures.f25
 04_results,S31/P/csd#tau_var|c3,0.4375,+0.438,results/S31/P/csd.json
 04_results,S31/P/csd#p_var|p,0.03099380123975205,0.031,results/S31/P/csd.json
 04_results,results/edge_matched/S31.json#tests/F2/p_edge|p,0.028794241151769647,0.029,results/edge_matched/S31.json

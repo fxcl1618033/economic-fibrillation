@@ -484,9 +484,9 @@ economies with equal weights (+0.51 on the 31). Neither changes a conclusion.
 
 ---
 
-*Figure — Methods diagnostics (F5.4, supplementary).* Panel **a**: MST mean edge length by year from 1971 (grey) with
-the decade means for 1979–89 and 2013–22 (blue), 0.687 against
+*Figure — Methods diagnostics (F5.4, supplementary).* Panel **a**: MST mean edge length by year from 1971 (blue) with
+the decade means for 1979–89 and 2013–22 (orange), 0.687 against
 0.424, a factor of 1.6×. Panel **b**: the phase-lag spread against
 its 5,000-member surrogate null — the observed 0.546 yr lies below every surrogate
-($p =$ 0.0002, the floor). Panel **c**: raw and Bonferroni-corrected $p$-values for the
-five lags of §3.5.3, against the $1/53$ permutation floor (dotted) and 0.05 (dashed).
+($p =$ 0.0002, the floor). Panel **c**: raw (filled) and Bonferroni-corrected (open)
+$p$-values for the five lags of §3.5.3, against the $1/53$ permutation floor (dotted) and 0.05 (dashed).

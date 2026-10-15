@@ -26,11 +26,12 @@ the path, then from the repository:
 make paper1-figures paper1-text paper1-pdf
 ```
 
-`paper1-figures` redraws the figures (with Inter once it is installed; until then matplotlib falls back to DejaVu
-Sans; if the figures still come out in DejaVu Sans, matplotlib's font cache predates Inter: delete
-`~/.matplotlib/fontlist-*.json` and run it again), `paper1-text` regenerates the text and `docs/methods.md`, and `paper1-pdf` runs pandoc with xelatex on
-`paper1/manuscript/paper1.md` (TeX Gyre Pagella for text, Inter for sans, Latin Modern Math). The same install lets
-`tools/build_figure_docs.py` rebuild `docs/FIGURES.md` and the figure books with the redrawn figures.
+`paper1-figures` redraws the figures (vector PDF and 300-dpi PNG; if they come out in DejaVu Sans, matplotlib's font
+cache predates Inter: delete `~/.matplotlib/fontlist-*.json` and run it again), `paper1-text` regenerates the text and
+`docs/methods.md`, and `paper1-pdf` writes the editable LaTeX source `latex/paper1.tex` (with `latex/figures/`) and
+compiles it with XeLaTeX into `paper1.pdf`.
 
-The fonts are loaded by file name in `header.tex`: XeTeX on macOS finds only system fonts by family name, and TeX Gyre
-Pagella and Latin Modern Math live inside TeX Live, not in the system font folders.
+**Editing in LaTeX.** `latex/` is self-contained: upload the folder to Overleaf (Menu → Compiler → XeLaTeX) or run
+`xelatex paper1.tex` twice inside it. The fonts (TeX Gyre Pagella, Inter, Latin Modern Math) are all in TeX Live and are
+loaded by file name, because XeTeX on macOS finds TeX Live's own fonts only that way. A later `make paper1-pdf` will not
+overwrite a `paper1.tex` you have edited; it writes `paper1.generated.tex` beside it instead.

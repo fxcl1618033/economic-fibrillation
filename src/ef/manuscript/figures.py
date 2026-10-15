@@ -19,7 +19,7 @@ from ef.phases import analytic, window_cycles
 
 ROOT = config.repo_root()
 FIGDATA = os.path.join(ROOT, 'paper1', 'manuscript', 'figdata')
-BLUE, ORANGE, AQUA, YELLOW, RED, GREY, LIGHT = '#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e34948', '#898781', '#c3c2b7'
+BLUE, ORANGE, AQUA, YELLOW, RED, GREY, LIGHT = '#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e34948', '#898781', '#c3c2b7'   # project palette
 CFG = os.path.join(ROOT, 'configs', 'runs', 'phase3_s31.yaml')
 MAIN = {  # ID: (folder, stem, title)
     'F1.3': ('01_method', 'F1-03_order_parameter_s31', 'The Kuramoto order parameter r(t), 31 economies, 1970–2022'),
@@ -35,14 +35,26 @@ SUPP = {
 }
 
 
+W_FULL = 6.5                                                   # inches: the text width of the PDF (A4, 2.2 cm margins)
+INK, MUTED, BAND, PRE = '#1f1f1d', '#6b6a64', '#e8e7e1', '#f6e7bf'
+
+
 def _plt():
+    """Journal style: Inter at 8 pt at the printed size, thin axes and ticks, no in-figure titles (the captions carry
+    them), recessive grey for context, colour only for data."""
     import matplotlib
     matplotlib.use('Agg'); import matplotlib.pyplot as plt
     warnings.filterwarnings('ignore', module='matplotlib')
-    plt.rcParams.update({'font.family': ['Inter', 'DejaVu Sans'], 'font.size': 9, 'axes.titlesize': 10, 'axes.titleweight': 'bold',
-                         'axes.spines.top': False, 'axes.spines.right': False, 'axes.grid': True, 'grid.color': '#e6e5df',
-                         'grid.linewidth': 0.6, 'legend.frameon': False, 'figure.dpi': 150, 'savefig.bbox': 'tight',
-                         'axes.unicode_minus': True})
+    plt.rcdefaults()
+    plt.rcParams.update({
+        'font.family': ['Inter', 'DejaVu Sans'], 'font.size': 8, 'axes.labelsize': 8, 'xtick.labelsize': 7.5, 'ytick.labelsize': 7.5,
+        'legend.fontsize': 7.5, 'axes.linewidth': 0.6, 'axes.edgecolor': INK, 'axes.labelcolor': INK, 'text.color': INK,
+        'xtick.color': INK, 'ytick.color': INK, 'xtick.major.width': 0.6, 'ytick.major.width': 0.6, 'xtick.major.size': 3,
+        'ytick.major.size': 3, 'xtick.direction': 'out', 'ytick.direction': 'out', 'axes.spines.top': False,
+        'axes.spines.right': False, 'axes.grid': False, 'legend.frameon': False, 'legend.handlelength': 1.6,
+        'lines.linewidth': 1.3, 'lines.solid_capstyle': 'round', 'figure.dpi': 150, 'savefig.dpi': 300, 'savefig.bbox': 'tight',
+        'savefig.pad_inches': 0.03, 'pdf.fonttype': 42, 'axes.unicode_minus': True, 'mathtext.fontset': 'custom',
+        'mathtext.rm': 'Inter', 'mathtext.it': 'Inter:italic', 'mathtext.bf': 'Inter:bold', 'axes.axisbelow': True})
     return plt
 
 
@@ -53,18 +65,12 @@ def path(fid, ext='png'):
 def _save(fig, fid):
     import matplotlib.pyplot as plt
     for ext in ('pdf', 'png'):
-        f = path(fid, ext); assert os.path.basename(f).endswith(f'_s31.{ext}'), f; fig.savefig(f, dpi=200 if ext == 'png' else None)
+        f = path(fid, ext); assert os.path.basename(f).endswith(f'_s31.{ext}'), f; fig.savefig(f)
     plt.close(fig)
 
 
-def _foot(fig, text):
-    """A wrapped note under the figure, as wide as the figure."""
-    import textwrap
-    fig.text(0.01, -0.01, textwrap.fill(text, int(fig.get_figwidth() * 17)), fontsize=6.8, color=GREY, va='top')
-
-
-def _sup(fig, text):
-    fig.suptitle(text, x=0.01, y=1.06, ha='left', fontweight='bold', fontsize=10)
+def _panel(ax, letter, x=-0.075, y=1.0):
+    ax.text(x, y, letter, transform=ax.transAxes, fontsize=9.5, fontweight='bold', va='bottom', ha='left')
 
 
 def _s(x, d=3): return f"{x:+.{d}f}".replace('-', '−')
@@ -73,8 +79,20 @@ def _s(x, d=3): return f"{x:+.{d}f}".replace('-', '−')
 def _p(p): return '0.0002' if p < 0.00025 else (f"{p:.4f}" if p < 0.001 else f"{p:.3f}")
 
 
-def _shade(ax, years, rec, color=RED, alpha=0.12):
-    for y in rec: ax.axvspan(y - 0.5, y + 0.5, color=color, alpha=alpha, lw=0)
+def _bands(ax, rec, label=False, y=1.0):
+    """Global recessions as light grey bands (optionally named at the top)."""
+    for e in rec:
+        ax.axvspan(e - 0.5, e + 0.5, color=BAND, lw=0, zorder=0)
+        if label: ax.text(e, y, str(e), transform=ax.get_xaxis_transform(), ha='center', va='bottom', fontsize=6.5, color=MUTED)
+
+
+def _years_axis(ax, lo, hi):
+    ax.set_xlim(lo - 0.5, hi + 0.5); ax.set_xticks(range(1970 if lo <= 1970 else (lo // 10 + 1) * 10, hi + 1, 10))
+
+
+def _halo(t):
+    import matplotlib.patheffects as pe
+    t.set_path_effects([pe.withStroke(linewidth=2.2, foreground='white')]); return t
 
 
 # ------------------------------------------------------------------ figure data, checked against the results files
@@ -118,6 +136,10 @@ def figdata():
         for j in range(i + 1, len(D.isos)): G.add_edge(D.isos[i], D.isos[j], weight=float(Dm[i, j]))
     T = nx.minimum_spanning_tree(G, algorithm='prim')
     assert abs(np.mean([d['weight'] for *_, d in T.edges(data=True)]) - Lf[str(wm[1])]) < 1e-9
+    iu = np.triu_indices(len(D.isos), 1); pairs = {}
+    for lo_, hi_ in ((1979, 1989), (2013, 2022)):        # pairwise correlations averaged over the windows ending in each decade
+        sel = (ym >= lo_) & (ym <= hi_); pairs[f'{lo_}-{hi_}'] = np.nanmean(C[sel], axis=0)[iu].round(6).tolist()
+    out['mst_pairs'] = pairs
     out['mst'] = {'years': ym.tolist(), 'L': [Lf[str(y)] for y in ym], 'decade_means': lookup('S31/P/mst#L_decade_means')[0],
                   'last_window': [int(wm[1] - tm['win'] + 1), int(wm[1])], 'tree': [[a, b, d['weight']] for a, b, d in T.edges(data=True)]}
     # F6.1: rolling lag-1 autocorrelation and variance of r on 15-year windows from 1962
@@ -137,139 +159,187 @@ def figdata():
         null.append(phaselags.leads(np.angle(to_z(Xs)), omega).std(axis=-1))
     null = np.concatenate(null); assert abs(null.mean() - lookup('S31/P/phase_lags#null_mean')[0]) < 1e-12
     out['phase'] = {'sd': sd, 'null': null.round(6).tolist()}
+    # F2.5: the arc under P and C with the circular-shift null at each lag (5th-95th percentile of the 52 shifted values)
+    rC = order.r(analytic(D.logs, D.years, w, 'C', band)); rCf = lookup('S31/P/conventions#C/r_by_year')[0]
+    assert np.allclose(rC, [rCf[str(y)] for y in yrs], atol=1e-12)
+    g = crisis.indicator(yrs, rec); out['arc'] = {}
+    for conv, series in (('P', r), ('C', rC)):
+        arc = crisis.arc(series, yrs, rec); out['arc'][conv] = {}
+        for lab, lag, _ in crisis.ARC:
+            stored = lookup(f'S31/P/arc#arc/{lab}')[0] if conv == 'P' else lookup(f'S31/P/conventions#C/arc/{lab}')[0]
+            assert abs(arc[lab]['corr'] - stored['corr']) < 1e-12 and abs(arc[lab]['p'] - stored['p']) < 1e-12
+            nul = nulls.shift_null(series, g, lag)
+            out['arc'][conv][lab] = {'corr': arc[lab]['corr'], 'p': arc[lab]['p'], 'null_lo': float(np.percentile(nul, 5)),
+                                     'null_hi': float(np.percentile(nul, 95))}
+    out['added'] = [i for i in D.isos if i not in config.sample('S26')]
     json.dump(out, open(os.path.join(FIGDATA, 'figdata_s31.json'), 'w'))
     return out
+
+
 
 
 # ------------------------------------------------------------------ the figures
 
 def f13(plt, d):
-    yrs, r = np.array(d['r']['years']), np.array(d['r']['r']); N = d['n_economies']
-    fig, ax = plt.subplots(figsize=(6.6, 2.8)); _shade(ax, yrs, d['recessions'])
-    ax.plot(yrs, r, color=BLUE, lw=1.6); ax.axhline(np.sqrt(np.pi / (4 * N)), color=GREY, ls=':', lw=1)
-    ax.text(2000.5, np.sqrt(np.pi / (4 * N)) - 0.06, f'mean under independent random phases ≈ {np.sqrt(np.pi / (4 * N)):.2f}', color=GREY, fontsize=7.5)
-    i, j = int(np.argmin(r)), int(np.argmax(r))
-    ax.annotate(f"{r[i]:.2f} ({yrs[i]})", (yrs[i], r[i]), textcoords='offset points', xytext=(6, 2), fontsize=7.5)
-    ax.annotate(f"{r[j]:.2f} ({yrs[j]})", (yrs[j], r[j]), textcoords='offset points', xytext=(-48, 3), fontsize=7.5)
-    ax.set_ylim(0, 1.02); ax.set_xlim(yrs[0] - 0.5, yrs[-1] + 0.5); ax.set_ylabel('r(t)')
-    ax.set_title(MAIN['F1.3'][2], loc='left'); ax.text(0.99, 0.02, 'red bands: global recessions · convention P', transform=ax.transAxes, ha='right', fontsize=7, color=GREY)
+    """F1.3: r(t), with the five recessions named and the random-phase mean as reference."""
+    yrs, r = np.array(d['r']['years']), np.array(d['r']['r']); N = d['n_economies']; m0 = np.sqrt(np.pi / (4 * N))
+    fig, ax = plt.subplots(figsize=(W_FULL, 2.3))
+    _bands(ax, d['recessions'], label=True)
+    ax.axhline(m0, color=MUTED, lw=0.7, ls=(0, (1.5, 2)))
+    ax.text(yrs[-1] + 0.4, m0, 'independent\nphases', fontsize=6.5, color=MUTED, va='center', ha='left', linespacing=1.1)
+    ax.plot(yrs, r, color=BLUE, lw=1.4, zorder=3)
+    ax.set_ylim(0, 1); ax.set_yticks([0, 0.25, 0.5, 0.75, 1]); ax.set_ylabel('Order parameter $r(t)$')
+    _years_axis(ax, yrs[0], yrs[-1])
     _save(fig, 'F1.3')
 
 
 def f25(plt, d):
-    labs = ['lead2', 'lead1', 'crisis', 'after1', 'after2']; names = ['lead-2', 'lead-1', 'crisis\nyear', 'after-1', 'after-2']
-    P = [lookup(f'S31/P/arc#arc/{l}')[0] for l in labs]; C = [lookup(f'S31/P/conventions#C/arc/{l}')[0] for l in labs]
-    fig, ax = plt.subplots(figsize=(6.6, 3.2)); x = np.arange(5); wd = 0.38
-    for off, S, col, lab in ((-wd / 2, P, BLUE, 'two-sided phases (P)'), (wd / 2, C, ORANGE, 'past-only phases (C)')):
-        b = ax.bar(x + off, [s['corr'] for s in S], wd, color=col, label=lab)
-        for k, s in enumerate(S):
-            y = s['corr']; ax.text(x[k] + off, y + (0.015 if y >= 0 else -0.015), f"p {_p(s['p'])}", ha='center', va='bottom' if y >= 0 else 'top', fontsize=6.8,
-                                   fontweight='bold' if s['p'] <= 0.05 else 'normal')
-    ax.axhline(0, color='black', lw=0.6); ax.set_xticks(x, names); ax.set_ylabel('corr(r, recession indicator)')
-    ax.set_title(MAIN['F2.5'][2], loc='left'); ax.legend(loc='lower left', fontsize=7.5); ax.set_ylim(min(s['corr'] for s in P + C) - 0.07, max(s['corr'] for s in P + C) + 0.08)
-    _foot(fig, 'One-sided p against 53 circular shifts of the recession years (floor 0.019); leads and the crisis year tested upward, '
-               'after-lags downward; bold: p ≤ 0.05. Past-only phases use data up to each year only.')
+    """F2.5: the arc at every lag, two-sided (P) and past-only (C) phases, against the range of 90% of circular shifts.
+    Filled markers: p <= 0.05 in the pre-registered direction."""
+    from matplotlib.lines import Line2D
+    labs = ['lead2', 'lead1', 'crisis', 'after1', 'after2']; names = ['Lead 2', 'Lead 1', 'Recession\nyear', 'After 1', 'After 2']
+    fig, ax = plt.subplots(figsize=(W_FULL, 2.6)); x = np.arange(5)
+    ax.axhline(0, color=INK, lw=0.6, zorder=1)
+    for off, conv, col, mk in ((-0.14, 'P', BLUE, 'o'), (0.14, 'C', ORANGE, 'D')):
+        A = d['arc'][conv]
+        for k, l in enumerate(labs):
+            a = A[l]; ax.plot([x[k] + off] * 2, [a['null_lo'], a['null_hi']], color=BAND, lw=5, solid_capstyle='butt', zorder=1)
+            sig = a['p'] <= 0.05 + 1e-12
+            ax.plot(x[k] + off, a['corr'], marker=mk, ms=6.5 if mk == 'o' else 5.8, mec=col, mew=1.3, mfc=col if sig else 'white', ls='none', zorder=3)
+    for conv, off, col in (('P', -0.14, BLUE), ('C', 0.14, ORANGE)):
+        a = d['arc'][conv]['lead1']
+        _halo(ax.text(1 + off + (0.06 if conv == 'C' else -0.06), a['corr'] + 0.035, _s(a['corr']), fontsize=7, ha='left' if conv == 'C' else 'right', color=INK))
+    ax.set_xticks(x, names); ax.set_xlim(-0.6, 4.6); ax.set_ylabel('Correlation of $r(t)$ with\nthe recession indicator')
+    ax.set_ylim(-0.45, 0.6); ax.tick_params(axis='x', length=0)
+    h = [Line2D([], [], marker='o', ls='none', mec=BLUE, mfc=BLUE, ms=6, label='Two-sided phases (P)'),
+         Line2D([], [], marker='D', ls='none', mec=ORANGE, mfc=ORANGE, ms=5.5, label='Past-only phases (C)'),
+         Line2D([], [], marker='o', ls='none', mec=INK, mfc='white', ms=6, label='Open: p > 0.05'),
+         Line2D([], [], color=BAND, lw=5, label='90% of circular shifts')]
+    ax.legend(handles=h, loc='lower center', bbox_to_anchor=(0.5, 1.0), ncol=4, columnspacing=1.4, handletextpad=0.4)
     _save(fig, 'F2.5')
 
 
 def f41(plt, d):
+    """F4.1: (a) detrended, standardized r and Abar over time; (b) the same pairs as a scatter, recession years marked."""
     yrs = np.array(d['r']['years']); rd, Ad = np.array(d['r']['r_detrended']), np.array(d['r']['Abar_detrended'])
-    z = lambda v: (v - v.mean()) / v.std()
-    fig, ax = plt.subplots(figsize=(6.6, 2.8)); _shade(ax, yrs, d['recessions'])
-    ax.plot(yrs, z(rd), color=BLUE, lw=1.6, label='synchronization r(t)'); ax.plot(yrs, z(Ad), color=ORANGE, lw=1.6, label='mean swing size Ā(t)')
-    ax.set_ylabel('detrended, standardized'); ax.set_xlim(yrs[0] - 0.5, yrs[-1] + 0.5); ax.legend(loc='upper left', fontsize=7.5, ncol=2)
-    p_s, p_u = lookup('S31/P/amplitude#p_shift')[0], lookup('S31/P/amplitude#p_surrogate')[0]
-    ax.set_title(MAIN['F4.1'][2], loc='left')
-    _foot(fig, f"corr {_s(d['r']['corr_detrended'])}; p = {_p(p_s)} against 53 circular shifts and {_p(p_u)} against 5,000 surrogates (both floors). "
-               f"Each series minus a Gaussian-smoothed copy (σ = {d['r']['detrend_sigma']:g} years), then standardized; convention P; red: global recessions.")
+    z = lambda v: (v - v.mean()) / v.std(); zr, zA = z(rd), z(Ad); rec = np.isin(yrs, d['recessions'])
+    fig = plt.figure(figsize=(W_FULL, 2.45)); gs = fig.add_gridspec(1, 2, width_ratios=[2.55, 1], wspace=0.28)
+    a = fig.add_subplot(gs[0]); b = fig.add_subplot(gs[1])
+    _bands(a, d['recessions']); a.axhline(0, color=BAND, lw=0.8, zorder=0)
+    a.plot(yrs, zr, color=BLUE, lw=1.3, label='Synchronization $r(t)$', zorder=3)
+    a.plot(yrs, zA, color=ORANGE, lw=1.3, label=r'Mean swing size $\bar{A}(t)$', zorder=3)
+    a.set_ylabel('Detrended (standard deviations)'); _years_axis(a, yrs[0], yrs[-1]); a.set_ylim(-3, 4.5)
+    a.legend(loc='upper left', ncol=2); _panel(a, 'a', x=-0.1)
+    b.axhline(0, color=BAND, lw=0.8, zorder=0); b.axvline(0, color=BAND, lw=0.8, zorder=0)
+    sl, ic = np.polyfit(zA, zr, 1); xs = np.array([zA.min(), zA.max()]); b.plot(xs, ic + sl * xs, color=INK, lw=0.8, zorder=2)
+    b.scatter(zA[~rec], zr[~rec], s=11, color=LIGHT, edgecolor='white', lw=0.4, zorder=3)
+    b.scatter(zA[rec], zr[rec], s=22, color=BLUE, edgecolor='white', lw=0.6, zorder=4)
+    off = {1975: (0.12, -0.42, 'left'), 1982: (-0.12, 0.14, 'right'), 1991: (0.15, -0.05, 'left'), 2009: (-0.15, 0.12, 'right'), 2020: (0.05, -0.5, 'right')}
+    for y_, xa, ya in zip(yrs[rec], zA[rec], zr[rec]):
+        dx, dy, ha = off.get(int(y_), (0.15, 0.12, 'left')); _halo(b.text(xa + dx, ya + dy, str(y_), fontsize=6.5, color=INK, ha=ha))
+    b.text(0.97, 0.04, f"corr {_s(d['r']['corr_detrended'])}", transform=b.transAxes, ha='right', fontsize=7.5)
+    b.set_xlabel(r'Swing size $\bar{A}$ (SD)'); b.set_ylabel('$r$ (SD)'); _panel(b, 'b', x=-0.3)
     _save(fig, 'F4.1')
 
 
-def _div_panel(ax, d, kind, title):
-    yrs = np.array(d['div']['years']); dv = d['div'][kind]; own = np.array(dv['own'], float); cross = np.array(dv['cross'], float)
-    _shade(ax, yrs, d['recessions']); tot = own + cross
-    ax.fill_between(yrs, 0, own * 1e4, color=LIGHT, label='own term (each economy alone)', lw=0)
-    ax.fill_between(yrs, own * 1e4, tot * 1e4, color=BLUE, alpha=0.75, label='cross term (co-movement)', lw=0)
-    ax.set_xlim(yrs[~np.isnan(tot)][0] - 0.5, yrs[-1] + 0.5); ax.set_ylabel('world cycle variance (×10⁻⁴)'); ax.set_title(title, loc='left')
-
-
 def f44(plt, d):
-    fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 2.9), gridspec_kw={'width_ratios': [2.3, 1]})
-    _div_panel(a, d, 'gdp_mean', 'a  World cycle variance on 10-year windows'); a.legend(loc='upper left', fontsize=7)
-    dv = d['div']['gdp_mean']
-    b.bar([0, 1], [dv['cross_share_normal'], dv['cross_share_crisis']], color=[LIGHT, BLUE], width=0.6)
-    for k, v in enumerate([dv['cross_share_normal'], dv['cross_share_crisis']]): b.text(k, v + 0.015, f"{v:.3f}", ha='center', fontsize=7.5)
-    b.set_xticks([0, 1], ['normal\nwindows', 'recession\nwindows']); b.set_ylim(0, 1); b.set_ylabel('cross share of world variance')
-    b.set_title('b  Cross share', loc='left')
-    _sup(fig, MAIN['F4.4'][2])
-    _foot(fig, f"GDP weights (within-window mean real GDP); windows from 1962; red: windows ending in a global recession. The cross term supplies "
-             f"{100 * dv['cross_fraction_of_excess']:.1f}% of the extra variance in recession windows (descriptive; no p-value: the share has no proper null).")
+    """F4.4: (a) own and cross terms of world cycle variance on 10-year windows (GDP weights); (b) the cross share in
+    normal and recession windows under both weightings."""
+    yrs = np.array(d['div']['years']); dv = d['div']['gdp_mean']; own = np.array(dv['own'], float) * 1e4; cross = np.array(dv['cross'], float) * 1e4
+    ok = ~np.isnan(own); fig = plt.figure(figsize=(W_FULL, 2.45)); gs = fig.add_gridspec(1, 2, width_ratios=[2.2, 1], wspace=0.48)
+    a = fig.add_subplot(gs[0]); b = fig.add_subplot(gs[1])
+    _bands(a, d['recessions'])
+    a.fill_between(yrs[ok], 0, own[ok], color=LIGHT, lw=0, zorder=2)
+    a.fill_between(yrs[ok], own[ok], own[ok] + cross[ok], color=BLUE, alpha=0.8, lw=0, zorder=2)
+    a.plot(yrs[ok], own[ok] + cross[ok], color=BLUE, lw=0.8, zorder=3)
+    _halo(a.text(1975.5, 0.12, 'Own term', fontsize=7, color=INK)); _halo(a.text(1975.5, 0.5, 'Cross term\n(co-movement)', fontsize=7, color=INK, linespacing=1.1))
+    a.set_ylabel('World cycle variance ($\\times10^{-4}$)'); a.set_ylim(0, None); _years_axis(a, int(yrs[ok][0]), int(yrs[-1])); _panel(a, 'a', x=-0.09)
+    rows = [('GDP weights', d['div']['gdp_mean']), ('Equal weights', d['div']['equal'])]
+    for k, (nm, v) in enumerate(rows):
+        y = 1 - k; lo, hi = v['cross_share_normal'], v['cross_share_crisis']
+        b.plot([lo, hi], [y, y], color=LIGHT, lw=2.2, zorder=1, solid_capstyle='butt')
+        b.plot(lo, y, 'o', ms=6.5, mfc='white', mec=MUTED, mew=1.1, zorder=3); b.plot(hi, y, 'o', ms=6.5, mfc=BLUE, mec=BLUE, zorder=3)
+        b.text(lo, y - 0.2, f"{lo:.3f}", ha='center', va='top', fontsize=6.8, color=MUTED); b.text(hi, y - 0.2, f"{hi:.3f}", ha='center', va='top', fontsize=6.8)
+    b.set_yticks([1, 0], [r[0] for r in rows]); b.set_ylim(-0.7, 1.6); b.set_xlim(0.55, 0.85); b.tick_params(axis='y', length=0)
+    b.spines['left'].set_visible(False); b.set_xlabel('Cross share of world variance')
+    b.plot([], [], 'o', mfc='white', mec=MUTED, label='Normal windows'); b.plot([], [], 'o', mfc=BLUE, mec=BLUE, label='Recession windows')
+    b.legend(loc='upper left', ncol=1, handletextpad=0.3, borderaxespad=0); _panel(b, 'b', x=-0.55)
     _save(fig, 'F4.4')
 
 
 def f45(plt, d):
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.8), sharey=False)
-    for ax, kind, name in zip(axes, ('gdp_mean', 'equal'), ('GDP weights', 'equal weights')):
-        dv = d['div'][kind]; v = [dv['cross_share_normal'], dv['cross_share_crisis']]
-        ax.bar([0, 1], v, color=[LIGHT, BLUE], width=0.6); ax.set_ylim(0, 1); ax.set_xticks([0, 1], ['normal windows', 'recession windows'])
-        for k, x in enumerate(v): ax.text(k, x + 0.015, f"{x:.3f}", ha='center', fontsize=7.5)
-        ax.set_title(f"{name}: cross term supplies {100 * dv['cross_fraction_of_excess']:.1f}% of the excess", loc='left', fontsize=8.5)
-    axes[0].set_ylabel('cross share of world variance'); _sup(fig, SUPP['F4.5'][2])
+    """F4.5 (supplementary): the cross share of world variance on 10-year windows, both weightings."""
+    yrs = np.array(d['div']['years']); fig, ax = plt.subplots(figsize=(W_FULL, 2.2)); _bands(ax, d['recessions'])
+    for kind, col, nm in (('gdp_mean', BLUE, 'GDP weights'), ('equal', ORANGE, 'Equal weights')):
+        sh = np.array(d['div'][kind]['share'], float); ok = ~np.isnan(sh); ax.plot(yrs[ok], sh[ok], color=col, lw=1.3, label=nm, zorder=3)
+    ax.set_ylim(0, 1); ax.set_ylabel('Cross share of world variance'); _years_axis(ax, 1971, int(yrs[-1])); ax.legend(loc='lower right', ncol=2)
     _save(fig, 'F4.5')
 
 
 def f51(plt, d):
-    import networkx as nx
-    m = d['mst']; yrs = np.array(m['years']); L = np.array([np.nan if v is None else v for v in m['L']])
-    fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.0), gridspec_kw={'width_ratios': [1.6, 1]})
-    _shade(a, yrs, d['recessions']); a.plot(yrs, L, color=GREY, lw=1.2, label='L(t), 10-year windows')
-    dm = m['decade_means']
-    for k, (lo, hi) in enumerate(((1979, 1989), (2013, 2022))):
-        v = dm[f'{lo}-{hi}']; a.hlines(v, lo, hi, color=BLUE, lw=2.4, label='decade means' if k == 0 else None); a.text((lo + hi) / 2, v + 0.02, f"{v:.3f}", ha='center', color=BLUE, fontsize=7.5)
-    ratio = dm['1979-1989'] / dm['2013-2022']
-    a.set_title(f"a  MST mean edge length: {ratio:.1f}× tighter", loc='left'); a.set_ylabel('mean edge length √(2(1−ρ))'); a.legend(loc='lower left', fontsize=7)
-    a.set_xlim(yrs[~np.isnan(L)][0] - 0.5, yrs[-1] + 0.5)
-    G = nx.Graph(); [G.add_edge(x, y, weight=w) for x, y, w in m['tree']]
-    pos = nx.kamada_kawai_layout(G, weight='weight')
-    nx.draw_networkx_edges(G, pos, ax=b, edge_color=LIGHT, width=1.2); nx.draw_networkx_nodes(G, pos, ax=b, node_size=22, node_color=BLUE)
-    nx.draw_networkx_labels(G, {k: (v[0], v[1] + 0.06) for k, v in pos.items()}, ax=b, font_size=5)
-    b.set_title(f"b  The tree, {m['last_window'][0]}–{m['last_window'][1]}", loc='left'); b.axis('off')
-    _sup(fig, MAIN['F5.1'][2])
-    _foot(fig, "Minimum spanning tree of the 31 business cycles, distance √(2(1−ρ)) on 10-year windows (windows may start in 1962). "
-               "Decade means: 1979–89, the first decade whose windows lie inside 1970–2022, and 2013–22. Red: global recessions.")
+    """F5.1: (a) mean MST edge length with the two decade means; (b) the 465 pairwise cycle correlations, averaged over
+    the windows ending in each decade, as densities."""
+    m = d['mst']; yrs = np.array(m['years']); L = np.array([np.nan if v is None else v for v in m['L']]); dm = m['decade_means']
+    fig = plt.figure(figsize=(W_FULL, 2.6)); gs = fig.add_gridspec(1, 2, width_ratios=[1.5, 1], wspace=0.22)
+    a = fig.add_subplot(gs[0]); b = fig.add_subplot(gs[1])
+    _bands(a, d['recessions']); ok = ~np.isnan(L)
+    a.plot(yrs[ok], L[ok], color=BLUE, lw=1.3, zorder=3)
+    for lo, hi in ((1979, 1989), (2013, 2022)):
+        v = dm[f'{lo}-{hi}']; a.hlines(v, lo - 0.5, hi + 0.5, color=ORANGE, lw=2, zorder=4)
+    r0, r1 = dm['1979-1989'], dm['2013-2022']
+    a.annotate('', xy=(1991.5, r1), xytext=(1991.5, r0), arrowprops=dict(arrowstyle='->', color=INK, lw=0.7, shrinkA=0, shrinkB=0))
+    _halo(a.text(1990.5, (r0 + r1) / 2, f"Decade means\n{r0:.3f} → {r1:.3f}\n{r0 / r1:.1f}× shorter", fontsize=7, va='center', ha='right', linespacing=1.2))
+    a.set_ylabel('Mean MST edge length, √(2(1 − ρ))'); _years_axis(a, int(yrs[ok][0]), int(yrs[-1])); _panel(a, 'a', x=-0.13)
+    bins = np.arange(-1.0, 1.0001, 0.05)
+    for key, col, nm, alpha in (('1979-1989', MUTED, '1979–89', 0.45), ('2013-2022', BLUE, '2013–22', 0.45)):
+        v = np.array(d['mst_pairs'][key]); hh, _, _ = b.hist(v, bins=bins, density=True, histtype='stepfilled', color=LIGHT if col == MUTED else BLUE,
+                                                              alpha=0.7 if col == MUTED else alpha, lw=0)
+        b.hist(v, bins=bins, density=True, histtype='step', color=col, lw=0.9)
+        med = float(np.median(v)); b.axvline(med, color=col, lw=0.8, ls=(0, (3, 2)))
+        _halo(b.text(med + (0.03 if col == BLUE else -0.03), hh.max() * (1.02 if col == BLUE else 1.08), f"{nm}\nmedian {med:.2f}",
+                     fontsize=6.8, ha='left' if col == BLUE else 'right', va='bottom', color=INK, linespacing=1.1))
+    b.set_xlim(-1.0, 1.0); b.set_ylim(0, None); b.set_xlabel('Pairwise cycle correlation'); b.set_ylabel('Density')
+    b.set_yticks([]); b.spines['left'].set_visible(False); _panel(b, 'b', x=-0.06)
     _save(fig, 'F5.1')
 
 
 def f61(plt, d):
-    c = d['csd']; yrs = np.array(c['years']); ar = np.array(c['ar1'], float); va = np.array(c['var'], float)
-    fig, (a, b) = plt.subplots(2, 1, figsize=(6.6, 4.0), sharex=True)
-    for ax, x, col, name, key in ((a, va, ORANGE, 'variance of r(t) fluctuations', 'var'), (b, ar, BLUE, 'lag-1 autocorrelation of r(t) fluctuations', 'ar1')):
-        for e in d['recessions']: ax.axvspan(e - c['pre'] - 0.5, e - 0.5, color=YELLOW, alpha=0.15, lw=0)
-        _shade(ax, yrs, d['recessions']); ax.plot(yrs, x, color=col, lw=1.5)
+    """F6.1: variance and lag-1 autocorrelation of r's fluctuations on trailing windows; the eight years before each
+    recession, over which the trend is tested, in colour."""
+    c = d['csd']; yrs = np.array(c['years']); fig, axes = plt.subplots(2, 1, figsize=(W_FULL, 3.3), sharex=True, gridspec_kw={'hspace': 0.18})
+    for ax, key, col, lab, letter in ((axes[0], 'var', ORANGE, 'Variance of $r$', 'a'), (axes[1], 'ar1', BLUE, 'Autocorrelation of $r$', 'b')):
+        x = np.array(c[key], float); ok = ~np.isnan(x)
+        for e in d['recessions']: ax.axvline(e, color=BAND, lw=4, zorder=0)
+        ax.plot(yrs[ok], x[ok], color=LIGHT, lw=1.1, zorder=2)
+        for e in d['recessions']:
+            m = (yrs >= e - c['pre']) & (yrs <= e - 1) & ok
+            if m.sum() >= 2: ax.plot(yrs[m], x[m], color=col, lw=1.8, zorder=3)
         tau, p = lookup(f'S31/P/csd#tau_{key}')[0], lookup(f'S31/P/csd#p_{key}')[0]
-        ax.set_title(f"{'a' if key == 'var' else 'b'}  {name}: pre-recession trend τ = {_s(tau)}, p = {_p(p)}", loc='left', fontsize=8.5)
-    b.set_xlim(yrs[~np.isnan(ar)][0] - 0.5, yrs[-1] + 0.5)
-    _sup(fig, MAIN['F6.1'][2])
-    _foot(fig, f"Trailing {c['win']}-year windows of r(t) minus a Gaussian-smoothed trend; yellow: the {c['pre']} years before each recession (red). "
-             "Kendall-type trend, one-sided upward, against 5,000 surrogates. Critical slowing down would raise both together.")
+        ax.text(0.01, 0.95, f"Pre-recession trend τ = {_s(tau)}, p = {_p(p)}", transform=ax.transAxes, va='top', fontsize=7.5)
+        ax.set_ylabel(lab); _panel(ax, letter, x=-0.1, y=1.02)
+    _years_axis(axes[1], int(yrs[~np.isnan(np.array(c['var'], float))][0]), int(yrs[-1]))
     _save(fig, 'F6.1')
 
 
 def f54(plt, d):
-    fig, (a, b, c) = plt.subplots(1, 3, figsize=(10.0, 3.0)); fig.subplots_adjust(wspace=0.35)
-    m = d['mst']; yrs = np.array(m['years']); L = np.array([np.nan if v is None else v for v in m['L']]); dm = m['decade_means']
-    a.plot(yrs, L, color=GREY, lw=1)
-    for lo, hi in ((1979, 1989), (2013, 2022)): a.hlines(dm[f'{lo}-{hi}'], lo, hi, color=BLUE, lw=2.2)
-    a.set_title(f"a  MST mean edge length\ndecade means {dm['1979-1989']:.3f} vs {dm['2013-2022']:.3f} ({dm['1979-1989'] / dm['2013-2022']:.1f}×)", loc='left', fontsize=7.5)
-    null = np.array(d['phase']['null']); b.hist(null, bins=50, color=LIGHT); b.axvline(d['phase']['sd'], color=RED, lw=1.5)
-    b.set_title(f"b  Phase-lead spread {d['phase']['sd']:.3f} yr (red)\nvs {len(null):,} surrogates: p = {_p(lookup('S31/P/phase_lags#p_spread_lower')[0])} (floor)", loc='left', fontsize=7.5)
-    b.set_xlabel('s.d. of phase leads (years)')
-    labs = ['lead2', 'lead1', 'crisis', 'after1', 'after2']; raw = [lookup(f'S31/P/arc#arc/{l}/p')[0] for l in labs]; bon = [lookup(f'S31/P/arc#bonferroni/{l}')[0] for l in labs]
-    x = np.arange(5); c.bar(x - 0.2, raw, 0.4, color=BLUE, label='raw'); c.bar(x + 0.2, bon, 0.4, color=ORANGE, label='Bonferroni')
-    c.axhline(1 / 53, color='black', ls=':', lw=0.8); c.axhline(0.05, color='black', ls='--', lw=0.8); c.set_yscale('log')
-    c.set_xticks(x, ['lead-2', 'lead-1', 'crisis', 'after-1', 'after-2'], fontsize=7); c.legend(fontsize=6.5, loc='upper left'); c.set_ylim(0.01, 1.5)
-    c.set_title('c  Arc p-values, raw and Bonferroni\nfloor 1/53 (dotted), 0.05 (dashed)', loc='left', fontsize=7.5)
-    _sup(fig, SUPP['F5.4'][2] + ' (S31, convention P)')
+    """F5.4 (supplementary, Methods diagnostics): (a) MST decade means; (b) phase-lead spread against its null;
+    (c) raw and Bonferroni p of the arc against the permutation floor."""
+    fig, (a, b, c) = plt.subplots(1, 3, figsize=(W_FULL, 2.1), gridspec_kw={'wspace': 0.42})
+    m = d['mst']; yrs = np.array(m['years']); L = np.array([np.nan if v is None else v for v in m['L']]); dm = m['decade_means']; ok = ~np.isnan(L)
+    a.plot(yrs[ok], L[ok], color=BLUE, lw=1)
+    for lo, hi in ((1979, 1989), (2013, 2022)): a.hlines(dm[f'{lo}-{hi}'], lo - 0.5, hi + 0.5, color=ORANGE, lw=1.8)
+    a.set_ylabel('Mean MST edge length'); a.set_xticks([1980, 2000, 2020]); _panel(a, 'a', x=-0.32)
+    null = np.array(d['phase']['null']); b.hist(null, bins=40, color=LIGHT, lw=0)
+    b.axvline(d['phase']['sd'], color=BLUE, lw=1.3); b.set_xlabel('S.d. of phase leads (years)'); b.set_ylabel('Surrogates')
+    _halo(b.text(d['phase']['sd'] + 0.02, b.get_ylim()[1] * 0.9, 'observed', fontsize=6.8, color=INK)); _panel(b, 'b', x=-0.32)
+    labs = ['lead2', 'lead1', 'crisis', 'after1', 'after2']; raw = [lookup(f'S31/P/arc#arc/{l}/p')[0] for l in labs]
+    bon = [lookup(f'S31/P/arc#bonferroni/{l}')[0] for l in labs]; x = np.arange(5)
+    c.axhline(1 / 53, color=MUTED, lw=0.7, ls=(0, (1.5, 2))); c.axhline(0.05, color=MUTED, lw=0.7, ls=(0, (4, 2)))
+    c.plot(x, raw, 'o', ms=5, color=BLUE, label='Raw'); c.plot(x, bon, 'D', ms=4.5, mfc='white', mec=ORANGE, mew=1.1, label='Bonferroni')
+    c.set_yscale('log'); c.set_ylim(0.012, 1.4); c.set_xticks(x, ['L2', 'L1', 'R', 'A1', 'A2']); c.set_ylabel('p'); c.set_xlim(-0.5, 4.5)
+    c.set_yticks([0.02, 0.05, 0.1, 0.2, 0.5, 1], ['0.02', '0.05', '0.1', '0.2', '0.5', '1']); c.minorticks_off()
+    c.text(-0.45, 1 / 53 * 0.84, 'floor 1/53', fontsize=6.3, color=MUTED, va='top', ha='left')
+    c.legend(loc='upper left', handletextpad=0.2, borderaxespad=0); _panel(c, 'c', x=-0.32)
     _save(fig, 'F5.4')
 
 

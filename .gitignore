@@ -8,3 +8,8 @@ __pycache__/
 .DS_Store
 .venv/
 .pytest_cache/
+# LaTeX build files of the Paper 1 manuscript
+paper1/manuscript/latex/*.aux
+paper1/manuscript/latex/*.log
+paper1/manuscript/latex/*.out
+paper1/manuscript/latex/*.toc
