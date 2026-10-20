@@ -13,10 +13,15 @@ scripts with an absolute /home/claude path are run from patched copies.
 
 Each row is EXACT, MATCH (differs only by floating-point rounding, no p-value changed; allowed only for outputs
 built from the float32 GMD files: panel26 and the atlas) or DIFFERS;
+atlas/panel.csv and atlas/global.csv are Global Macro Database series, whose terms do not allow re-hosting, so the
+public repository does not hold them: they are checked against the sha256 pinned in data/sources.yaml (EXACT), or
+against a stored copy given with --reference; without either they are NOT COMPARED (the derived stats.json and
+sync.json, built from them, are still compared);
 the rules are in src/ef/repro.py. The script exits with an error if any row is DIFFERS or FAILED.
 Scripts that only print are compared line by line with paper1/results/printed/.
 """
 import argparse, glob, os, shutil, subprocess, sys, hashlib
+import yaml
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
 from ef.repro import compare
 
@@ -24,6 +29,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--raw", default="data/raw")
 ap.add_argument("--out", default="build/asrun")
 ap.add_argument("--timeout", type=int, default=1800)
+ap.add_argument("--reference", help="folder with stored copies of atlas files that are not distributed (panel.csv, global.csv)")
 args = ap.parse_args()
 ROOT = os.getcwd(); RAW = os.path.abspath(args.raw); OUT = os.path.abspath(args.out)
 shutil.rmtree(OUT, ignore_errors=True); os.makedirs(f"{OUT}/internal")
@@ -87,16 +93,25 @@ for s in ("data.py", "stats.py", "sync.py"):
     r = subprocess.run([sys.executable, s], cwd=A, env=env, capture_output=True, text=True, timeout=args.timeout)
     if r.returncode: rows.append((f"atlas/{s}", "FAILED", r.stderr.strip().splitlines()[-1][:120])); break
 else:
+    sha = lambda p: hashlib.sha256(open(p, "rb").read()).hexdigest()
+    pinned = yaml.safe_load(open("data/sources.yaml"))["derived_checksums"]
     for f in ("panel.csv", "global.csv", "meta.json", "stats.json", "sync.json"):
-        same = hashlib.sha256(open(f"{A}/{f}", "rb").read()).hexdigest() == hashlib.sha256(open(f"atlas/{f}", "rb").read()).hexdigest()
-        if same: rows.append((f"atlas/{f}", "EXACT", "byte-for-byte")); continue
-        t = compare(f"{A}/{f}", f"atlas/{f}")
-        rows.append((f"atlas/{f}", t.status(), "not byte-identical; " + t.note()))
+        ref = f"atlas/{f}" if os.path.exists(f"atlas/{f}") else None
+        if ref is None and args.reference and os.path.exists(os.path.join(args.reference, f)): ref = os.path.join(args.reference, f)
+        if ref is None:                                       # not distributed (GMD terms): the pinned checksum only
+            if sha(f"{A}/{f}") == pinned.get(f"atlas/{f}"): rows.append((f"atlas/{f}", "EXACT", "byte-for-byte with the sha256 pinned in data/sources.yaml"))
+            else: rows.append((f"atlas/{f}", "NOT COMPARED", "not distributed (GMD terms); its sha256 differs from the one pinned on Linux x86; "
+                                                             "compare with --reference <folder with a stored copy>"))
+            continue
+        if sha(f"{A}/{f}") == sha(ref): rows.append((f"atlas/{f}", "EXACT", "byte-for-byte" + ("" if ref.startswith("atlas/") else f" (reference {ref})"))); continue
+        t = compare(f"{A}/{f}", ref)
+        rows.append((f"atlas/{f}", t.status(), "not byte-identical; " + t.note() + ("" if ref.startswith("atlas/") else f" (reference {ref})")))
 
 rep = ["# As-run reproduction report", "",
        "EXACT: every number within 1e-9 (relative). MATCH: differs only by floating-point rounding (within 1e-3, phases",
        "within 0.005 rad), no p-value changed; allowed only for outputs built from the float32 GMD files (panel26, atlas).",
-       "DIFFERS: anything else. Rules in `src/ef/repro.py`.", "",
+       "DIFFERS: anything else. NOT COMPARED: a file the public repository does not hold (GMD terms) whose checksum",
+       "differs from the pinned one and for which no --reference copy was given. Rules in `src/ef/repro.py`.", "",
        "| Script or file | Result | Note |", "|---|---|---|"]
 rep += [f"| {a} | {b} | {c} |" for a, b, c in rows]
 rep += ["", "Not run: " + "; ".join(f"{k} ({v})" for k, v in NOT_RUN.items())]

@@ -22,7 +22,7 @@ MS = os.path.join(ROOT, 'paper1', 'manuscript')
 OUT = os.path.join(MS, 'latex')
 STAMP = os.path.join(OUT, '.generated.sha256')
 BODY = ['01_introduction', '02_data', '03_methods', '04_results', '05_discussion', '06_limitations', '07_future_work',
-        '08_ai_disclosure', '09_references', '10_appendix']
+        '08_ai_disclosure', '08b_data_availability', '09_references', '10_appendix']
 
 PREAMBLE = r"""% Economic Fibrillation, Paper 1 -- editable LaTeX source.
 % Compile with pdfLaTeX, XeLaTeX or LuaLaTeX (run twice). On Overleaf the default settings work.

@@ -26,7 +26,7 @@ ROOT = config.repo_root()
 MS = os.path.join(ROOT, 'paper1', 'manuscript')
 TPL = os.path.join(MS, 'templates')
 SECTIONS = ['00_front', '01_introduction', '02_data', '03_methods', '04_results', '05_discussion', '06_limitations', '07_future_work',
-            '08_ai_disclosure', '09_references', '10_appendix']
+            '08_ai_disclosure', '08b_data_availability', '09_references', '10_appendix']
 METHODS_PARTS = ['02_data', '03_methods']            # docs/methods.md = these two, in methods.md numbering
 EXTRAS = {'caveats': 'CAVEATS_FOR_SID', 'checks': 'CHECKS'}   # companion documents for Sid, rendered and traced the same way
 CFG = os.path.join(ROOT, 'configs', 'runs', 'phase3_s31.yaml')
@@ -157,6 +157,7 @@ ALLOWED = [  # (pattern, what it is): numbers that are not results
     (r'\b(?:19|20)\d\d[a-z]?\)', 'citation year'), (r'\((?:19|20)\d\d\b', 'citation year'), (r'\b(?:19|20)\d\d[a-z]?(?=[;,]\s)', 'citation year'),
     (r'\$\$.*?\$\$', 'mathematics'), (r'\$[^$]+\$', 'mathematics'), (r"\b(?:19|20)\d0s\b", 'decade'), (r'\bG[0-4]\b|\bS(?:26|30|31)\b|\bG1b\b', 'stage or sample name'),
     (r'doi:\S+|arXiv[: ]\d{4}\.\d{4,5}|\b10\.\d{4,}/\S+', 'identifier'), (r'`[^`]*`', 'file name or code'),
+    (r'<https?://[^>\s]+>', 'web address'), (r'Penn World Table\s+\d+\.\d+', 'dataset name and version'), (r'CC BY(?:-NC-SA)?\s+\d\.\d', 'licence name'),
     (r'\b(?:pp?\.|vol\.|no\.)\s*\d+', 'page or volume'), (r'\(\d+\)', 'issue number'), (r'\b\d+[–-]\d+(?=[,.])', 'page range'),
 ]
 

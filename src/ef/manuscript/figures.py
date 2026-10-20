@@ -141,7 +141,7 @@ def figdata():
         sel = (ym >= lo_) & (ym <= hi_); pairs[f'{lo_}-{hi_}'] = np.nanmean(C[sel], axis=0)[iu].round(6).tolist()
     out['mst_pairs'] = pairs
     out['mst'] = {'years': ym.tolist(), 'L': [Lf[str(y)] for y in ym], 'decade_means': lookup('S31/P/mst#L_decade_means')[0],
-                  'last_window': [int(wm[1] - tm['win'] + 1), int(wm[1])], 'tree': [[a, b, d['weight']] for a, b, d in T.edges(data=True)]}
+                  'last_window': [int(wm[1] - tm['win'] + 1), int(wm[1])], 'tree': sorted([sorted([a, b]) + [d['weight']] for a, b, d in T.edges(data=True)])}   # fixed order: the library's edge order varies between runs
     # F6.1: rolling lag-1 autocorrelation and variance of r on 15-year windows from 1962
     tc = cfg['tests']['csd']; wc = tuple(tc['window']); yc = np.arange(wc[0], wc[1] + 1)
     rc = order.r(analytic(D.logs, D.years, wc, 'P', band)); ar, va = tipping.rolling_ar1_var(rc, win=tc['win'], sigma=tc['sigma'])

@@ -145,3 +145,4 @@ Applied with the fifth-draft edits when `docs/methods.md` became generated from 
 | Date | Decision | Why | Rejected alternative |
 |---|---|---|---|
 | 15 Oct 2026 | **Paper 1 locked after G1b. No new tests. Anything new is Paper 2.** Every item in `docs/open_issues.md` is closed (FIXED with its commit, LIMITATIONS or FUTURE WORK) | Sid's decision of 15 October 2026: a complete manuscript ready for review | Further tests on Paper 1 |
+| 27 Oct 2026 | The minimum spanning tree stored in `paper1/manuscript/figdata/figdata_s31.json` is listed in a fixed order (edges sorted by name); no figure or number changes | `make reproduce` found the same 30 edges with the same weights listed in a different order, which the library does not fix between runs | Leaving the order to the library, which makes a reproduction report a difference that is not one |

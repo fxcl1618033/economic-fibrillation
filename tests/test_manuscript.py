@@ -51,8 +51,14 @@ def test_main_text_figures(rendered):
         assert os.path.exists(os.path.normpath(os.path.join(MS, path))), path
 
 
-def test_methods_file_stays_read_only():
-    assert not os.access(os.path.join(build.ROOT, 'docs', 'methods.md'), os.W_OK) or os.geteuid() == 0
+def test_methods_file_is_written_read_only(tmp_path):
+    """docs/methods.md is generated, and the build writes it read-only so it is not edited by accident. The test checks
+    the build's write, not the checkout: git records no read-only bit, so a fresh clone has the file writable."""
+    p = tmp_path / 'methods.md'
+    for before in (None, 'old'):                       # a new file, and an existing read-only one
+        if before is not None: os.chmod(p, 0o644); p.write_text(before); os.chmod(p, 0o444)
+        build.write_locked(str(p), 'new')
+        assert p.read_text() == 'new' and (not os.access(p, os.W_OK) or os.geteuid() == 0)
 
 
 def test_latex_title_block_and_figures():

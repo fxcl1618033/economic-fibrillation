@@ -1,6 +1,7 @@
-# Economic Fibrillation — one-command rebuild (HANDOFF.md Phases 0–1).
-#   make all      environment, pinned data, as-run reproduction check and tests (needs no LaTeX)
-#   make help     list the targets
+# Economic Fibrillation — one-command rebuild.
+#   make all        environment, pinned data, as-run reproduction check and tests (needs no LaTeX; minutes)
+#   make reproduce  everything Paper 1 reports, regenerated from the pinned data and compared with the committed files
+#   make help       list the targets
 # Every target runs the project's own Python (.venv, Python 3.13, versions from requirements.lock).
 
 PY     := $(CURDIR)/.venv/bin/python
@@ -8,9 +9,23 @@ STAMP  := .venv/.installed
 export PYTHONPATH := $(CURDIR)/src
 export MPLBACKEND := Agg
 
-.PHONY: all help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null dtt gnn-g0 gnn-g1 gnn-g1b paper1-figures paper1-text paper1-pdf golden figures atlas-figs atlas-pdf clean
+.PHONY: all reproduce help env data fetch verify build-data validate asrun test paper1 phase3 phase3-s31 followup edge-null dtt gnn-g0 gnn-g1 gnn-g1b paper1-figures paper1-text paper1-pdf golden figures atlas-figs atlas-pdf clean
 
 all: data asrun test           ## environment, data, as-run check and tests
+
+reproduce: data asrun          ## regenerate every result Paper 1 reports and compare each file with the committed one (build/REPRODUCE.md; several hours)
+	$(PY) -m ef.phase3
+	$(PY) -m ef.phase3 --config configs/runs/phase3_s31.yaml
+	$(PY) -m ef.edge_null validate && $(PY) -m ef.edge_null run && $(PY) -m ef.edge_null report
+	$(PY) -m ef.followup
+	$(PY) -m ef.dtt_runs reproduce
+	$(PY) -m ef.gnn.report
+	$(PY) -m ef.gnn.g1 calibrate && $(PY) -m ef.gnn.g1 run && $(PY) -m ef.gnn.g1 checks && $(PY) -m ef.gnn.g1 report
+	$(PY) -m ef.gnn.g1b run && $(PY) -m ef.gnn.g1b report
+	$(PY) -m ef.manuscript.build figures
+	$(PY) -m ef.manuscript.build text
+	$(PY) tools/check_reproduction.py
+	$(PY) -m pytest -q
 
 help:                          ## list the targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sed 's/:.*## /\t/' | expand -t 16
@@ -94,7 +109,8 @@ figures: $(STAMP)              ## rebuild the category folders, figure books and
 	@command -v xelatex >/dev/null && command -v pdftoppm >/dev/null || { echo "make figures needs xelatex (TeX Live or MacTeX) and pdftoppm (poppler)"; exit 1; }
 	$(PY) tools/build_figure_docs.py
 
-atlas-figs: $(STAMP)           ## redraw the 35 atlas figures (atlas/fig/*.png) from atlas/panel.csv and friends (~1 min)
+atlas-figs: asrun              ## redraw the 35 atlas figures (atlas/fig/*.png) from atlas/panel.csv and friends (~1 min)
+	@for f in panel.csv global.csv; do [ -f atlas/$$f ] || cp build/asrun/atlas/$$f atlas/$$f; done   # GMD series: rebuilt, not distributed
 	cd atlas && mkdir -p fig && $(PY) figs.py all
 
 atlas-pdf: atlas-figs          ## rebuild the 39-page atlas PDF (xelatex with TeX Gyre Pagella, Inter, Latin Modern Math)

@@ -75,6 +75,11 @@ def main(argv=None):
            "MATCH: floating-point rounding only, no p-value changed (rules in `src/ef/repro.py`).", "", "| File | Result | Note |", "|---|---|---|"]
     bad = []
     for name, new, old in rows:
+        if not os.path.exists(old):        # atlas/panel.csv and global.csv: GMD series, not distributed (GMD terms)
+            same = sha256(new) == checksums.get(name)
+            rep.append(f"| {name} | {'EXACT' if same else 'NOT COMPARED'} | "
+                       f"{'byte-identical with the pinned sha256' if same else 'not distributed (GMD terms); sha256 differs from the one pinned on Linux x86'} |")
+            continue
         same = sha256(new) == checksums.get(name, sha256(old))
         t = compare(new, old); st = 'EXACT' if same else t.status()
         rep.append(f"| {name} | {st} | {'byte-identical' if same else t.note()} |")
